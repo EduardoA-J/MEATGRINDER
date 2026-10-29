@@ -1,0 +1,18 @@
+﻿# Local tool clones / caches
+_tools/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.secret
+*.secrets
+**/PhotonAppId.local
+
+# Cursor local (keep shared skills; ignore caches if any)
+.cursor/*.log

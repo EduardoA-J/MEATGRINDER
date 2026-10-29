@@ -1,0 +1,11 @@
+﻿# Photon Fusion 2 — App ID (local, do not commit the filled file)
+# 1. Create an account at https://dashboard.photonengine.com/
+# 2. Create a new Fusion 2 application
+# 3. Copy the App ID below
+# 4. Rename this file to PhotonAppId.local (gitignored)
+# 5. After importing the Fusion SDK, paste the App ID into:
+#    Assets/Photon/Fusion/Resources/PhotonAppSettings.asset
+#    field: App Id Fusion
+#    (menu: Tools > Fusion > Realtime Settings)
+
+PHOTON_FUSION_APP_ID=
