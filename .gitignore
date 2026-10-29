@@ -1,4 +1,4 @@
-﻿# Local tool clones / caches
+# Local tool clones / caches
 _tools/
 
 # OS
@@ -16,3 +16,13 @@ Desktop.ini
 
 # Cursor local (keep shared skills; ignore caches if any)
 .cursor/*.log
+
+# Unity generated folders (project lives under grinder/)
+grinder/[Ll]ibrary/
+grinder/[Tt]emp/
+grinder/[Oo]bj/
+grinder/[Bb]uild/
+grinder/[Bb]uilds/
+grinder/[Ll]ogs/
+grinder/[Uu]ser[Ss]ettings/
+*.log
