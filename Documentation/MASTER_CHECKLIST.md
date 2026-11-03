@@ -69,7 +69,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 | F2-11 | Feedback local de impacto | BACKLOG | F2-07 |
 | F2-12 | Pruebas EditMode de daño | BACKLOG | F2-01, F2-02, F2-04, F2-09 |
 | F3-01 | Bootstrap de Fusion | BLOCKED | F0-08. El SDK y el App ID local ya están. Falta la escena Boot |
-| F3-02 | Crear, unir y salir de sesión | BLOCKED | F3-01 |
+| F3-02 | Crear, unir y salir de sesión | DONE | F3-01. La prueba usó NetworkTest; la escena Boot sigue pendiente |
 | F3-03 | Spawn autorizado | BLOCKED | F3-02, F5-04 |
 | F3-04 | Movimiento replicado con predicción | BACKLOG | F1-10, F3-03, D-19 puede seguir abierta si la prueba solo registra el error observado |
 | F3-05 | Equipos | BACKLOG | F3-03 |
@@ -1102,7 +1102,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 - **Objetivo:** RF-01.
 - **Justificación:** GDD 13.1.
 - **Dependencias:** F3-01
-- **Archivos o sistemas:** FusionSessionManager.cs
+- **Archivos o sistemas:** `Assets/_Project/01_Scripts/Networking/NetworkSessionController.cs`
 - **Skills o plugins:** Documentación de Fusion
 - **Responsable:** Multiplayer Engineer
 - **Prioridad:** P0
@@ -1112,8 +1112,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El cliente A crea y obtiene un identificador.
   - El cliente B entra con ese identificador.
   - Tras salir, ninguno sigue recibiendo estado de esa sesión.
-- **Pruebas:** Dos procesos. Resultado escrito en PROGRESS.
-- **Estado:** BLOCKED
+- **Pruebas:** 3 de noviembre de 2026. Editor `6000.5.6f1` en batchmode como Host y `Builds/NetworkTest/MeatgrinderProbe.exe` como Client, sesión `MeatgrinderProbe-20261103`. `grinder/Logs/network-test-host.txt`: `START_OK Host`, jugador 2 entra (`total=2`) y sale (`total=1`), `HOST_SAW_DESPAWN`, runner cerrado `Ok`. `network-test-client.txt`: `START_OK Client`, `LocalPlayer=2`, `CLIENT_SAW_TWO` (dos `NetworkTestAvatar` en el cliente), runner cerrado `Ok`.
+- **Estado:** DONE
 - **Subtareas:**
   - F3-02a Create.
   - F3-02b Join.
@@ -1139,7 +1139,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Cada jugador conectado aparece una vez.
   - El punto lo elige la autoridad.
   - Un cliente no puede forzar las coordenadas de spawn por RPC sin validación.
-- **Pruebas:** Dos clientes en la arena gris.
+- **Pruebas:** La sonda del 3 de noviembre de 2026 spawneó un avatar estático por jugador y el Host lo despawneó al salir el Client. Sigue faltando la arena gris y la lista de puntos de F5-04.
 - **Estado:** BLOCKED
 - **Subtareas:**
   - F3-03a Lista de puntos.

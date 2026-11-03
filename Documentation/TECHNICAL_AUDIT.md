@@ -53,7 +53,7 @@ El 3 de noviembre de 2026 `upm.log` cerró `project:resolve-packages` con HTTP 2
 | GDD | Repositorio |
 |---|---|
 | `Assets/_Project/` con escenas Boot, Menus y Maps | `Assets/Scenes/SampleScene.unity` y `Assets/Settings/` |
-| Fusion 2, sesión, autoridad | SDK 2.1.4 build 2500 en `Assets/Photon`. App ID en el asset local, fuera de git. Sin sesión de juego |
+| Fusion 2, sesión, autoridad | SDK 2.1.4 y sonda Host/Client en `NetworkTest`. App ID local, fuera de git. Sin movimiento, daño ni mapa de juego |
 | Controlador, armas, salud, monstruos | Ausentes |
 | Nombre de producto MEATGRINDER | `grinder` |
 | Gravedad de movimiento configurable | Solo la gravedad por defecto de PhysX |
@@ -106,7 +106,7 @@ Plugins de Cursor en caché: Miro, Trello, Figma y Prisma. En esta sesión hay M
 | `build-gtk` | Grafos de editor con Graph Toolkit | `required_editor_version: >=6000.6`. El proyecto es 6.5.6 | INCOMPATIBLE | Borrada del repositorio el 3 de noviembre de 2026 |
 | `asset-transformer-toolkit` | Importación Pixyz / Industry Toolkit | Exige `com.unity.industry.toolkit` >= 4. No está instalado. El skill ordena detenerse | POR VERIFICAR | Solo si más adelante hay licencia y CAD. No instalarlo ahora |
 | Unity Agent Plugin | Supuesto plugin de agente Unity | No está en `.cursor`, ni en los plugins de la sesión, ni como MCP | POR VERIFICAR | No hay evidencia de instalación. Lo más cercano es `unity-cli`, inactivo |
-| Photon Fusion 2 | Red del juego. Topología cerrada: Host Mode | 2.1.4 Stable, build 2500, compiló en `6000.5.6f1` el 3 de noviembre de 2026. La página de requisitos sigue en 6.0.x y 6.3.x y no nombra este editor | ÚTIL | Prueba autorizada, no certificación oficial. App ID en el asset local, fuera de git. El paquete oficial es un `.unitypackage` en `Assets/Photon` |
+| Photon Fusion 2 | Red del juego. Topología cerrada: Host Mode | 2.1.4 Stable, build 2500. El 3 de noviembre de 2026 un Host de Editor y un Client Windows se unieron en Photon Cloud, spawnearon dos avatares y el Host despawneó al que salió | ÚTIL | Prueba de compilación y de sesión real. No es certificación oficial del editor. App ID en el asset local, fuera de git. Escena `Assets/_Project/00_Scenes/NetworkTest.unity` |
 | MCP Miro | Tableros y diagramas | Presente en la sesión | ÚTIL | Opcional para un grafo visual. La fuente sigue siendo el repo |
 | MCP Trello | Tableros de tareas | Presente en la sesión | ÚTIL | Opcional. El checklist maestro está en git |
 | MCP Figma | Diseño de interfaz | Presente en la sesión. No hay archivo de Figma en el repo | POR VERIFICAR | Útil si David diseña el HUD ahí. El GDD no lo exige |

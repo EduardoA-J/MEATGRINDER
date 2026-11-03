@@ -57,12 +57,12 @@ Esa cadena es la que pide el encargo, aterrizada en el GDD: controlador, cámara
 5. F1-01 a F1-10 movimiento comprobable.
 6. F2-01, F2-02, F2-06, F2-07, F2-08 daño y las dos armas en local.
 7. F0-08 escena Boot antes de F3-01. El App ID ya está en el asset local.
-8. F3-01, F3-02, F3-03, F3-04, F3-07, F3-10.
+8. F3-02 está hecha con la sonda de `NetworkTest`. Siguen F3-01 (Boot), F3-03 (arena), F3-04, F3-07 y F3-10.
 9. F3-12 dos clientes.
 10. F7-04 y F7-05 HUD mínimo.
 11. F3-14 una pasada de latencia, aunque el umbral siga sin número.
 
-El SDK ya compiló y el App ID está en el asset local. El tramo de red del MVP arranca cuando exista la escena Boot. El editor ya no bloquea el movimiento local.
+El SDK compiló, el App ID está en el asset local y la sonda Host/Client del 3 de noviembre de 2026 conectó dos procesos. El movimiento local ya no está bloqueado por la red. F3-01 sigue esperando la escena Boot.
 
 ## Qué puede ir en paralelo
 
@@ -85,7 +85,7 @@ Estas tareas están `BLOCKED` porque falta una decisión o una herramienta, no p
 - F0-10: PC de referencia.
 - F1-11: dash.
 - F2-03 y F6-02: fórmula de armadura.
-- F3-01 y F3-02: el SDK compiló y el App ID está en el asset local. Faltan la escena Boot y el código de sesión. El resto de red está en `BACKLOG` detrás de ellas.
+- F3-02 quedó cerrada el 3 de noviembre de 2026 con la sonda de `NetworkTest`. F3-01 sigue esperando la escena Boot. F3-03 espera la arena gris.
 - F3-09: lag compensation.
 - F4-02 y F4-06: fichas de monstruo y armas de monstruo.
 - F6-03, F6-04 y F6-06: Quad Damage, temporizadores y acumulación.
