@@ -13,6 +13,8 @@ Desktop.ini
 *.secret
 *.secrets
 **/PhotonAppId.local
+grinder/Assets/Photon/Fusion/Resources/PhotonAppSettings.asset
+grinder/Assets/Photon/Fusion/Resources/PhotonAppSettings.asset.meta
 
 # Cursor local (keep shared skills; ignore caches if any)
 .cursor/*.log

@@ -1,0 +1,33 @@
+---
+description: Reglas de Photon Fusion 2, autoridad, predicción y pruebas de red.
+globs: grinder/Assets/_Project/01_Scripts/Networking/**/*.cs
+alwaysApply: false
+---
+
+# Photon Fusion 2
+
+El GDD, sección 13, elige Fusion 2. David cerró la topología en Host Mode (T-21): el jugador host es la autoridad de estado. El servidor dedicado queda fuera de esta fase. Shared Mode queda fuera hasta una justificación técnica y una aprobación nueva. El SDK instalado es 2.1.4 Stable, build 2500 (T-22). Compiló en Unity `6000.5.6f1`. La matriz oficial sigue sin nombrar ese editor, así que esta instalación es una prueba autorizada y no una certificación de Photon. El App ID de Fusion está en `PhotonAppSettings.asset` en esta máquina. Ese asset y su `.meta` están en `.gitignore`. No copies el identificador a documentación, chat ni commits.
+
+`setup-multiplayer-services` y `build-live-game` se borraron de `.cursor/skills`. No los reincorpores. Empujan Unity Gaming Services, que es otro stack. No importes `Photon-Fusion-Intro-Shared-2.1.4-Stable-2500.unitypackage`.
+
+## Autoridad
+
+La autoridad confirma daño, salud, muerte, pickups, temporizadores, puntuación y transición de mapa. El cliente no envía el resultado ya aplicado: envía la intención. Cadencia, munición, posición de recogida, equipo y vida se validan antes de aceptar la acción. La puntuación no se escribe desde el cliente.
+
+## Qué se sincroniza
+
+Spawn, movimiento, equipo, arma, salud, armadura, muerte, proyectiles, impactos, ronda, mapa, puerta, puntuación, entrada y salida. Las partículas de gore no son `NetworkObject`. Se sincroniza el evento; el cliente instancia el efecto local con límite.
+
+## Predicción
+
+El jugador local responde en el mismo frame de su input. Después se reconcilia. Hitscan: la política de lag compensation está sin definir (D-03); no la des por activada. Proyectiles: trayectoria y estado coherentes entre clientes. Un impacto predicho no puede contabilizarse dos veces cuando llega la confirmación.
+
+## Flujo
+
+Bootstrap → crear o unir sesión → validar sesión y equipo → cargar escena → spawn autorizado → juego → fin de ronda → salida limpia. Timeout si un cliente no carga. Una desconexión en la demo continúa la partida y queda marcada; sin bots.
+
+## Prueba mínima de cualquier tarea de red
+
+Dos clientes. Además, según la tarea: abandono a media ronda, recogida simultánea, dos muertes casi juntas, transición con todos conectados, latencia artificial y pérdida de paquetes. Dos procesos en la misma máquina no sustituyen la prueba entre máquinas cuando la tarea la pide.
+
+App Id y secretos van fuera de git (`PhotonAppId.local` ya está ignorado). No los escribas en documentación.

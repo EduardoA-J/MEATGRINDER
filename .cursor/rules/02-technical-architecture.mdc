@@ -1,0 +1,60 @@
+---
+description: Arquitectura de carpetas, datos y autoridad para scripts de MEATGRINDER.
+globs: grinder/Assets/**/*.cs
+alwaysApply: false
+---
+
+# Arquitectura
+
+El GDD, sección 14, fija esta raíz cuando empiece el código de juego:
+
+`grinder/Assets/_Project/`
+
+- `00_Scenes/` Boot, Menus, Maps
+- `01_Scripts/` Core, Networking, Players, Movement, Combat, Weapons, Monsters, Pickups, GameModes, Maps, UI, Audio, Utilities
+- `02_ScriptableObjects/` Weapons, Monsters, Pickups, Maps, GameModes
+- `03_Prefabs/` Players, Monsters, Weapons, Pickups, VFX, UI
+- `04_Audio/` Music, SFX, VO
+- `05_ArtModels/` Characters, Environment, Materials, Textures
+- `Tests/` EditMode, PlayMode
+
+Hoy esa raíz no existe. No muevas `SampleScene` ni los Settings de URP hasta la tarea que lo pida.
+
+## Componentes previstos
+
+`GameBootstrap`, `FusionSessionManager`, `NetworkGameManager`, `VersusManager`, `PlayerMovement`, `NetworkPlayerState`, `PlayerCombat`, `HealthComponent`, `DamageResolver`, `WeaponController`, `WeaponDefinition`, `ProjectileNetwork`, `PickupSpawner`, `PowerupEffectController`, `MonsterDefinition`, `MonsterSelectionUI`, `MapFlowManager`, `SpawnManager`, `ScoreboardUI`, `AudioManager`, `VFXPool`, `MatchResultsService`.
+
+Créalos solo dentro de la tarea que los nombra. Si uno ya existe, amplíalo; no dupliques el sistema.
+
+## Datos
+
+ScriptableObjects de configuración, sin estado de partida:
+
+- `WeaponDefinition`: id estable, nombre, prefab, tipo de disparo, daño, cadencia, dispersión, velocidad de proyectil, radio, munición, recarga, sonido, VFX, pickup.
+- `MonsterDefinition`: salud, velocidad, tamaño, ataque, prefab.
+- `PickupDefinition`: efecto, duración, reaparición, acumulación.
+- `MapDefinition`: escena, orden, spawns, ítems.
+- `GameModeDefinition`: tamaño de equipos, puntuación, duración, respawn, transición.
+- `MovementTuning`: GroundSpeed, GroundAcceleration, AirAcceleration, JumpVelocity, Gravity, Friction, MaxSpeed, DashCooldown. Sin números canónicos: el GDD no los da.
+
+## Reglas
+
+- Lógica, presentación y red viven en componentes distintos.
+- El daño entra por `DamageInfo` (atacante, objetivo, cantidad, tipo, punto, contexto de red) y sale solo de `DamageResolver` en la autoridad.
+- La UI y el audio escuchan eventos. No modifican salud, munición ni puntuación.
+- Sin frameworks nuevos «por si acaso». Sin DOTS, sin Visual Scripting para gameplay, sin NavMesh mientras los monstruos sean jugadores.
+- Ensamblados: uno por carpeta de sistema cuando la tarea de estructura lo autorice. Tests en ensamblado separado.
+
+Ejemplo de límite:
+
+```csharp
+// La autoridad aplica el daño una sola vez.
+// La presentación solo reacciona al evento ya confirmado.
+public readonly struct DamageInfo
+{
+    public readonly int AttackerId;
+    public readonly int TargetId;
+    public readonly float Amount;
+    public readonly DamageType Type;
+}
+```

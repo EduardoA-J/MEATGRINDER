@@ -1,0 +1,22 @@
+---
+description: Orden del MVP, de la demo de 8 semanas y de lo que queda fuera.
+alwaysApply: true
+---
+
+# Roadmap
+
+El plan del GDD son 8 semanas desde un inicio que no tiene fecha. A 2 de noviembre de 2026 el código de juego no ha empezado. El calendario está en riesgo; el orden de corte no: si el movimiento o la red se retrasan, se recorta arte antes que las pruebas de red.
+
+## MVP (primera prueba jugable)
+
+Movimiento con los criterios de `03-gameplay-and-combat`. Arena gris. Cámara e Input System. Escopeta y lanzacohetes en local y luego en red. Daño y salud. Dos clientes Fusion. Muerte y respawn. HUD mínimo (salud, munición, conexión). Una pasada de estabilidad. Corresponde a las semanas 1–3 del GDD más un HUD mínimo, y a las tareas F1, F2 y F3 del checklist. 4v4 no entra en el MVP.
+
+## Demo de 8 semanas, después del MVP
+
+Equipos, dos monstruos, ataque melee, M01, puertas, salud, armadura, Quad Damage cuando su efecto esté definido, marcador, resultados, gore y audio básicos, build Windows. 4v4 y M02 solo si el núcleo ya cumple las pruebas.
+
+## Después de la demo
+
+Ranked y todo el epic E11. Mapas M03 y M04. Armas futuras. Más monstruos. Desmembramiento. Sistema de estilo. Servidor dedicado de producción, si la evaluación de costes y latencia lo pide.
+
+No adelantes un epic posterior porque la tarea actual se quedó corta. Déjala en REVIEW y registra el bloqueo.

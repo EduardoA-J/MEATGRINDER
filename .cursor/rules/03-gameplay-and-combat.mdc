@@ -1,0 +1,47 @@
+---
+description: Movimiento FPS, armas, daño, salud y monstruos según el GDD.
+globs: grinder/Assets/_Project/01_Scripts/**/*.cs
+alwaysApply: false
+---
+
+# Movimiento y combate
+
+## Movimiento obligatorio
+
+Primera persona, teclado y ratón. Caminar, acelerar, frenar, saltar, gravedad, control aéreo, strafe jumping y bunny hopping que conserve parte de la velocidad si los saltos van sincronizados. Colisión estable con rampas, escalones, plataformas y puertas. La postura remota se sincroniza; la tolerancia numérica de error visual no está definida.
+
+El dash es opcional y no es un poder de personaje. No lo implementes hasta la decisión D-06.
+
+Criterios comprobables, sin cifras inventadas:
+
+- El jugador acelera mientras mantiene la dirección.
+- Puede saltar y seguir orientando el movimiento en el aire.
+- Un salto sincronizado no pone la velocidad horizontal a cero.
+- El strafe en el aire puede aumentar la velocidad respecto del salto anterior, dentro de `MaxSpeed`.
+- No atraviesa geometría sólida.
+- El mismo recorrido de prueba produce un resultado comparable a otra tasa de fotogramas.
+- Los parámetros salen de `MovementTuning`, no de constantes dispersas.
+
+`Gravity` del movimiento es dato de diseño. La gravedad de PhysX del proyecto sigue en `{0, -9.81, 0}` y no es el valor de juego.
+
+## Armas de la demo
+
+Escopeta: hitscan o dispersión de rayos, fuerte de cerca, cae con la distancia. Lanzacohetes: proyectil con velocidad y radio. Munición limitada. El jugador humano empieza con un arma básica; el resto se recoge. Cambiar de arma no cancela estados críticos de forma abusiva.
+
+Ametralladora, superescopeta y rayo quedan fuera de la demo.
+
+## Daño
+
+Un ataque, una confirmación, un aplicación. Una muerte, un registro. Fuego amigo desactivado por defecto y configurable por modo. Asistencias: iteración posterior.
+
+La armadura «absorbe parte del daño». No hay fórmula en el GDD. Bloquea la implementación de la mitigación hasta D-07.
+
+Respawn con temporizador corto y zona protegida el mínimo tiempo para evitar spawn-kill. Duraciones sin número: D-08.
+
+## Feedback
+
+Retroceso de arma y de cámara configurable. Confirmación de impacto, indicador de daño y feed (atacante, víctima, arma). El daño no espera a que termine la animación de disparo.
+
+## Monstruos
+
+Ataque melee (garras, mordisco o golpe). Sin cooldown de héroe. Hitbox y estadísticas idénticas en todos los clientes. El servidor rechaza una selección ilegal para el equipo.

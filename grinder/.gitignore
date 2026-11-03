@@ -101,6 +101,8 @@ InitTestScene*.unity*
 # Photon / credentials — never commit local App IDs or secrets
 PhotonAppId.local
 **/PhotonAppId.local
+[Aa]ssets/Photon/Fusion/Resources/PhotonAppSettings.asset
+[Aa]ssets/Photon/Fusion/Resources/PhotonAppSettings.asset.meta
 *.secret
 *.secrets
 .env

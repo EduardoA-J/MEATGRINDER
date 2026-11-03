@@ -1,0 +1,30 @@
+---
+description: Flujo de trabajo de los agentes y límites de esta fase de documentación.
+alwaysApply: true
+---
+
+# Flujo
+
+Detalle de perfiles: `Documentation/AGENT_WORKFLOW.md`. Tareas: `Documentation/MASTER_CHECKLIST.md`.
+
+1. Lee `AGENTS.md` y la regla del dominio.
+2. Abre una sola tarea. Comprueba dependencias y estado.
+3. Inspecciona el código que ya existe para ese sistema.
+4. Propón el cambio y espera aprobación si toca una decisión de `Documentation/DECISIONS.md` marcada como pendiente.
+5. Implementa solo ese alcance.
+6. Ejecuta la prueba escrita en la tarea.
+7. Revisa el diff.
+8. Actualiza el estado de la tarea y `Documentation/PROGRESS.md`.
+9. Si David cierra una decisión, actualiza `Documentation/DECISIONS.md` y la regla afectada.
+
+## Quién hace qué
+
+Cursor es el agente que edita este repositorio. Codex no está configurado dentro del proyecto; sus skills de usuario duplican las de Cursor y no sustituyen el GDD.
+
+`game-team-orchestrator` aporta el orden de handoff (diseño → técnica → UX/QA). No invoques sus pipelines: los skills `game-designer`, `game-unity-specialist` y el resto de GameForge no están instalados, ni tampoco `docs/agent-hierarchy.md`.
+
+Skills de red permitidas para Fusion: ninguna skill instalada cubre Photon. Se consulta la documentación oficial citada en el apéndice B del GDD. `unity-cli` y `unity-package-management` sirven cuando Unity 6.5.6 y el CLI estén instalados. Hoy el CLI no está en el PATH y el Hub local no tiene el editor 6.5.6.
+
+## Prohibido en tareas de juego
+
+Cambiar la versión de Unity, actualizar paquetes por impulso, instalar anuncios, IAP, Vivox, localización o un segundo stack de red, y dar por terminada una función sin la prueba de su tarea.

@@ -1,0 +1,38 @@
+---
+description: Convenciones C# de MEATGRINDER para scripts de juego.
+globs: grinder/Assets/**/*.cs
+alwaysApply: false
+---
+
+# Código
+
+Apéndice A del GDD.
+
+- Tipos, métodos públicos y archivos en inglés, PascalCase.
+- Campos privados en camelCase. No uses el prefijo `m_` en código nuevo.
+- Un tipo público principal por archivo. El archivo se llama como el tipo.
+- Configuración en ScriptableObject. Estado de partida en el sistema de red.
+- `[SerializeField] private` para referencias de inspector. Nada de singletons globales nuevos si un componente de escena puede recibir la dependencia.
+- Eventos C# para avisar a UI, audio y VFX. El suscriptor se da de baja en `OnDisable`.
+- Sin `FindObjectOfType` en bucles de juego. Sin asignar daño dentro de `Update` de cada arma.
+- Física de movimiento en un solo componente. El resto lee velocidad; no la reescribe.
+- Comentarios solo para un valor `PENDIENTE` o una restricción de red que el código no muestra.
+- Tests de EditMode para daño, pickups y puntuación en `Assets/_Project/Tests/EditMode`.
+
+```csharp
+public sealed class HealthComponent : MonoBehaviour
+{
+    [SerializeField] private float maxHealth = 100f;
+
+    public float Current { get; private set; }
+    public event Action<float> Damaged;
+
+    public void ApplyConfirmed(float amount)
+    {
+        Current = Mathf.Max(0f, Current - amount);
+        Damaged?.Invoke(amount);
+    }
+}
+```
+
+`maxHealth = 100` en este ejemplo es ilustrativo. El valor de juego sale de `MonsterDefinition` o del perfil del humano y queda pendiente hasta el prototipo.

@@ -1,0 +1,50 @@
+---
+description: Pilares, modos, mapas e ítems de MEATGRINDER. Úsala cuando una decisión afecte al diseño.
+alwaysApply: false
+---
+
+# Diseño
+
+GDD: `MEATGRINDER_GDD_TDD.docx`, secciones 1–12. Requisitos: `Documentation/GDD_REQUIREMENTS.md`.
+
+## Pilares
+
+1. El movimiento se sostiene aunque no haya enemigos.
+2. El combate se lee: el efecto explica el evento y no oculta al rival.
+3. Armas, salud, armadura y potenciadores tienen lugar y temporizador.
+4. Versus asimétrico: humanos armados contra monstruos jugador.
+5. Gore estilizado, exagerado y con coste acotado.
+6. El resultado competitivo lo valida la autoridad de sesión.
+
+## Bucle
+
+Menú → partida rápida o sala privada → sesión y equipos → mapa → combate y control de recursos → muerte y respawn → puerta → siguiente mapa → puntuación. En la variante de campaña escrita en la sección 25, los equipos intercambian roles y se comparan.
+
+## Modos
+
+- Versus Campaign: misma ruta, intercambio de roles. Prioridad alta en el GDD.
+- Versus Continuous: combate por mapa y transición automática. Prioridad alta para la demo.
+- Private Match: código o invitación, mapa y reglas básicas. Prioridad media.
+- Ranked Versus: visión futura. No es requisito de la demo.
+
+## Mapas
+
+Arenas legibles, pasillos, al menos dos rutas y verticalidad si la geometría lo permite. Las puertas avanzan el recorrido. No piden llaves ni puzzles. El spawn no puede recibir disparos directos. Una ruta no puede quedar bloqueada para siempre. Las caídas mortales solo existen con el borde legible.
+
+Demo: M01 The Slaughterhouse. M02 Iron Cathedral solo si hay tiempo. M03 The Pit y M04 Blood Foundry quedan después de la demo.
+
+## Ítems
+
+Salud y armadura entran en la demo. Quad Damage está en el plan de la semana 5 y en el checklist del GDD, pero la sección 8 no define su efecto: no inventes el multiplicador. Invulnerabilidad, berserk y regeneración son futuras.
+
+La recogida la confirma la autoridad. Dos jugadores no pueden obtener el mismo objeto. La política de acumular, reiniciar o ignorar la duración está sin cerrar.
+
+## Monstruos
+
+Diferencias permitidas: modelo, hitbox, animación, velocidad, salud y ataque básico. El GDD nombra un arquetipo (Demonio: garras, menos salud, cuerpo pequeño, movilidad moderadamente superior) y el checklist pide demonio ligero y demonio pesado. Las estadísticas del pesado no existen: no las inventes.
+
+Los monstruos no usan munición para su ataque básico. La sección 6.2 también dice que pueden recoger armas durante la partida. La sección 25 dice que pueden recoger todos los potenciadores.
+
+## Decisiones escritas en la sección 25 que chocan con otras secciones
+
+Trátalas como propuestas del propio GDD, no como cerradas, hasta que David las confirme en `Documentation/DECISIONS.md`: intercambio de roles, victoria por progreso del recorrido, tamaño 4v4, armas que no se conservan al cambiar de mapa, temporizadores «sí, algunos», sesión de prueba en lugar de servidor dedicado.

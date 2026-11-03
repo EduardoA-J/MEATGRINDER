@@ -1,0 +1,23 @@
+---
+description: Definition of Done y pruebas mínimas antes de cerrar una tarea.
+globs: grinder/Assets/_Project/Tests/**/*.cs
+alwaysApply: false
+---
+
+# Pruebas
+
+Definition of Done del GDD, sección 23:
+
+- El comportamiento ocurre en la escena prevista.
+- Los datos configurables están nombrados y los pendientes están marcados.
+- Si hay red, hay prueba con dos clientes y la autoridad es quien confirma el estado.
+- UI, audio y VFX no duplican el evento.
+- El fallo previsible tiene respuesta (desconexión, timeout de carga, pickup repetido).
+- No quedan errores críticos conocidos sin registrar.
+- Existe una prueba repetible o un paso de checklist.
+
+No cierres una tarea de movimiento con «se siente bien». Compara el mismo recorrido. No cierres una tarea de daño sin un caso de un solo registro y un caso de muerte única.
+
+Herramientas: Unity Test Framework 1.7.0 ya está en el manifiesto. Profiler y las herramientas de Fusion se usan en la fase 10, cuando el juego exista. No inventes resultados de una prueba que no se ejecutó.
+
+Una build de demo tiene que arrancar en Windows sin el Editor.

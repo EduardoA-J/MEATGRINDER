@@ -1,0 +1,29 @@
+---
+description: Dirección visual, animación, gore y audio de MEATGRINDER.
+globs: grinder/Assets/_Project/05_ArtModels/**/*,grinder/Assets/_Project/04_Audio/**/*
+alwaysApply: false
+---
+
+# Arte, animación y audio
+
+Dirección: FPS de lectura rápida, arquitectura gótica e industrial, metal, luz roja, contraste alto. Low poly aceptable si la silueta, el material y el efecto sostienen la demo. El enemigo se distingue del escenario.
+
+## Gore
+
+Sangre en impacto, decals con tope y caducidad, muerte animada o ragdoll simple, sonido de impacto y de muerte. El desmembramiento es expansión y, si llega, será por piezas de prefab. Los efectos no aplican daño. Se reciclan con pool. Hay opción para bajar partículas y decals. El VFX remoto se simplifica si cae el rendimiento. No puede cubrir al rival.
+
+## Animación
+
+La lista completa del GDD (secciones 16.1–16.3) es el objetivo de producción. La demo puede recortar clips antes de recortar pruebas de red. El daño y la muerte autoritativos no dependen del Animator local.
+
+Parámetros previstos: `MoveX`, `MoveY`, `Speed`, `Grounded`, `VerticalVelocity`, `Attack`, `Fire`, `Hit`, `Dead`.
+
+Manos y arma FPS quedan estables en la cámara. El disparo aplica daño aunque el clip no haya terminado.
+
+## Audio
+
+Pasos por material, salto, aterrizaje, disparo, recarga, vacío, proyectil, explosión, monstruo, pickup, UI, ambiente industrial e infernal, música heavy, inicio, cambio de mapa, victoria, derrota y empate. Pasos y disparos cercanos se entienden. Música, efectos y volumen general son ajustables. Un sonido cosmético no puede confundirse con una señal de juego.
+
+## Producción
+
+Cada asset externo lleva fuente, licencia, atribución y modificaciones en el registro de la tarea F0-11. Materiales compartidos. Pocas luces dinámicas. LOD solo cuando el modelo lo pida. Skills útiles cuando toque: `urp-postprocessing`, `audio-setup-mixers`, `optimize-audio`, `optimize-text-mesh-pro`. `asset-transformer-toolkit` exige `com.unity.industry.toolkit` >= 4, que no está instalado: no lo añadas por tu cuenta.
