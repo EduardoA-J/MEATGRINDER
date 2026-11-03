@@ -1,0 +1,25 @@
+{
+    "name": "Meatgrinder.Tests.PlayMode",
+    "rootNamespace": "Meatgrinder.Tests",
+    "references": [
+        "Meatgrinder.Movement",
+        "Meatgrinder.Combat",
+        "Meatgrinder.Weapons",
+        "Meatgrinder.Players",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9500e2cd25fbef14fa8531aa6c7fcacf, type: 3}
+  m_Name: MovementTuning
+  m_EditorClassIdentifier: Meatgrinder.Movement::Meatgrinder.Movement.MovementTuning
+  groundSpeed: 8
+  groundAcceleration: 15
+  friction: 6
+  stopSpeed: 2
+  airAcceleration: 40
+  airControl: 3
+  maxSpeed: 22
+  jumpVelocity: 7.5
+  gravity: 22
+  bunnyHopWindow: 0.15
+  bunnyHopSpeedRetention: 1
+  jumpGroundLock: 0.1
+  groundStick: 3
+  height: 1.8
+  radius: 0.4
+  stepOffset: 0.4
+  slopeLimit: 46
+  skinWidth: 0.08
+  groundProbeDistance: 0.2
+  lookSensitivity: 0.08
+  minPitch: -89
+  maxPitch: 89
+  fieldOfView: 90
+  dashCooldown: 0

@@ -4,7 +4,7 @@ Fecha: 2 de noviembre de 2026.
 Fuente: `MEATGRINDER_GDD_TDD.docx`. Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md).
 
 Estados usados: `BACKLOG`, `READY`, `IN PROGRESS`, `BLOCKED`, `REVIEW`, `DONE`.
-`DONE` solo con prueba realizada. En este documento están en `DONE` la auditoría escrita (F0-01, F0-12), la apertura verificada del editor (F0-02, F0-03) y la prueba de importación de Fusion 2.1.4 (F0-05, F0-06). Ninguna función de juego está hecha. El App ID de Photon está en el asset local y fuera de git.
+`DONE` solo con prueba realizada. En `DONE` están la auditoría (F0-01, F0-12), el editor (F0-02, F0-03), Fusion (F0-05, F0-06), la sonda F3-02, la estructura F0-07 y el movimiento local verificado el 3 de noviembre de 2026 (F1-01, F1-02, F1-04 a F1-10 y F5-01). F0-09 y F1-03 quedan en `REVIEW`: el asset de input está cableado, pero el vector en vivo no se leyó en batchmode. El App ID de Photon está en el asset local y fuera de git.
 
 Prioridad: P0 bloquea el MVP, P1 entra en la demo de 8 semanas, P2 es demo si el núcleo aguanta, P3 queda fuera.
 Complejidad: S, M, L, XL. Es orden de magnitud, no una estimación en días. El GDD no da velocidades de equipo.
@@ -39,22 +39,22 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 | F0-04 | Política de ramas Git | READY | Ninguna |
 | F0-05 | Elegir la versión de Photon Fusion 2 y el modo de sesión | DONE | David autorizó la prueba de 2.1.4 el 3 de noviembre de 2026 |
 | F0-06 | Instalar Photon Fusion 2 | DONE | F0-02, F0-05 |
-| F0-07 | Crear Assets/_Project y ensamblados vacíos | BACKLOG | F0-03 |
+| F0-07 | Crear Assets/_Project y ensamblados vacíos | DONE | F0-03 |
 | F0-08 | Escena Boot vacía | BACKLOG | F0-07 |
-| F0-09 | Mapa de input de juego | BACKLOG | F0-03, decisión D-17 si se van a borrar acciones |
+| F0-09 | Mapa de input de juego | REVIEW | F0-03, decisión D-17 si se van a borrar acciones |
 | F0-10 | Acordar el PC de referencia | BLOCKED | David |
 | F0-11 | Registro de licencias | READY | Ninguna |
 | F0-12 | Inventario de paquetes de plantilla no pedidos | DONE | F0-01 |
-| F1-01 | MovementTuning | BACKLOG | F0-07 |
-| F1-02 | Cámara FPS | BACKLOG | F0-09 |
-| F1-03 | Input de Move, Look y Jump | BACKLOG | F0-09 |
-| F1-04 | Aceleración en suelo y fricción | BACKLOG | F1-01, F1-03, F5-01 |
-| F1-05 | Salto y gravedad de diseño | BACKLOG | F1-04 |
-| F1-06 | Control aéreo | BACKLOG | F1-05 |
-| F1-07 | Strafe jumping | BACKLOG | F1-02, F1-06 |
-| F1-08 | Bunny hopping | BACKLOG | F1-05, F1-07 |
-| F1-09 | Rampas, escalones y plataformas | BACKLOG | F1-04, F5-01 |
-| F1-10 | Prueba repetible de movimiento | BACKLOG | F1-04, F1-05, F1-06, F1-07, F1-08, F1-09 |
+| F1-01 | MovementTuning | DONE | F0-07 |
+| F1-02 | Cámara FPS | DONE | F0-09 |
+| F1-03 | Input de Move, Look y Jump | REVIEW | F0-09 |
+| F1-04 | Aceleración en suelo y fricción | DONE | F1-01, F1-03, F5-01 |
+| F1-05 | Salto y gravedad de diseño | DONE | F1-04 |
+| F1-06 | Control aéreo | DONE | F1-05 |
+| F1-07 | Strafe jumping | DONE | F1-02, F1-06 |
+| F1-08 | Bunny hopping | DONE | F1-05, F1-07 |
+| F1-09 | Rampas, escalones y plataformas | DONE | F1-04, F5-01 |
+| F1-10 | Prueba repetible de movimiento | DONE | F1-04, F1-05, F1-06, F1-07, F1-08, F1-09 |
 | F1-11 | Decidir el dash | BLOCKED | David |
 | F2-01 | DamageInfo y DamageResolver | BACKLOG | F0-07 |
 | F2-02 | HealthComponent | BACKLOG | F2-01 |
@@ -93,7 +93,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 | F4-06 | Armas y potenciadores para el monstruo | BLOCKED | D-13, F2-10, F6-05, F4-03 |
 | F4-07 | Identidad visual en red | BACKLOG | F4-03, F3-06, F8-03 |
 | F4-08 | Prueba de asimetría 2v2 | BACKLOG | F4-05, F3-13, F5-02 |
-| F5-01 | Arena gris | BACKLOG | F0-07 |
+| F5-01 | Arena gris | DONE | F0-07 |
 | F5-02 | Blockout de M01 The Slaughterhouse | BACKLOG | F5-01, F1-10 |
 | F5-03 | Dos rutas y verticalidad | BACKLOG | F5-02 |
 | F5-04 | Spawns separados | BACKLOG | F5-02 |
@@ -334,8 +334,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Existen las carpetas 00 a 05 y Tests.
   - Hay asmdefs de runtime y de tests sin referencias circulares.
   - SampleScene sigue en el build hasta que Boot la reemplace en su propia tarea.
-- **Pruebas:** El Editor compila los ensamblados vacíos.
-- **Estado:** BACKLOG
+- **Pruebas:** El Editor compiló `Meatgrinder.Movement`, `Meatgrinder.Players` y los dos ensamblados de tests. EditMode 17/17 y PlayMode 5/5 el 3 de noviembre de 2026. La sonda de red sigue en `Assembly-CSharp` para no mover el `NetworkBehaviour` ya tejido.
+- **Estado:** DONE
 - **Subtareas:**
   - F0-07a Crear carpetas.
   - F0-07b Crear asmdefs.
@@ -387,8 +387,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Existen acciones Move, Look, Jump y Attack enlazadas a teclado y ratón.
   - Crouch y Sprint no alimentan el controlador de MEATGRINDER mientras D-17 siga abierta.
   - El juego no lee el Input Manager antiguo.
-- **Pruebas:** En Play, el log de una escena de prueba muestra el vector de Move y el eje de Look. Esa escena pertenece a F1, no a esta tarea si aún no hay controlador.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `GameActionsBindWasdSpaceAndMouseWithoutCrouch` comprueba Move, Look, Jump y Attack, y que no hay Crouch ni Sprint. En PlayMode batchmode la tecla W del dispositivo de prueba queda pulsada y enlazada, pero `InputAction.ReadValue` sigue en cero: el monitor de acciones ignora `InputUpdateType.Editor`. Falta el vector en una ventana de Play con ratón real.
+- **Estado:** REVIEW
 - **Subtareas:**
   - F0-09a Listar acciones del GDD.
   - F0-09b Crear el asset de juego sin reutilizar Crouch como mecánica.
@@ -488,8 +488,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El asset expone los ocho campos del GDD.
   - Cada valor de prototipo lleva comentario PENDIENTE.
   - No hay constantes de velocidad duplicadas en el controlador.
-- **Pruebas:** EditMode: el asset se carga y los campos existen.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `TuningExposesTheDesignFields`, 3 de noviembre de 2026. Los ocho campos se leen y `DashCooldown` queda en 0.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-01a Crear el tipo.
   - F1-01b Crear el asset con valores marcados.
@@ -514,8 +514,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El yaw gira el cuerpo y el pitch gira solo la cámara.
   - El pitch no pasa del tope configurado.
   - Sin input de Look la cámara no deriva.
-- **Pruebas:** Escena de movimiento: mover el ratón y comprobar los tres criterios.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `LookYawsTheBodyAndClampsPitch`, 3 de noviembre de 2026. Yaw en el cuerpo, pitch limitado y sin deriva si el delta es cero. El ratón real en la ventana no se ha movido.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-02a Componente de mirada.
   - F1-02b Límite de pitch en el mismo asset o en uno de cámara.
@@ -539,8 +539,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 - **Criterios de aceptación:**
   - Move, Look y Jump salen del Input System.
   - No hay llamadas a UnityEngine.Input en el controlador nuevo.
-- **Pruebas:** Play Mode con el asset de acciones de juego.
-- **Estado:** BACKLOG
+- **Pruebas:** No hay `UnityEngine.Input` en el controlador. El asset de juego existe. PlayMode batchmode no entregó un vector distinto de cero desde `ReadValue`. Misma causa que F0-09.
+- **Estado:** REVIEW
 - **Subtareas:**
   - F1-03a Envolver el asset.
   - F1-03b Prueba manual de cada acción.
@@ -565,8 +565,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Mantener la dirección aumenta la velocidad hasta el objetivo de GroundSpeed.
   - Soltar la dirección reduce la velocidad por Friction.
   - El cambio de esos dos campos altera el resultado sin editar el script.
-- **Pruebas:** Recorrido recto cronometrado, repetido dos veces con los mismos campos.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `HoldingForwardApproachesGroundSpeed`, `HigherGroundAccelerationIsFasterBeforeTheCap`, `ReleasingDirectionAppliesFriction` y `HigherFrictionStopsSooner`. Pasaron el 3 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-04a Integración de velocidad en suelo.
   - F1-04b Fricción al no haber input.
@@ -591,8 +591,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Con Jump, la velocidad vertical pasa a JumpVelocity.
   - En el aire, la velocidad vertical cambia según Gravity del asset.
   - El jugador no puede saltar otra vez hasta volver a Grounded, salvo la ventana que defina el bunny hop en F1-08.
-- **Pruebas:** Salto en plano, medido dos veces.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `JumpSetsVerticalSpeedAndBlocksASecondJump` y `GravityUsesTheAssetValue`. Pasaron el 3 de noviembre de 2026. La gravedad de PhysX sigue en `{0, -9.81, 0}`; D-18 no se cierra.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-05a Impulso.
   - F1-05b Integrar Gravity del asset y dejar PhysX documentado en D-18.
@@ -617,8 +617,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Durante el salto, una dirección lateral cambia la velocidad horizontal.
   - Al dejar de pulsar, la velocidad horizontal no cae por Friction de suelo.
   - El aterrizaje no teletransporta al jugador.
-- **Pruebas:** Salto con corrección lateral, repetido.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `AirInputChangesHorizontalVelocity`, `AirborneHorizontalSpeedSurvivesWithoutInput` y `AirControlRedirectsWhenAccelerationIsZero`. Pasaron el 3 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-06a Rama de aire.
   - F1-06b Caso de aterrizaje.
@@ -643,8 +643,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Una secuencia escrita de strafe produce más velocidad horizontal que un salto recto con los mismos campos.
   - La velocidad no supera la regla de MaxSpeed del asset.
   - La secuencia está descrita en la prueba para poder repetirla.
-- **Pruebas:** Prueba de movimiento F1-10, caso strafe.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `StrafeJumpExceedsAStraightJumpInsideMaxSpeed`. Cuarenta ticks en el aire, yaw +4 grados y strafe derecho, superan al salto recto y no pasan de `MaxSpeed`. Pasó el 3 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-07a Acoplar yaw al wishdir.
   - F1-07b Aplicar MaxSpeed.
@@ -669,8 +669,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Un salto en el frame de aterrizaje conserva velocidad horizontal por encima de GroundSpeed si se venía más rápido.
   - Un aterrizaje largo sin nuevo salto aplica Friction.
   - La ventana, si existe, es un campo del asset.
-- **Pruebas:** Caso de la prueba F1-10.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode `TimedHopKeepsSpeedAboveGroundSpeed` y `ALongLandingWithoutJumpAppliesFriction`. Pasaron el 3 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-08a Detectar aterrizaje.
   - F1-08b Conservar la fracción configurada.
@@ -695,8 +695,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El jugador sube la rampa de la arena gris y se queda sobre ella.
   - Sube el escalón marcado y no lo trata como muro.
   - En diez pasadas no atraviesa el suelo.
-- **Pruebas:** Recorrido de geometría de F5-01.
-- **Estado:** BACKLOG
+- **Pruebas:** PlayMode `LowStepIsClimbedAndTheCameraStaysInsideTheBody`, `RampRaisesTheBody` y `CapsuleStaysOnTheFloorForTenPasses`. Pasaron el 3 de noviembre de 2026. La altura medida es el pico del recorrido, no la posición final.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-09a Step offset configurable.
   - F1-09b Caso de rampa y caso de escalón.
@@ -721,8 +721,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El caso recta, el caso salto, el caso strafe, el caso bhop y el caso rampa tienen pasos escritos.
   - Dos ejecuciones con el mismo asset dan la misma conclusión de cumple o no cumple.
   - Cambiar GroundAcceleration cambia el caso recta.
-- **Pruebas:** Ejecutar la prueba y pegar el resultado en PROGRESS.md.
-- **Estado:** BACKLOG
+- **Pruebas:** 3 de noviembre de 2026. EditMode 17/17 (`movement-editmode.xml`). PlayMode 5/5 (`movement-playmode.xml`). `TheSameTickCountIsRepeatable` y `HalfTicksStayCloseToTheFixedStep` pasaron. El resultado está en PROGRESS.md.
+- **Estado:** DONE
 - **Subtareas:**
   - F1-10a Escribir los pasos.
   - F1-10b Ejecutarlos en el Editor.
@@ -1740,8 +1740,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - La escena contiene suelo, rampa, escalón, plataforma y muro con colisión.
   - No tiene luces decorativas ni mallas finales.
   - Está en Build Settings.
-- **Pruebas:** Recorrido a pie cuando exista F1-04. Hasta entonces, los colliders se seleccionan en el Editor.
-- **Estado:** BACKLOG
+- **Pruebas:** La escena `Greybox.unity` está en Build Settings, después de NetworkTest y SampleScene. PlayMode recorrió suelo, muro, escalón de 0,3 m y rampa de 18 grados con `CharacterController`. Pasó el 3 de noviembre de 2026. Queda la luz direccional por defecto de la escena nueva.
+- **Estado:** DONE
 - **Subtareas:**
   - F5-01a Geometría.
   - F5-01b Colliders.

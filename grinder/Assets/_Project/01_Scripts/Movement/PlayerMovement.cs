@@ -1,0 +1,154 @@
+using UnityEngine;
+
+namespace Meatgrinder.Movement
+{
+    // Local body. FixedUpdate keeps the same result when the render rate changes.
+    // Fusion later: move this call into FixedUpdateNetwork and feed a predicted command.
+    // Sync Velocity, pose and the grounded bit. Presentation (camera) stays on the client.
+    // DashCooldown is intentionally unread until D-06.
+    [RequireComponent(typeof(CharacterController))]
+    public sealed class PlayerMovement : MonoBehaviour
+    {
+        [SerializeField] private MovementTuning tuning;
+        [SerializeField] private MonoBehaviour planarInputSource;
+
+        CharacterController controller;
+        IPlanarInput scriptedInput;
+        MovementState state;
+        bool collisionGrounded;
+
+        public Vector3 Velocity => state.Velocity;
+        public float HorizontalSpeed => MovementSimulator.HorizontalSpeed(state.Velocity);
+        public bool IsGrounded => state.IsGrounded;
+        public MovementTuning Tuning => tuning;
+
+        void Awake()
+        {
+            controller = GetComponent<CharacterController>();
+            state = MovementState.Standing();
+            ResolveInput();
+            ApplyBody();
+        }
+
+        void FixedUpdate()
+        {
+            if (tuning == null || controller == null)
+            {
+                return;
+            }
+
+            ApplyBody();
+            IPlanarInput input = scriptedInput ?? (planarInputSource as IPlanarInput);
+            MovementIntent intent = default;
+            if (input != null)
+            {
+                intent.Move = Vector2.ClampMagnitude(input.Move, 1f);
+                intent.Jump = input.JumpHeld;
+            }
+
+            float deltaTime = Time.fixedDeltaTime;
+            MovementSimulator.Tick(
+                ref state,
+                intent,
+                tuning,
+                transform.forward,
+                transform.right,
+                deltaTime,
+                collisionGrounded);
+
+            CollisionFlags flags = controller.Move(state.Velocity * deltaTime);
+            if ((flags & CollisionFlags.Above) != 0 && state.Velocity.y > 0f)
+            {
+                state.Velocity.y = 0f;
+            }
+
+            collisionGrounded = (flags & CollisionFlags.Below) != 0 || ProbeGround();
+        }
+
+        void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            if (tuning == null || controller == null || hit.normal.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            float angle = Vector3.Angle(Vector3.up, hit.normal);
+            if (angle < tuning.SlopeLimit)
+            {
+                return;
+            }
+
+            float stepTop = transform.position.y + controller.stepOffset;
+            if (hit.point.y <= stepTop)
+            {
+                return;
+            }
+
+            Vector3 horizontal = Vector3.ProjectOnPlane(
+                new Vector3(state.Velocity.x, 0f, state.Velocity.z),
+                hit.normal);
+            state.Velocity.x = horizontal.x;
+            state.Velocity.z = horizontal.z;
+        }
+
+        internal void SetPlanarInput(IPlanarInput input)
+        {
+            scriptedInput = input;
+        }
+
+        internal void SetTuning(MovementTuning value)
+        {
+            tuning = value;
+            ApplyBody();
+        }
+
+        void ResolveInput()
+        {
+            if (planarInputSource != null)
+            {
+                return;
+            }
+
+            MonoBehaviour[] behaviours = GetComponents<MonoBehaviour>();
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                if (behaviours[i] is IPlanarInput && behaviours[i] != this)
+                {
+                    planarInputSource = behaviours[i];
+                    return;
+                }
+            }
+        }
+
+        void ApplyBody()
+        {
+            if (tuning == null || controller == null)
+            {
+                return;
+            }
+
+            controller.height = tuning.Height;
+            controller.radius = tuning.Radius;
+            controller.center = new Vector3(0f, tuning.Height * 0.5f, 0f);
+            controller.stepOffset = Mathf.Min(tuning.StepOffset, tuning.Height);
+            controller.slopeLimit = tuning.SlopeLimit;
+            controller.skinWidth = tuning.SkinWidth;
+            controller.minMoveDistance = 0f;
+        }
+
+        bool ProbeGround()
+        {
+            float radius = Mathf.Max(0.05f, controller.radius * 0.45f);
+            Vector3 origin = transform.position + (Vector3.up * (radius + tuning.SkinWidth));
+            float distance = tuning.GroundProbeDistance + tuning.SkinWidth;
+            return Physics.SphereCast(
+                origin,
+                radius,
+                Vector3.down,
+                out _,
+                distance,
+                Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Meatgrinder.Weapons",
+    "rootNamespace": "Meatgrinder.Weapons",
+    "references": [
+        "Meatgrinder.Combat"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
