@@ -19,10 +19,16 @@ namespace Meatgrinder.Weapons
         bool equipped = true;
         bool ready;
         bool loggedShot;
+        float drawRemaining;
         ulong nextConfirmation = 1;
+
+        public event System.Action StateChanged;
 
         public bool IsEquipped => equipped;
         public bool IsReloading => ready && slots.Length > 0 && slots[activeIndex].ReloadRemaining > 0f;
+        public bool IsDrawing => drawRemaining > 0f;
+        public float DrawRemaining => drawRemaining;
+        public float ReloadRemaining => ready && slots.Length > 0 ? slots[activeIndex].ReloadRemaining : 0f;
         public int ActiveIndex => activeIndex;
         public int Loaded => ready && slots.Length > 0 ? slots[activeIndex].Loaded : 0;
         public int Reserve => ready && slots.Length > 0 ? slots[activeIndex].Reserve : 0;
@@ -60,6 +66,8 @@ namespace Meatgrinder.Weapons
             }
 
             ready = true;
+            BeginDraw();
+            StateChanged?.Invoke();
         }
 
         public void Tick(float deltaTime)
@@ -70,6 +78,13 @@ namespace Meatgrinder.Weapons
                 return;
             }
 
+            bool finishedDraw = false;
+            if (drawRemaining > 0f)
+            {
+                drawRemaining = Mathf.Max(0f, drawRemaining - deltaTime);
+                finishedDraw = drawRemaining <= 0f;
+            }
+
             for (int i = 0; i < slots.Length; i++)
             {
                 Slot slot = slots[i];
@@ -78,6 +93,7 @@ namespace Meatgrinder.Weapons
                     slot.Cooldown = Mathf.Max(0f, slot.Cooldown - deltaTime);
                 }
 
+                bool finishedReload = false;
                 if (slot.ReloadRemaining > 0f)
                 {
                     slot.ReloadRemaining -= deltaTime;
@@ -85,10 +101,20 @@ namespace Meatgrinder.Weapons
                     {
                         slot.ReloadRemaining = 0f;
                         FinishReload(i, ref slot);
+                        finishedReload = true;
                     }
                 }
 
                 slots[i] = slot;
+                if (finishedReload && i == activeIndex)
+                {
+                    StateChanged?.Invoke();
+                }
+            }
+
+            if (finishedDraw)
+            {
+                StateChanged?.Invoke();
             }
         }
 
@@ -116,13 +142,15 @@ namespace Meatgrinder.Weapons
             }
 
             activeIndex = index;
+            BeginDraw();
+            StateChanged?.Invoke();
             return true;
         }
 
         public bool TryBeginReload()
         {
             Initialize();
-            if (equipped == false || slots.Length == 0)
+            if (equipped == false || slots.Length == 0 || drawRemaining > 0f)
             {
                 return false;
             }
@@ -141,6 +169,7 @@ namespace Meatgrinder.Weapons
             }
 
             slots[activeIndex] = slot;
+            StateChanged?.Invoke();
             return true;
         }
 
@@ -170,6 +199,7 @@ namespace Meatgrinder.Weapons
                 loggedShot = true;
             }
 
+            StateChanged?.Invoke();
             return ShotTicket.Ok(weapon, confirmation);
         }
 
@@ -189,6 +219,11 @@ namespace Meatgrinder.Weapons
             if (equipped == false || slots.Length == 0 || loadout[activeIndex] == null)
             {
                 return ShotRejectReason.Unequipped;
+            }
+
+            if (drawRemaining > 0f)
+            {
+                return ShotRejectReason.Drawing;
             }
 
             Slot slot = slots[activeIndex];
@@ -222,6 +257,12 @@ namespace Meatgrinder.Weapons
             int moved = Mathf.Min(Mathf.Max(0, room), slot.Reserve);
             slot.Loaded += moved;
             slot.Reserve -= moved;
+        }
+
+        void BeginDraw()
+        {
+            WeaponDefinition weapon = slots.Length > 0 ? loadout[activeIndex] : null;
+            drawRemaining = weapon != null ? weapon.DrawDuration : 0f;
         }
     }
 }

@@ -1,6 +1,6 @@
 # Grafo de dependencias
 
-Fecha: 2 de noviembre de 2026.
+Fecha: 5 de noviembre de 2026. El grafo de tareas de abajo sigue siendo el del 2 de noviembre. La sección de ensamblados es el código local actual.
 Las flechas significan «hace falta antes». El detalle por tarea está en [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md).
 
 ## Cadena de sistemas
@@ -90,6 +90,28 @@ Estas tareas están `BLOCKED` porque falta una decisión o una herramienta, no p
 - F4-02 y F4-06: fichas de monstruo y armas de monstruo.
 - F6-03, F6-04 y F6-06: Quad Damage, temporizadores y acumulación.
 - F9-01: modo de la demo.
+
+## Ensamblados locales — 5 de noviembre de 2026
+
+El movimiento no referencia armas. Las armas referencian combate y no referencian la interfaz. La presentación referencia combate, armas y jugadores, y lee eventos. Los jugadores referencian movimiento, combate, armas y el Input System.
+
+```mermaid
+flowchart LR
+  movement[Meatgrinder.Movement]
+  combat[Meatgrinder.Combat]
+  weapons[Meatgrinder.Weapons]
+  players[Meatgrinder.Players]
+  presentation[Meatgrinder.Presentation]
+  movement --> players
+  combat --> weapons
+  combat --> players
+  weapons --> players
+  combat --> presentation
+  weapons --> presentation
+  players --> presentation
+```
+
+Eso cubre el Greybox local: carrera, aire, salto, escopeta, salud y HUD. No hay `NetworkObject` en `LocalPlayer`. La sincronización de movimiento y daño sigue sin arista hecha. El lanzacohetes existe en código y en una prueba de PlayMode, y no está en la escena.
 
 ## Fuera del grafo de la demo
 

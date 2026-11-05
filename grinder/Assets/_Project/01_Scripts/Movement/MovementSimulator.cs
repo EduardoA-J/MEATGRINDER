@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Meatgrinder.Movement
 {
-    // Local integrator for ground friction, ground acceleration, air acceleration and timed hops.
+    // Local integrator for ground friction, ground acceleration, a short air wish and timed hops.
     // Inspected reference: rogerli2020/SourceEngineMovementUnity. That repository has no license,
     // so none of its files were copied.
     // D-18 stays open: Gravity here is design data. PhysX gravity is not applied.
@@ -125,7 +125,7 @@ namespace Meatgrinder.Movement
             Accelerate(
                 ref state.Velocity,
                 wishDirection,
-                tuning.GroundSpeed,
+                tuning.AirWishSpeed,
                 tuning.AirAcceleration,
                 tuning.MaxSpeed,
                 deltaTime,

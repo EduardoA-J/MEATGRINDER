@@ -140,3 +140,32 @@ Siguen en el repositorio y quedan fuera del flujo de juego: `migrate-birp-to-urp
 - Anuncios, IAP, voz y ranked.
 
 `asset-transformer-toolkit`, `manage-sprite-atlas` y Figma se consultan solo si la tarea correspondiente aparece y sus dependencias están realmente instaladas.
+
+## Actualización — 4 de noviembre de 2026
+
+La fotografía del 2 de noviembre queda arriba. Esto es lo que cambió después, sin tocar la versión de Unity, URP ni Photon.
+
+| Hecho | Valor observado |
+|---|---|
+| Editor de las pruebas | `6000.5.6f1`. Instalación de blancos: `grinder/Logs/combat-install.log`, línea `[Combat] Greybox targets ready.`, código 0 |
+| EditMode | 31/31. Combate 14, movimiento 17. `Documentation/test-results/combat-editmode.xml` |
+| PlayMode | 7/7. `ShotgunDamagesTheOpenTargetAndNotTheHiddenOne` y `RocketMovesAndSparesTheCoveredTarget` incluidos. Movimiento 5/5. `Documentation/test-results/combat-playmode.xml` |
+| Escena de build | `NetworkTest`, `SampleScene` y `Greybox` |
+| Combate en Greybox | `CombatRange` con cuatro blancos y un muro. `LocalPlayer` con escopeta y salud. Sin lanzacohetes en la escena |
+| Red en el gameplay | `LocalPlayer` no tiene `NetworkObject`. El daño lo aplica `DamageResolver` local |
+| Pasada manual | No realizada. F2-07 en REVIEW |
+
+Los apartados de arriba que dicen «cero scripts de juego» y «Photon no instalado» describen el 2 de noviembre. El 3 de noviembre entró Fusion 2.1.4 y el movimiento. El 4 de noviembre entró la escopeta local.
+
+## Actualización — 5 de noviembre de 2026
+
+Sensación de movimiento y ciclo del arma. No cambió Unity, URP ni Photon. El detalle está en `MOVEMENT_WEAPON_REFERENCE_ANALYSIS.md`.
+
+| Hecho | Valor observado |
+|---|---|
+| EditMode | 36/36. `Documentation/test-results/feel-editmode.xml` |
+| PlayMode | 7/7. `Documentation/test-results/feel-playmode.xml` |
+| Movimiento | Wish de aire 2,8. Tope 32. `AirControl` 0. Buffer de salto al pulsar, no al mantener |
+| Armas | Escopeta con `DrawDuration` 0,18 s. Daño, perdigones y cadencia iguales que el 4 de noviembre. Sin rifle y sin lanzacohetes en la escena |
+| Greybox | `MovementCourse` al oeste. `Shotgun_Close` sigue en la galería |
+| Pasada manual | No realizada. F2-07 sigue en REVIEW |

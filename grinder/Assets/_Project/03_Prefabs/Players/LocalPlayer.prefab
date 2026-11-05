@@ -30,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3346535359344412003}
   m_Father: {fileID: 5442872500924139774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &7747991749405855276
@@ -106,6 +107,14 @@ GameObject:
   - component: {fileID: 5651883123566696477}
   - component: {fileID: 580957382889774011}
   - component: {fileID: 6213519905379518084}
+  - component: {fileID: 3670686398719650186}
+  - component: {fileID: 4788045068346207786}
+  - component: {fileID: 3332020308699896869}
+  - component: {fileID: 8266835684249367618}
+  - component: {fileID: 2016568834437557509}
+  - component: {fileID: 1070347938455339194}
+  - component: {fileID: 640484442658164521}
+  - component: {fileID: 8618887097653009711}
   m_Layer: 0
   m_Name: LocalPlayer
   m_TagString: Untagged
@@ -196,6 +205,7 @@ MonoBehaviour:
   tuning: {fileID: 11400000, guid: e53a3624f9cf7e543b7e7641b290fd5c, type: 2}
   input: {fileID: 4997093119483746650}
   view: {fileID: 7747991749405855276}
+  recoilRecovery: 40
 --- !u!114 &6213519905379518084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +219,201 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meatgrinder.Players::Meatgrinder.Players.MovementProbeReadout
   movement: {fileID: 5651883123566696477}
+--- !u!114 &3670686398719650186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90012e80aa3033842bb95575cee98804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Combat::Meatgrinder.Combat.HealthComponent
+  profile: {fileID: 11400000, guid: 097565e1c27843e4bad0515fbbdb7c8f, type: 2}
+  maxHealth: 100
+  teamId: 1
+  stableId: 0
+--- !u!114 &4788045068346207786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db30e02611066574ca9ce33ed6d89ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Weapons::Meatgrinder.Weapons.WeaponController
+  loadout:
+  - {fileID: 11400000, guid: 8ae29fe704be533408ef8468e12fb093, type: 2}
+  activeIndex: 0
+--- !u!114 &3332020308699896869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14042d16216d47f4f8d11e6ac58cbf68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Combat::Meatgrinder.Combat.DamageResolverHost
+--- !u!114 &8266835684249367618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a71a9022ec35c8b42bed2ea944174467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Combat::Meatgrinder.Combat.LocalCombatAuthority
+  authoritative: 1
+--- !u!114 &2016568834437557509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c757cab97ad31e749b847a3677b7c3f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Players::Meatgrinder.Players.PlayerImpactFeedback
+  look: {fileID: 580957382889774011}
+--- !u!114 &1070347938455339194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a7a36c8784214d419008bb008c75cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Players::Meatgrinder.Players.PlayerCombat
+  input: {fileID: 4997093119483746650}
+  look: {fileID: 580957382889774011}
+  weapons: {fileID: 4788045068346207786}
+  damage: {fileID: 3332020308699896869}
+  authority: {fileID: 8266835684249367618}
+  feedback: {fileID: 2016568834437557509}
+  projectiles: {fileID: 0}
+  health: {fileID: 3670686398719650186}
+  muzzleClearance: 0.6
+--- !u!114 &640484442658164521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13375602df14ed74eb2e4808b8158247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Players::Meatgrinder.Players.CombatReadout
+  weapons: {fileID: 4788045068346207786}
+  feedback: {fileID: 2016568834437557509}
+  health: {fileID: 3670686398719650186}
+--- !u!114 &8618887097653009711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782031967440905134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ac4feacfa5a1b4f8adaa125b6fe0cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Meatgrinder.Presentation::Meatgrinder.Presentation.CombatHud
+  weapons: {fileID: 4788045068346207786}
+  health: {fileID: 3670686398719650186}
+  feedback: {fileID: 2016568834437557509}
+  lineLength: 12
+  lineThickness: 2
+  gap: 5
+  crosshairScale: 1
+  lineColor: {r: 0.95, g: 0.95, b: 0.92, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 0.8}
+  hitColor: {r: 1, g: 0.82, b: 0.25, a: 1}
+  worldHitColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.55}
+--- !u!1001 &5246596423066539081
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4007060420594238313}
+    m_Modifications:
+    - target: {fileID: 2504469621357849792, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: weapons
+      value: 
+      objectReference: {fileID: 4788045068346207786}
+    - target: {fileID: 2504469621357849792, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: feedback
+      value: 
+      objectReference: {fileID: 2016568834437557509}
+    - target: {fileID: 3913718304346606490, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_Name
+      value: ShotgunView
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+--- !u!4 &3346535359344412003 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7403618220251631914, guid: bcaac6ada418f294c92155361ad4303d, type: 3}
+  m_PrefabInstance: {fileID: 5246596423066539081}
+  m_PrefabAsset: {fileID: 0}

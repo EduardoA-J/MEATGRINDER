@@ -1,0 +1,19 @@
+{
+    "name": "Meatgrinder.Presentation",
+    "rootNamespace": "Meatgrinder.Presentation",
+    "references": [
+        "Meatgrinder.Combat",
+        "Meatgrinder.Weapons",
+        "Meatgrinder.Players",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

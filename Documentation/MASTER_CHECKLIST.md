@@ -4,7 +4,7 @@ Fecha: 2 de noviembre de 2026.
 Fuente: `MEATGRINDER_GDD_TDD.docx`. Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md).
 
 Estados usados: `BACKLOG`, `READY`, `IN PROGRESS`, `BLOCKED`, `REVIEW`, `DONE`.
-`DONE` solo con prueba realizada. En `DONE` están la auditoría (F0-01, F0-12), el editor (F0-02, F0-03), Fusion (F0-05, F0-06), la sonda F3-02, la estructura F0-07 y el movimiento local verificado el 3 de noviembre de 2026 (F1-01, F1-02, F1-04 a F1-10 y F5-01). F0-09 y F1-03 quedan en `REVIEW`: el asset de input está cableado, pero el vector en vivo no se leyó en batchmode. El App ID de Photon está en el asset local y fuera de git.
+`DONE` solo con prueba realizada. En `DONE` están la auditoría (F0-01, F0-12), el editor (F0-02, F0-03), Fusion (F0-05, F0-06), la sonda F3-02, la estructura F0-07, el movimiento local verificado el 3 de noviembre de 2026 (F1-01, F1-02, F1-04 a F1-10 y F5-01) y el combate local verificado el 4 de noviembre de 2026 (F2-01, F2-02, F2-06, F2-09, F2-11 y F2-12). F0-09 y F1-03 siguen en `REVIEW`: el vector en vivo no se leyó en una ventana de Play. F2-07 queda en `REVIEW`: las pruebas automáticas de la escopeta pasaron y Greybox ya tiene blancos, pero nadie ha pulsado Play en el Editor. El 5 de noviembre el movimiento se reajustó y la escopeta bloquea el disparo mientras se saca; EditMode 36/36 y PlayMode 7/7. Esa pasada manual sigue pendiente, así que F1 y F2-07 no cambian de estado. El App ID de Photon está en el asset local y fuera de git.
 
 Prioridad: P0 bloquea el MVP, P1 entra en la demo de 8 semanas, P2 es demo si el núcleo aguanta, P3 queda fuera.
 Complejidad: S, M, L, XL. Es orden de magnitud, no una estimación en días. El GDD no da velocidades de equipo.
@@ -56,18 +56,18 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 | F1-09 | Rampas, escalones y plataformas | DONE | F1-04, F5-01 |
 | F1-10 | Prueba repetible de movimiento | DONE | F1-04, F1-05, F1-06, F1-07, F1-08, F1-09 |
 | F1-11 | Decidir el dash | BLOCKED | David |
-| F2-01 | DamageInfo y DamageResolver | BACKLOG | F0-07 |
-| F2-02 | HealthComponent | BACKLOG | F2-01 |
+| F2-01 | DamageInfo y DamageResolver | DONE | F0-07 |
+| F2-02 | HealthComponent | DONE | F2-01 |
 | F2-03 | Mitigación de armadura | BLOCKED | D-07, F2-01 |
 | F2-04 | Muerte única y respawn | BACKLOG | F2-02, F3-03 para el respawn en red; en local puede probarse antes |
 | F2-05 | Protección de spawn | BACKLOG | F2-04 |
-| F2-06 | WeaponDefinition y WeaponController | BACKLOG | F0-07, F2-01 |
-| F2-07 | Escopeta | BACKLOG | F2-06, F1-02 |
+| F2-06 | WeaponDefinition y WeaponController | DONE | F0-07, F2-01 |
+| F2-07 | Escopeta | REVIEW | F2-06, F1-02 |
 | F2-08 | Lanzacohetes y explosión | BACKLOG | F2-06 |
-| F2-09 | Munición y cambio de arma | BACKLOG | F2-06 |
+| F2-09 | Munición y cambio de arma | DONE | F2-06 |
 | F2-10 | Recogida de arma en el mapa | BACKLOG | F2-06, F6-05 |
-| F2-11 | Feedback local de impacto | BACKLOG | F2-07 |
-| F2-12 | Pruebas EditMode de daño | BACKLOG | F2-01, F2-02, F2-04, F2-09 |
+| F2-11 | Feedback local de impacto | DONE | F2-07 |
+| F2-12 | Pruebas EditMode de daño | DONE | F2-01, F2-02, F2-04, F2-09 |
 | F3-01 | Bootstrap de Fusion | BLOCKED | F0-08. El SDK y el App ID local ya están. Falta la escena Boot |
 | F3-02 | Crear, unir y salir de sesión | DONE | F3-01. La prueba usó NetworkTest; la escena Boot sigue pendiente |
 | F3-03 | Spawn autorizado | BLOCKED | F3-02, F5-04 |
@@ -773,8 +773,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Dos llamadas con la misma confirmación no restan vida dos veces.
   - Una llamada sin autoridad no modifica la salud cuando la red exista.
   - El tipo de daño distingue hitscan, proyectil, melee y explosión.
-- **Pruebas:** EditMode F2-12.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode F2-12. El 4 de noviembre de 2026, `SameConfirmationDoesNotApplyTwice`, `MissingAuthorityDoesNotChangeHealth` y `DamageTypesCoverTheFourChannels` pasaron dentro de EditMode 31/31. Resultado en `Documentation/test-results/combat-editmode.xml`.
+- **Estado:** DONE
 - **Subtareas:**
   - F2-01a Tipo DamageInfo.
   - F2-01b Resolver con id de confirmación.
@@ -799,8 +799,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - La salud no baja de cero.
   - El evento se dispara una vez por daño confirmado.
   - El tope del humano es un campo de configuración marcado PENDIENTE.
-- **Pruebas:** EditMode: daño parcial y daño mayor que la salud.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode: daño parcial y daño mayor que la salud. `PartialDamageStopsAtZeroAndRaisesOneDeath` pasó el 4 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F2-02a Estado.
   - F2-02b Evento.
@@ -903,8 +903,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Un asset describe id, daño, cadencia, dispersión, proyectil, radio, munición, recarga, prefab, VFX y audio.
   - Cambiar de arma activa el otro definition.
   - El cambio no dispara un tiro extra.
-- **Pruebas:** EditMode de cambio de arma y de cadencia.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode de cambio de arma y de cadencia. `SwitchingBackDoesNotSpendAnotherRound`, `CadenceReloadAndEmptyMagazineFollowTheAsset` y `DefinitionExposesTheWeaponCatalog` pasaron el 4 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F2-06a ScriptableObject.
   - F2-06b Controlador de equipo.
@@ -930,8 +930,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El mismo disparo a mayor distancia aplica menos, según el campo del asset.
   - Un muro entre ambos impide el daño.
   - La cadencia del asset rechaza un segundo disparo inmediato.
-- **Pruebas:** Escena gris con un blanco y un muro.
-- **Estado:** BACKLOG
+- **Pruebas:** Escena gris con un blanco y un muro. EditMode cubre caída, muro y cadencia (`SpreadLeavesTheCenterAndFalloffDropsWithDistance`, `WallStopsTheShotgun`, `CadenceReloadAndEmptyMagazineFollowTheAsset`). PlayMode `ShotgunDamagesTheOpenTargetAndNotTheHiddenOne` pasó. Greybox contiene `Shotgun_Close`, `Shotgun_Far`, `Shotgun_Blocked` y `Wall_ShotgunBlock`. Falta la pasada manual en la ventana de Play.
+- **Estado:** REVIEW
 - **Subtareas:**
   - F2-07a Rayos.
   - F2-07b Caída por distancia configurable.
@@ -982,8 +982,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Cada disparo válido consume la cantidad del asset.
   - Con munición 0 no hay DamageInfo.
   - El arma inicial del humano tiene la munición de su definition.
-- **Pruebas:** EditMode de consumo y de arma vacía.
-- **Estado:** BACKLOG
+- **Pruebas:** EditMode de consumo y de arma vacía. `CadenceReloadAndEmptyMagazineFollowTheAsset` y `EmptyWeaponDoesNotDamageTheTarget` pasaron el 4 de noviembre de 2026.
+- **Estado:** DONE
 - **Subtareas:**
   - F2-09a Contador.
   - F2-09b Rechazo en vacío. El modelo de recarga queda PENDIENTE si hace falta otro campo.
@@ -1034,8 +1034,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Un impacto en un blanco muestra confirmación.
   - Un impacto en el mundo no usa la confirmación de jugador.
   - La amplitud del retroceso es un campo y puede ponerse a cero.
-- **Pruebas:** Play Mode de la escopeta contra un blanco.
-- **Estado:** BACKLOG
+- **Pruebas:** Play Mode de la escopeta contra un blanco. `ShotgunDamagesTheOpenTargetAndNotTheHiddenOne` y `ZeroRecoilLeavesTheCamera` pasaron el 4 de noviembre de 2026. Resultado en `Documentation/test-results/combat-playmode.xml`.
+- **Estado:** DONE
 - **Subtareas:**
   - F2-11a Confirmación.
   - F2-11b Retroceso configurable.
@@ -1060,8 +1060,8 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El test de doble confirmación falla si el daño se aplica dos veces.
   - El test de muerte espera un solo evento.
   - Los tests no cargan SampleScene.
-- **Pruebas:** Ejecutar EditMode y registrar el recuento real.
-- **Estado:** BACKLOG
+- **Pruebas:** Ejecutar EditMode y registrar el recuento real. Unity `6000.5.6f1`, 4 de noviembre de 2026: EditMode 31/31 (combate 14, movimiento 17). XML en `Documentation/test-results/combat-editmode.xml`. No cargan `SampleScene`.
+- **Estado:** DONE
 - **Subtareas:**
   - F2-12a Casos.
   - F2-12b Correrlos en el Editor 6.5.6.

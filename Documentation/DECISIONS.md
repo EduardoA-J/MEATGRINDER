@@ -90,6 +90,16 @@ Plan gratuito, leído en [photonengine.com/fusion/pricing](https://www.photoneng
 - A partir de 500 CCU el servicio es de pago (500 CCU a 125 USD al mes, 1000 a 250, 2000 a 500, con burst). El excedente de tráfico se factura por GB: 0,05 USD en regiones de América y Europa listadas, 0,10 USD en el resto de las regiones publicadas.
 - El SDK gratuito durante el desarrollo no vuelve ilimitado el servicio online.
 
+## Implementación local — 5 de noviembre de 2026
+
+Estas filas describen código que ya está en el proyecto. Los números siguen en `PENDIENTE`. No cierran D-06, D-07, D-09 ni D-18.
+
+| ID | Decisión | Evidencia |
+|---|---|---|
+| T-23 | En aire, el wish es `AirWishSpeed` y no la carrera. `MaxSpeed` es un tope de seguridad, no la velocidad de correr. `AirControl` es un slerp que solo redirige. Su valor de sensación es 0, porque un valor alto cierra el ángulo del strafe. | `MovementSimulator.TickAir`, `MovementTuning.asset` |
+| T-24 | El jugador llena un buffer al pulsar salto y no lo rellena mientras la tecla sigue pulsada. `MovementSimulator` sigue tratando `Jump` como «salta en este tick». | `PlayerMovement.SampleJump` |
+| T-25 | Cada hueco guarda su munición. Sacar el arma bloquea el disparo durante `DrawDuration`. El valor por defecto del tipo es 0. El retroceso del viewmodel no mueve la cámara ni el rayo. El HUD escucha eventos y no escribe daño. No se añade un rifle. El lanzacohetes no entra en Greybox. | `WeaponController`, `ShotgunView`, `CombatHud`, `Shotgun.asset` |
+
 ## Propuestas que no son decisiones
 
 Quedan en el epic E12 del checklist: menú de pausa, bots, barriles, desmembramiento, armas futuras, asistencias y medidor de estilo.

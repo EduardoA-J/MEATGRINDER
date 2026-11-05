@@ -28,6 +28,7 @@ namespace Meatgrinder.Weapons
         [SerializeField] private float blastDamage = 80f; // PENDIENTE
         [SerializeField] private float blastEdgeScale = 0.2f; // PENDIENTE
         [SerializeField] private float recoilPitch; // PENDIENTE
+        [SerializeField] private float drawDuration; // PENDIENTE. 0 no bloquea el disparo.
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private AudioClip shotSound;
         [SerializeField] private GameObject impactVfx;
@@ -52,6 +53,7 @@ namespace Meatgrinder.Weapons
         public float BlastDamage => blastDamage;
         public float BlastEdgeScale => blastEdgeScale;
         public float RecoilPitch => recoilPitch < 0f ? 0f : recoilPitch;
+        public float DrawDuration => drawDuration < 0f ? 0f : drawDuration;
         public GameObject ProjectilePrefab => projectilePrefab;
         public AudioClip ShotSound => shotSound;
         public GameObject ImpactVfx => impactVfx;
@@ -135,6 +137,11 @@ namespace Meatgrinder.Weapons
         internal void SetRecoil(float degrees)
         {
             recoilPitch = degrees;
+        }
+
+        internal void SetDrawDuration(float seconds)
+        {
+            drawDuration = seconds;
         }
 
         internal void SetMaxRange(float value)

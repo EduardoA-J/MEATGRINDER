@@ -7,19 +7,20 @@ namespace Meatgrinder.Movement
     {
         [Header("Suelo")]
         [SerializeField] private float groundSpeed = 8f; // PENDIENTE
-        [SerializeField] private float groundAcceleration = 15f; // PENDIENTE
+        [SerializeField] private float groundAcceleration = 10f; // PENDIENTE
         [SerializeField] private float friction = 6f; // PENDIENTE
         [SerializeField] private float stopSpeed = 2f; // PENDIENTE
 
         [Header("Aire")]
-        [SerializeField] private float airAcceleration = 40f; // PENDIENTE
-        [SerializeField] private float airControl = 3f; // PENDIENTE
-        [SerializeField] private float maxSpeed = 22f; // PENDIENTE
+        [SerializeField] private float airAcceleration = 70f; // PENDIENTE
+        [SerializeField] private float airWishSpeed = 2.8f; // PENDIENTE. Recorta el wish, no la velocidad ya ganada.
+        [SerializeField] private float airControl; // PENDIENTE. El slerp solo redirige. Un valor alto cierra el ángulo del strafe.
+        [SerializeField] private float maxSpeed = 32f; // PENDIENTE. Tope de seguridad, no es la carrera.
 
         [Header("Salto")]
         [SerializeField] private float jumpVelocity = 7.5f; // PENDIENTE
         [SerializeField] private float gravity = 22f; // PENDIENTE
-        [SerializeField] private float bunnyHopWindow = 0.15f; // PENDIENTE
+        [SerializeField] private float bunnyHopWindow = 0.12f; // PENDIENTE
         [SerializeField] private float bunnyHopSpeedRetention = 1f; // PENDIENTE
         [SerializeField] private float jumpGroundLock = 0.1f; // PENDIENTE
         [SerializeField] private float groundStick = 3f; // PENDIENTE
@@ -36,7 +37,7 @@ namespace Meatgrinder.Movement
         [SerializeField] private float lookSensitivity = 0.08f; // PENDIENTE
         [SerializeField] private float minPitch = -89f; // PENDIENTE
         [SerializeField] private float maxPitch = 89f; // PENDIENTE
-        [SerializeField] private float fieldOfView = 90f; // PENDIENTE
+        [SerializeField] private float fieldOfView = 100f; // PENDIENTE
 
         [Header("Sin usar")]
         [SerializeField] private float dashCooldown; // PENDIENTE. D-06. El controlador no lo lee.
@@ -46,6 +47,7 @@ namespace Meatgrinder.Movement
         public float Friction => friction;
         public float StopSpeed => stopSpeed;
         public float AirAcceleration => airAcceleration;
+        public float AirWishSpeed => airWishSpeed > 0f ? airWishSpeed : groundSpeed;
         public float AirControl => airControl;
         public float MaxSpeed => maxSpeed;
         public float JumpVelocity => jumpVelocity;
@@ -80,6 +82,11 @@ namespace Meatgrinder.Movement
         internal void SetAirAcceleration(float value)
         {
             airAcceleration = value;
+        }
+
+        internal void SetAirWishSpeed(float value)
+        {
+            airWishSpeed = value;
         }
 
         internal void SetAirControl(float value)

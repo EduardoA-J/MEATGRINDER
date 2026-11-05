@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Meatgrinder.Combat;
 using Meatgrinder.Movement;
 using Meatgrinder.Players;
+using Meatgrinder.Presentation;
 using Meatgrinder.Weapons;
 using NUnit.Framework;
 using UnityEngine;
@@ -161,6 +162,78 @@ namespace Meatgrinder.Tests
             Assert.AreEqual(2, weapons.Loaded);
             Assert.IsTrue(weapons.Select(0));
             Assert.AreEqual(3, weapons.Loaded);
+        }
+
+        [Test]
+        public void DrawBlocksTheShotAndLeavesTheOtherMagazine()
+        {
+            WeaponDefinition shotgun = Weapon();
+            shotgun.SetAmmo(4, 2, 4, 1);
+            shotgun.SetFireInterval(0f);
+            shotgun.SetDrawDuration(0.2f);
+            WeaponDefinition other = Weapon();
+            other.SetAmmo(3, 9, 3, 1);
+            other.SetDrawDuration(0.2f);
+            WeaponController weapons = Controller(shotgun, other);
+            ShotTicket blocked = weapons.TryBeginShot();
+            Assert.IsFalse(blocked.Accepted);
+            Assert.AreEqual(ShotRejectReason.Drawing, blocked.Reason);
+            Assert.AreEqual(4, weapons.Loaded);
+            Assert.AreEqual(2, weapons.Reserve);
+            Assert.IsFalse(weapons.TryBeginReload());
+            weapons.Tick(0.2f);
+            Assert.IsFalse(weapons.IsDrawing);
+            Assert.IsTrue(weapons.TryBeginShot().Accepted);
+            Assert.AreEqual(3, weapons.Loaded);
+            Assert.IsTrue(weapons.Select(1));
+            Assert.IsTrue(weapons.IsDrawing);
+            Assert.AreEqual(3, weapons.Loaded);
+            Assert.AreEqual(9, weapons.Reserve);
+            Assert.AreEqual(ShotRejectReason.Drawing, weapons.TryBeginShot().Reason);
+            Assert.IsFalse(weapons.Select(4));
+            weapons.Tick(0.2f);
+            Assert.IsTrue(weapons.TryBeginShot().Accepted);
+            Assert.AreEqual(2, weapons.Loaded);
+            Assert.IsTrue(weapons.Select(0));
+            Assert.AreEqual(3, weapons.Loaded);
+            Assert.AreEqual(2, weapons.Reserve);
+        }
+
+        [Test]
+        public void ViewmodelKickDoesNotChangeTheRay()
+        {
+            GameObject cameraObject = new GameObject("aim-camera");
+            trash.Add(cameraObject);
+            cameraObject.transform.position = new Vector3(640f, 200f, 0f);
+            Quaternion rotation = cameraObject.transform.rotation;
+            Vector3 position = cameraObject.transform.position;
+            GameObject view = new GameObject("view");
+            view.transform.SetParent(cameraObject.transform, false);
+            GameObject model = new GameObject("model");
+            model.transform.SetParent(view.transform, false);
+            ShotgunView component = view.AddComponent<ShotgunView>();
+            component.Bind(model.transform, null, null, null);
+            component.PlayShotPose();
+            component.ApplyVisual(0.05f);
+            model.transform.localRotation = Quaternion.Euler(80f, 40f, 10f);
+            HealthComponent target = CreateHealth(new Vector3(640f, 200f, 4f), 40f, 91, 2);
+            WeaponDefinition weapon = Weapon();
+            weapon.SetSpread(0f, 1);
+            weapon.SetMaxRange(20f);
+            weapon.SetFalloff(30f, 40f, 1f, 10f);
+            List<HitscanHit> hits = new List<HitscanHit>();
+            Physics.SyncTransforms();
+            HitscanQuery.Collect(
+                weapon,
+                cameraObject.transform.position,
+                cameraObject.transform.forward,
+                1,
+                cameraObject.transform,
+                hits);
+            Assert.AreEqual(1, hits.Count);
+            Assert.AreSame(target, hits[0].Target);
+            Assert.Less(Quaternion.Angle(rotation, cameraObject.transform.rotation), 0.01f);
+            Assert.AreEqual(position, cameraObject.transform.position);
         }
 
         [Test]

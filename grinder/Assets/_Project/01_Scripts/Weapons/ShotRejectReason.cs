@@ -6,6 +6,7 @@ namespace Meatgrinder.Weapons
         Unequipped = 1,
         Reloading = 2,
         CoolingDown = 3,
-        Empty = 4
+        Empty = 4,
+        Drawing = 5
     }
 }

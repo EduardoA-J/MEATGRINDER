@@ -2,9 +2,12 @@ using UnityEngine;
 
 namespace Meatgrinder.Combat
 {
+    // Health binding kept for the scene. The readable label lives on TargetBillboard.
     public sealed class CombatTargetLabel : MonoBehaviour
     {
         [SerializeField] private HealthComponent health;
+
+        public HealthComponent Health => health;
 
         void Awake()
         {
@@ -12,30 +15,6 @@ namespace Meatgrinder.Combat
             {
                 health = GetComponent<HealthComponent>();
             }
-        }
-
-        void OnGUI()
-        {
-            if (health == null)
-            {
-                return;
-            }
-
-            Camera view = Camera.main;
-            if (view == null)
-            {
-                return;
-            }
-
-            Vector3 screen = view.WorldToScreenPoint(transform.position + Vector3.up);
-            if (screen.z <= 0f)
-            {
-                return;
-            }
-
-            GUI.Label(
-                new Rect(screen.x, Screen.height - screen.y, 140f, 22f),
-                health.Current.ToString("0") + "/" + health.Max.ToString("0"));
         }
     }
 }

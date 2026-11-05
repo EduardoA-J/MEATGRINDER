@@ -7,11 +7,31 @@ namespace Meatgrinder.Players
     {
         [SerializeField] private PlayerMovement movement;
 
+        float sessionMax;
+        float previousSpeed;
+        float speedDelta;
+
         void Awake()
         {
             if (movement == null)
             {
                 movement = GetComponent<PlayerMovement>();
+            }
+        }
+
+        void Update()
+        {
+            if (movement == null)
+            {
+                return;
+            }
+
+            float speed = movement.HorizontalSpeed;
+            speedDelta = speed - previousSpeed;
+            previousSpeed = speed;
+            if (speed > sessionMax)
+            {
+                sessionMax = speed;
             }
         }
 
@@ -23,9 +43,14 @@ namespace Meatgrinder.Players
             }
 
             string grounded = movement.IsGrounded ? "suelo" : "aire";
+            string jump = movement.JumpBuffered ? "salto" : "quieto";
             GUI.Label(
-                new Rect(16f, 16f, 480f, 24f),
-                "vel " + movement.HorizontalSpeed.ToString("0.00") + "  " + grounded);
+                new Rect(16f, 16f, 640f, 40f),
+                "vel " + movement.HorizontalSpeed.ToString("0.00")
+                + "   max " + sessionMax.ToString("0.00")
+                + "   " + grounded
+                + "\ndvel " + speedDelta.ToString("+0.00;-0.00;0.00")
+                + "   " + jump);
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Meatgrinder.Tests
             Assert.Greater(tuning.Gravity, 0f);
             Assert.Greater(tuning.Friction, 0f);
             Assert.Greater(tuning.MaxSpeed, tuning.GroundSpeed);
+            Assert.Greater(tuning.AirWishSpeed, 0f);
+            Assert.Less(tuning.AirWishSpeed, tuning.GroundSpeed);
             Assert.AreEqual(0f, tuning.DashCooldown);
             Object.DestroyImmediate(tuning);
         }
@@ -164,7 +166,42 @@ namespace Meatgrinder.Tests
             float strafe = JumpThenFly(tuning, true);
             Assert.Greater(strafe, straight + 0.5f);
             Assert.LessOrEqual(strafe, tuning.MaxSpeed + 0.001f);
+            Assert.LessOrEqual(straight, tuning.GroundSpeed + 0.2f);
+            Assert.Greater(strafe, tuning.GroundSpeed + 1f);
             Object.DestroyImmediate(tuning);
+        }
+
+        [Test]
+        public void SpeedStaysUnderTheSafetyCap()
+        {
+            MovementTuning tuning = ScriptableObject.CreateInstance<MovementTuning>();
+            tuning.SetAirWishSpeed(40f);
+            tuning.SetAirAcceleration(400f);
+            tuning.SetMaxSpeed(12f);
+            MovementState state = default;
+            float speed = Run(ref state, tuning, new Vector2(0f, 1f), false, false, 20);
+            Assert.Greater(speed, 11f);
+            Assert.LessOrEqual(speed, tuning.MaxSpeed + 0.001f);
+            Object.DestroyImmediate(tuning);
+        }
+
+        [Test]
+        public void HoldingSpaceDoesNotRefreshTheJump()
+        {
+            bool held = false;
+            float buffer = 0f;
+            PlayerMovement.SampleJump(ref held, ref buffer, true, 0.12f, 0.02f, out bool jump);
+            Assert.IsTrue(jump);
+            for (int i = 0; i < 8; i++)
+            {
+                PlayerMovement.SampleJump(ref held, ref buffer, true, 0.12f, 0.02f, out jump);
+            }
+
+            Assert.IsFalse(jump);
+            PlayerMovement.SampleJump(ref held, ref buffer, false, 0.12f, 0.02f, out jump);
+            Assert.IsFalse(jump);
+            PlayerMovement.SampleJump(ref held, ref buffer, true, 0.12f, 0.02f, out jump);
+            Assert.IsTrue(jump);
         }
 
         [Test]

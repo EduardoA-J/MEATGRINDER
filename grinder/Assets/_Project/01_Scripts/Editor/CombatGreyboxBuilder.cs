@@ -13,9 +13,7 @@ namespace Meatgrinder.Editor
     {
         const string ScenePath = "Assets/_Project/00_Scenes/Maps/Greybox/Greybox.unity";
         const string PrefabPath = "Assets/_Project/03_Prefabs/Players/LocalPlayer.prefab";
-        const string RocketPath = "Assets/_Project/03_Prefabs/Weapons/Rocket.prefab";
         const string ShotgunPath = "Assets/_Project/02_ScriptableObjects/Weapons/Shotgun.asset";
-        const string RocketWeaponPath = "Assets/_Project/02_ScriptableObjects/Weapons/RocketLauncher.asset";
         const string HumanPath = "Assets/_Project/02_ScriptableObjects/Combat/HealthHuman.asset";
         const string FragilePath = "Assets/_Project/02_ScriptableObjects/Combat/HealthFragile.asset";
         const string StandardPath = "Assets/_Project/02_ScriptableObjects/Combat/HealthStandard.asset";
@@ -34,17 +32,13 @@ namespace Meatgrinder.Editor
 
             Directory.CreateDirectory("Assets/_Project/02_ScriptableObjects/Weapons");
             Directory.CreateDirectory("Assets/_Project/02_ScriptableObjects/Combat");
-            Directory.CreateDirectory("Assets/_Project/03_Prefabs/Weapons");
 
             HealthProfile human = Profile(HumanPath, 100f);
             HealthProfile fragile = Profile(FragilePath, 40f);
             HealthProfile standard = Profile(StandardPath, 80f);
             HealthProfile tough = Profile(ToughPath, 200f);
             WeaponDefinition shotgun = Shotgun();
-            WeaponDefinition rocket = RocketWeapon();
-            GameObject rocketPrefab = RocketPrefab();
-            AssignPrefab(rocket, rocketPrefab);
-            InstallPlayer(human, shotgun, rocket);
+            InstallPlayer(human, shotgun);
             InstallScene(fragile, standard, tough);
             AssetDatabase.SaveAssets();
             Debug.Log("[Combat] Greybox targets ready.");
@@ -99,63 +93,7 @@ namespace Meatgrinder.Editor
             return weapon;
         }
 
-        static WeaponDefinition RocketWeapon()
-        {
-            WeaponDefinition weapon = AssetDatabase.LoadAssetAtPath<WeaponDefinition>(RocketWeaponPath);
-            if (weapon != null)
-            {
-                return weapon;
-            }
-
-            weapon = ScriptableObject.CreateInstance<WeaponDefinition>();
-            AssetDatabase.CreateAsset(weapon, RocketWeaponPath);
-            SerializedObject data = new SerializedObject(weapon);
-            data.FindProperty("weaponId").stringValue = "rocket";
-            data.FindProperty("displayName").stringValue = "Lanzacohetes";
-            data.FindProperty("delivery").enumValueIndex = (int)WeaponDelivery.Projectile;
-            data.FindProperty("pelletCount").intValue = 1;
-            data.FindProperty("fireInterval").floatValue = 0.9f;
-            data.FindProperty("magazineSize").intValue = 4;
-            data.FindProperty("startingLoaded").intValue = 4;
-            data.FindProperty("startingReserve").intValue = 12;
-            data.FindProperty("ammoPerShot").intValue = 1;
-            data.FindProperty("reloadDuration").floatValue = 1.8f;
-            data.FindProperty("projectileSpeed").floatValue = 24f;
-            data.FindProperty("projectileRadius").floatValue = 0.18f;
-            data.FindProperty("projectileLifetime").floatValue = 4f;
-            data.FindProperty("blastRadius").floatValue = 4f;
-            data.FindProperty("blastDamage").floatValue = 90f;
-            data.FindProperty("blastEdgeScale").floatValue = 0.2f;
-            data.FindProperty("recoilPitch").floatValue = 2f;
-            data.ApplyModifiedPropertiesWithoutUndo();
-            return weapon;
-        }
-
-        static void AssignPrefab(WeaponDefinition weapon, GameObject prefab)
-        {
-            SerializedObject data = new SerializedObject(weapon);
-            data.FindProperty("projectilePrefab").objectReferenceValue = prefab;
-            data.ApplyModifiedPropertiesWithoutUndo();
-        }
-
-        static GameObject RocketPrefab()
-        {
-            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(RocketPath);
-            if (existing != null)
-            {
-                return existing;
-            }
-
-            GameObject body = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            body.name = "Rocket";
-            body.transform.localScale = Vector3.one * 0.36f;
-            body.AddComponent<RocketProjectile>();
-            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(body, RocketPath);
-            Object.DestroyImmediate(body);
-            return prefab;
-        }
-
-        static void InstallPlayer(HealthProfile human, WeaponDefinition shotgun, WeaponDefinition rocket)
+        static void InstallPlayer(HealthProfile human, WeaponDefinition shotgun)
         {
             GameObject root = PrefabUtility.LoadPrefabContents(PrefabPath);
             HealthComponent health = GetOrAdd<HealthComponent>(root);
@@ -163,7 +101,6 @@ namespace Meatgrinder.Editor
             DamageResolverHost resolver = GetOrAdd<DamageResolverHost>(root);
             LocalCombatAuthority authority = GetOrAdd<LocalCombatAuthority>(root);
             PlayerImpactFeedback feedback = GetOrAdd<PlayerImpactFeedback>(root);
-            LocalProjectileSpawner spawner = GetOrAdd<LocalProjectileSpawner>(root);
             PlayerCombat combat = GetOrAdd<PlayerCombat>(root);
             CombatReadout readout = GetOrAdd<CombatReadout>(root);
             PlayerInputReader input = root.GetComponent<PlayerInputReader>();
@@ -174,9 +111,8 @@ namespace Meatgrinder.Editor
             Set(feedback, "look", look);
             SerializedObject weaponObject = new SerializedObject(weapons);
             SerializedProperty loadout = weaponObject.FindProperty("loadout");
-            loadout.arraySize = 2;
+            loadout.arraySize = 1;
             loadout.GetArrayElementAtIndex(0).objectReferenceValue = shotgun;
-            loadout.GetArrayElementAtIndex(1).objectReferenceValue = rocket;
             weaponObject.FindProperty("activeIndex").intValue = 0;
             weaponObject.ApplyModifiedPropertiesWithoutUndo();
 
@@ -187,7 +123,6 @@ namespace Meatgrinder.Editor
             combatObject.FindProperty("damage").objectReferenceValue = resolver;
             combatObject.FindProperty("authority").objectReferenceValue = authority;
             combatObject.FindProperty("feedback").objectReferenceValue = feedback;
-            combatObject.FindProperty("projectiles").objectReferenceValue = spawner;
             combatObject.FindProperty("health").objectReferenceValue = health;
             combatObject.ApplyModifiedPropertiesWithoutUndo();
             Set(readout, "weapons", weapons);
@@ -214,9 +149,6 @@ namespace Meatgrinder.Editor
             Target(parent, "Shotgun_Far", new Vector3(18f, 1f, 20f), new Vector3(1f, 2f, 1f), fragile, material);
             Wall(parent, "Wall_ShotgunBlock", new Vector3(22f, 1.25f, 0f), new Vector3(1f, 2.5f, 4f), material);
             Target(parent, "Shotgun_Blocked", new Vector3(22f, 1f, 6f), new Vector3(1f, 2f, 1f), standard, material);
-            Target(parent, "Rocket_Open", new Vector3(12f, 1f, 2f), new Vector3(1f, 2f, 1f), standard, material);
-            Wall(parent, "Wall_RocketCover", new Vector3(12f, 1.25f, 10f), new Vector3(5f, 2.5f, 1f), material);
-            Target(parent, "Rocket_Covered", new Vector3(12f, 1f, 13f), new Vector3(1f, 2f, 1f), fragile, material);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
         }

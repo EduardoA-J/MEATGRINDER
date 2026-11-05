@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: MovementTuning
   m_EditorClassIdentifier: Meatgrinder.Movement::Meatgrinder.Movement.MovementTuning
   groundSpeed: 8
-  groundAcceleration: 15
+  groundAcceleration: 10
   friction: 6
   stopSpeed: 2
-  airAcceleration: 40
-  airControl: 3
-  maxSpeed: 22
+  airAcceleration: 70
+  airWishSpeed: 2.8
+  airControl: 0
+  maxSpeed: 32
   jumpVelocity: 7.5
   gravity: 22
-  bunnyHopWindow: 0.15
+  bunnyHopWindow: 0.12
   bunnyHopSpeedRetention: 1
   jumpGroundLock: 0.1
   groundStick: 3
@@ -34,5 +35,5 @@ MonoBehaviour:
   lookSensitivity: 0.08
   minPitch: -89
   maxPitch: 89
-  fieldOfView: 90
+  fieldOfView: 100
   dashCooldown: 0

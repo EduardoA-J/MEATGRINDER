@@ -16,11 +16,36 @@ namespace Meatgrinder.Movement
         IPlanarInput scriptedInput;
         MovementState state;
         bool collisionGrounded;
+        bool jumpWasHeld;
+        float jumpBuffer;
 
         public Vector3 Velocity => state.Velocity;
         public float HorizontalSpeed => MovementSimulator.HorizontalSpeed(state.Velocity);
         public bool IsGrounded => state.IsGrounded;
+        public bool JumpBuffered => jumpBuffer > 0f;
         public MovementTuning Tuning => tuning;
+
+        // A press fills the window once. Holding the key does not fill it again.
+        internal static void SampleJump(
+            ref bool wasHeld,
+            ref float buffer,
+            bool held,
+            float window,
+            float deltaTime,
+            out bool jump)
+        {
+            if (held && wasHeld == false)
+            {
+                buffer = window > 0f ? window : 0f;
+            }
+
+            wasHeld = held;
+            jump = buffer > 0f;
+            if (buffer > 0f)
+            {
+                buffer = Mathf.Max(0f, buffer - Mathf.Max(0f, deltaTime));
+            }
+        }
 
         void Awake()
         {
@@ -38,15 +63,21 @@ namespace Meatgrinder.Movement
             }
 
             ApplyBody();
+            float deltaTime = Time.fixedDeltaTime;
             IPlanarInput input = scriptedInput ?? (planarInputSource as IPlanarInput);
             MovementIntent intent = default;
             if (input != null)
             {
                 intent.Move = Vector2.ClampMagnitude(input.Move, 1f);
-                intent.Jump = input.JumpHeld;
+                SampleJump(
+                    ref jumpWasHeld,
+                    ref jumpBuffer,
+                    input.JumpHeld,
+                    tuning.BunnyHopWindow,
+                    deltaTime,
+                    out bool jump);
+                intent.Jump = jump;
             }
-
-            float deltaTime = Time.fixedDeltaTime;
             MovementSimulator.Tick(
                 ref state,
                 intent,
