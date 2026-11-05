@@ -9,6 +9,8 @@ namespace Meatgrinder.Combat
         readonly HashSet<ulong> confirmations = new HashSet<ulong>();
 
         public bool FriendlyFire { get; set; }
+        public Meatgrinder.Pickups.PowerUpManager AttackerPowerUps { get; set; }
+        public Meatgrinder.Pickups.PowerUpManager TargetPowerUps { get; set; }
 
         public bool Apply(in DamageInfo info)
         {
@@ -34,7 +36,30 @@ namespace Meatgrinder.Combat
                 return false;
             }
 
-            info.Target.ReceiveConfirmed(info.Amount);
+            // Aplicar modificadores de power-ups ANTES de aplicar el daño
+            float finalDamage = info.Amount;
+
+            // Quad Damage del atacante (multiplica daño de salida)
+            if (AttackerPowerUps != null)
+            {
+                float damageMultiplier = AttackerPowerUps.GetDamageMultiplier();
+                if (damageMultiplier != 1f)
+                {
+                    finalDamage *= damageMultiplier;
+                }
+            }
+
+            // Invulnerability del objetivo (reduce daño de entrada)
+            if (TargetPowerUps != null)
+            {
+                float damageReduction = TargetPowerUps.GetDamageReduction();
+                if (damageReduction > 0f)
+                {
+                    finalDamage *= (1f - damageReduction);
+                }
+            }
+
+            info.Target.ReceiveConfirmed(finalDamage);
             return true;
         }
     }

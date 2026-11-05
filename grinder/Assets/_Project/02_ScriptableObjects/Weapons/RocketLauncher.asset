@@ -1,0 +1,40 @@
+﻿%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e34523a96a74e4d8d4dcdf0487a476, type: 3}
+  m_Name: RocketLauncher
+  weaponId: rocket_launcher
+  displayName: Lanzacohetes
+  delivery: 1
+  damage: 80
+  pelletCount: 1
+  spreadDegrees: 0
+  maxRange: 100
+  falloffStart: 0
+  falloffEnd: 100
+  minimumDamageScale: 1
+  fireInterval: 1.2
+  magazineSize: 4
+  startingLoaded: 4
+  startingReserve: 12
+  ammoPerShot: 1
+  reloadDuration: 2
+  projectileSpeed: 24
+  projectileRadius: 0.18
+  projectileLifetime: 5
+  blastRadius: 4
+  blastDamage: 120
+  blastEdgeScale: 0.2
+  recoilPitch: 2
+  drawDuration: 0.25
+  projectilePrefab: {fileID: 0}
+  shotSound: {fileID: 0}
+  impactVfx: {fileID: 0}

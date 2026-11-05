@@ -1,7 +1,9 @@
 {
     "name": "Meatgrinder.Combat",
     "rootNamespace": "Meatgrinder.Combat",
-    "references": [],
+    "references": [
+        "Meatgrinder.Pickups"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

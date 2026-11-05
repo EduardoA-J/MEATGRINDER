@@ -5,6 +5,7 @@
         "Meatgrinder.Combat",
         "Meatgrinder.Weapons",
         "Meatgrinder.Players",
+        "Meatgrinder.Pickups",
         "UnityEngine.UI"
     ],
     "includePlatforms": [],

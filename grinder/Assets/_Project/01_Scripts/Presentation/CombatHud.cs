@@ -11,6 +11,7 @@ namespace Meatgrinder.Presentation
         [SerializeField] private WeaponController weapons;
         [SerializeField] private HealthComponent health;
         [SerializeField] private PlayerImpactFeedback feedback;
+        [SerializeField] private Meatgrinder.Pickups.PowerUpManager powerUps;
         [SerializeField] private float lineLength = 12f;
         [SerializeField] private float lineThickness = 2f;
         [SerializeField] private float gap = 5f;
@@ -21,9 +22,12 @@ namespace Meatgrinder.Presentation
         [SerializeField] private Color worldHitColor = new Color(0.8f, 0.8f, 0.8f, 0.55f);
 
         Text healthText;
+        Text armorText;
         Text weaponText;
         Text ammoText;
+        Text powerUpText;
         Image healthFill;
+        Image armorFill;
         Image vignette;
         Image[] hitMarks;
         float vignetteUntil;
@@ -69,11 +73,18 @@ namespace Meatgrinder.Presentation
             {
                 health.Damaged += OnDamaged;
                 health.Died += OnDied;
+                health.ArmorChanged += OnArmorChanged;
             }
 
             if (feedback != null)
             {
                 feedback.Presented += OnPresented;
+            }
+
+            if (powerUps != null)
+            {
+                powerUps.PowerUpActivated += OnPowerUpActivated;
+                powerUps.PowerUpExpired += OnPowerUpExpired;
             }
 
             RefreshAll();
@@ -90,11 +101,18 @@ namespace Meatgrinder.Presentation
             {
                 health.Damaged -= OnDamaged;
                 health.Died -= OnDied;
+                health.ArmorChanged -= OnArmorChanged;
             }
 
             if (feedback != null)
             {
                 feedback.Presented -= OnPresented;
+            }
+
+            if (powerUps != null)
+            {
+                powerUps.PowerUpActivated -= OnPowerUpActivated;
+                powerUps.PowerUpExpired -= OnPowerUpExpired;
             }
         }
 
@@ -109,12 +127,35 @@ namespace Meatgrinder.Presentation
             {
                 SetHitVisible(false);
             }
+
+            // Actualizar power-ups continuamente para mostrar tiempo restante
+            if (powerUps != null && powerUpText != null)
+            {
+                RefreshPowerUps();
+            }
+        }
+
+        void OnArmorChanged(float newArmor)
+        {
+            RefreshArmor();
+        }
+
+        void OnPowerUpActivated(Meatgrinder.Pickups.PowerUpType type, float duration)
+        {
+            RefreshPowerUps();
+        }
+
+        void OnPowerUpExpired(Meatgrinder.Pickups.PowerUpType type)
+        {
+            RefreshPowerUps();
         }
 
         public void RefreshAll()
         {
             RefreshHealth();
+            RefreshArmor();
             RefreshWeapon();
+            RefreshPowerUps();
         }
 
         void OnDamaged(float amount)
@@ -195,6 +236,51 @@ namespace Meatgrinder.Presentation
             ammoText.text = weapons.Loaded + "  /  " + weapons.Reserve + state;
         }
 
+        void RefreshArmor()
+        {
+            if (armorText == null)
+            {
+                return;
+            }
+
+            if (health == null)
+            {
+                armorText.text = "armadura —";
+                return;
+            }
+
+            armorText.text = "armadura  " + health.Armor.ToString("0") + " / " + health.MaxArmor.ToString("0");
+            if (armorFill != null)
+            {
+                armorFill.fillAmount = health.MaxArmor > 0f ? health.Armor / health.MaxArmor : 0f;
+            }
+        }
+
+        void RefreshPowerUps()
+        {
+            if (powerUpText == null || powerUps == null)
+            {
+                return;
+            }
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var types = System.Enum.GetValues(typeof(Meatgrinder.Pickups.PowerUpType));
+            foreach (Meatgrinder.Pickups.PowerUpType type in types)
+            {
+                if (powerUps.HasEffect(type))
+                {
+                    float remaining = powerUps.GetTimeRemaining(type);
+                    if (sb.Length > 0)
+                    {
+                        sb.Append("  |  ");
+                    }
+                    sb.Append(type.ToString()).Append(" ").Append(remaining.ToString("0.0")).Append("s");
+                }
+            }
+
+            powerUpText.text = sb.Length > 0 ? sb.ToString() : "";
+        }
+
         void SetHitVisible(bool visible)
         {
             if (hitMarks == null)
@@ -245,6 +331,7 @@ namespace Meatgrinder.Presentation
             BuildCrosshair(root.transform);
             BuildCorner(root.transform, font, true);
             BuildCorner(root.transform, font, false);
+            BuildPowerUpPanel(root.transform, font);
         }
 
         void BuildCrosshair(Transform parent)
@@ -272,32 +359,61 @@ namespace Meatgrinder.Presentation
         {
             Vector2 anchor = healthCorner ? new Vector2(0f, 0f) : new Vector2(1f, 0f);
             RectTransform panel = NewRect(parent, healthCorner ? "HealthPanel" : "AmmoPanel", anchor, anchor, healthCorner ? new Vector2(28f, 28f) : new Vector2(-28f, 28f));
-            panel.sizeDelta = new Vector2(320f, 92f);
+            panel.sizeDelta = new Vector2(320f, healthCorner ? 120f : 92f); // Más alto para armadura
             Image background = panel.gameObject.AddComponent<Image>();
             background.sprite = White();
             background.color = new Color(0.04f, 0.04f, 0.05f, 0.62f);
             background.raycastTarget = false;
             if (healthCorner)
             {
-                healthText = Label(panel, font, "HealthText", new Vector2(16f, 46f), 26, TextAnchor.MiddleLeft);
-                RectTransform bar = NewRect(panel, "HealthBar", new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(16f, 16f));
-                bar.sizeDelta = new Vector2(288f, 14f);
-                Image back = bar.gameObject.AddComponent<Image>();
-                back.sprite = White();
-                back.color = new Color(0.15f, 0.15f, 0.15f, 1f);
-                back.raycastTarget = false;
-                healthFill = ImageOn(NewRect(bar, "Fill", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, 0f)), new Color(0.72f, 0.16f, 0.12f, 1f));
+                healthText = Label(panel, font, "HealthText", new Vector2(16f, 74f), 26, TextAnchor.MiddleLeft);
+                RectTransform healthBar = NewRect(panel, "HealthBar", new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(16f, 48f));
+                healthBar.sizeDelta = new Vector2(288f, 14f);
+                Image healthBack = healthBar.gameObject.AddComponent<Image>();
+                healthBack.sprite = White();
+                healthBack.color = new Color(0.15f, 0.15f, 0.15f, 1f);
+                healthBack.raycastTarget = false;
+                healthFill = ImageOn(NewRect(healthBar, "Fill", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, 0f)), new Color(0.72f, 0.16f, 0.12f, 1f));
                 healthFill.rectTransform.pivot = new Vector2(0f, 0.5f);
                 healthFill.rectTransform.sizeDelta = new Vector2(288f, 14f);
                 healthFill.type = Image.Type.Filled;
                 healthFill.fillMethod = Image.FillMethod.Horizontal;
                 healthFill.fillAmount = 1f;
+
+                // Armadura
+                armorText = Label(panel, font, "ArmorText", new Vector2(16f, 26f), 22, TextAnchor.MiddleLeft);
+                RectTransform armorBar = NewRect(panel, "ArmorBar", new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(16f, 8f));
+                armorBar.sizeDelta = new Vector2(288f, 10f);
+                Image armorBack = armorBar.gameObject.AddComponent<Image>();
+                armorBack.sprite = White();
+                armorBack.color = new Color(0.15f, 0.15f, 0.15f, 1f);
+                armorBack.raycastTarget = false;
+                armorFill = ImageOn(NewRect(armorBar, "Fill", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, 0f)), new Color(0.25f, 0.5f, 0.75f, 1f));
+                armorFill.rectTransform.pivot = new Vector2(0f, 0.5f);
+                armorFill.rectTransform.sizeDelta = new Vector2(288f, 10f);
+                armorFill.type = Image.Type.Filled;
+                armorFill.fillMethod = Image.FillMethod.Horizontal;
+                armorFill.fillAmount = 0f;
             }
             else
             {
                 weaponText = Label(panel, font, "WeaponText", new Vector2(16f, 50f), 22, TextAnchor.MiddleLeft);
                 ammoText = Label(panel, font, "AmmoText", new Vector2(16f, 16f), 28, TextAnchor.MiddleLeft);
             }
+        }
+
+        void BuildPowerUpPanel(Transform parent, Font font)
+        {
+            // Panel superior central para power-ups activos
+            RectTransform panel = NewRect(parent, "PowerUpPanel", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -28f));
+            panel.sizeDelta = new Vector2(600f, 32f);
+            Image background = panel.gameObject.AddComponent<Image>();
+            background.sprite = White();
+            background.color = new Color(0.04f, 0.04f, 0.05f, 0.62f);
+            background.raycastTarget = false;
+            
+            powerUpText = Label(panel, font, "PowerUpText", new Vector2(8f, 16f), 18, TextAnchor.MiddleCenter);
+            powerUpText.rectTransform.sizeDelta = new Vector2(584f, 32f);
         }
 
         void Bar(RectTransform parent, string name, Vector2 position, Vector2 size)

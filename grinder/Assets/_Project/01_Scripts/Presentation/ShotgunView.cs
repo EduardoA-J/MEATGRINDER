@@ -101,7 +101,11 @@ namespace Meatgrinder.Presentation
 
         void OnRecoil(float pitch)
         {
-            PlayShotPose();
+            // Solo aplicar si el arma activa es la escopeta
+            if (weapons != null && weapons.ActiveDefinition != null && weapons.ActiveDefinition.WeaponId == "shotgun")
+            {
+                PlayShotPose();
+            }
         }
 
         float DrawBlend()

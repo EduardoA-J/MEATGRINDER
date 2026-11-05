@@ -1,0 +1,17 @@
+{
+    "name": "Meatgrinder.Pickups",
+    "rootNamespace": "Meatgrinder.Pickups",
+    "references": [
+        "Meatgrinder.Combat",
+        "Meatgrinder.Weapons"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
