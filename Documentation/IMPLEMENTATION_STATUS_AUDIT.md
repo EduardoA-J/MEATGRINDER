@@ -43,10 +43,10 @@ Alcance de todas las filas: `REQUIRED`.
 | Sync combate/pickups | NOT_STARTED | — | |
 | Boot / menús producto | NOT_STARTED | — | |
 | Monstruos jugables | NOT_STARTED | `.gitkeep` | |
-| M01 | PARTIALLY_IMPLEMENTED | `M01_TheSlaughterhouse` ampliado | Rampa original conservada. Sin MapDefinition. No VALIDATED |
-| M02 Castle of the Damned | PARTIALLY_IMPLEMENTED | `M02_CastleOfTheDamned` | GDD: Iron Cathedral. T-27. No VALIDATED |
-| M03 Ruins of the Forgotten | PARTIALLY_IMPLEMENTED | `M03_RuinsOfTheForgotten` | GDD: The Pit. T-27. No VALIDATED |
-| M04 The Longest Void | PARTIALLY_IMPLEMENTED | `M04_TheLongestVoid` | GDD: Blood Foundry. Sin suelo continuo. No VALIDATED |
+| M01 | PARTIALLY_IMPLEMENTED | `M01_TheSlaughterhouse` complejo industrial, 10 nov 2026 | Rampa original conservada. Sin MapDefinition. Humo 4/4 no recorre escaleras. No VALIDATED |
+| M02 Castle of the Damned | PARTIALLY_IMPLEMENTED | `M02_CastleOfTheDamned` recinto ~540 m, torres, ruinas y plataformas | GDD: Iron Cathedral. T-27. No VALIDATED |
+| M03 Ruins of the Forgotten | PARTIALLY_IMPLEMENTED | `M03_RuinsOfTheForgotten` plaza, templo, terrazas | GDD: The Pit. T-27. No VALIDATED |
+| M04 The Longest Void | PARTIALLY_IMPLEMENTED | `M04_TheLongestVoid` islas a varias alturas | GDD: Blood Foundry. Sin suelo continuo. No VALIDATED |
 | Ranked | NOT_STARTED | R-01…04 | |
 | Arsenal ampliado | NOT_STARTED | P-05 | |
 | Audio / VFX producción | NOT_STARTED | — | |

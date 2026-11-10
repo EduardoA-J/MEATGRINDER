@@ -113,16 +113,16 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
 | F4-07 | Identidad visual en red | NOT_STARTED | P3 | F4-03, F3-06, F8-03 |
 | F4-08 | Prueba de asimetría 2v2 | NOT_STARTED | P2 | F4-05, F3-13, F5-02 |
 | F5-01 | Arena gris (laboratorio) | VALIDATED | P0 | F0-07 |
-| F5-02 | Blockout de M01 The Slaughterhouse | PARTIALLY_IMPLEMENTED | P2 | Arena y pasillos ProBuilder. Rampa original conservada. Sin MapDefinition. No VALIDATED |
-| F5-03 | Dos rutas y verticalidad (M01) | PARTIALLY_IMPLEMENTED | P2 | Flancos y pasarela en escena. Recorrido completo no caminado |
-| F5-04 | Spawns separados (M01) | PARTIALLY_IMPLEMENTED | P2 | 4 marcadores. Un rayo en humo. Sin SpawnManager |
-| F5-05 | Layout de ítems y armas (M01) | PARTIALLY_IMPLEMENTED | P2 | Marcadores + `MAPS.md`. Cifras PENDIENTE. Sin MapDefinition |
+| F5-02 | Blockout de M01 The Slaughterhouse | PARTIALLY_IMPLEMENTED | P2 | Complejo industrial ProBuilder. Rampa original conservada. Sin MapDefinition. No VALIDATED |
+| F5-03 | Dos rutas y verticalidad (M01) | PARTIALLY_IMPLEMENTED | P2 | Flancos, foso y pasarelas a 3,6 m y 6 m. Recorrido completo no caminado |
+| F5-04 | Spawns separados (M01) | PARTIALLY_IMPLEMENTED | P2 | 4 marcadores en los muelles y la sala. Un rayo en humo. Sin SpawnManager |
+| F5-05 | Layout de ítems y armas (M01) | PARTIALLY_IMPLEMENTED | P2 | Marcadores recolocados + `MAPS.md`. Cifras PENDIENTE. Sin MapDefinition |
 | F5-06 | Puertas de recorrido | NOT_STARTED | P2 | F5-02 |
 | F5-07 | Carga del siguiente estado | NOT_STARTED | P2 | F5-06, F9-01 |
 | F5-08 | Pruebas de spawn-kill y de bloqueo | NOT_STARTED | P2 | F5-03, F5-04, F1-09 |
-| F5-09 | M02 Castle of the Damned (GDD: Iron Cathedral) | PARTIALLY_IMPLEMENTED | P3 | Escena ProBuilder. T-27. Humo de suelo. No VALIDATED. Sin Host Mode |
-| F5-10 | M03 Ruins of the Forgotten (GDD: The Pit) | PARTIALLY_IMPLEMENTED | P3 | Escena abierta ProBuilder. T-27. Humo de suelo. No VALIDATED |
-| F5-11 | M04 The Longest Void (GDD: Blood Foundry) | PARTIALLY_IMPLEMENTED | P3 | Arena flotante. T-27. Sin suelo continuo. No VALIDATED |
+| F5-09 | M02 Castle of the Damned (GDD: Iron Cathedral) | PARTIALLY_IMPLEMENTED | P3 | Recinto ~540 m, torre gigante por cuadrante, torreón, atalayas y ruinas. T-27. Humo de suelo. No VALIDATED. Sin Host Mode |
+| F5-10 | M03 Ruins of the Forgotten (GDD: The Pit) | PARTIALLY_IMPLEMENTED | P3 | Plaza, templo y terrazas. T-27. Humo de suelo. No VALIDATED |
+| F5-11 | M04 The Longest Void (GDD: Blood Foundry) | PARTIALLY_IMPLEMENTED | P3 | Islas a varias alturas. T-27. Sin suelo continuo. No VALIDATED |
 | F6-01 | Pickup de salud | INTEGRATED | P0 | Recogida local. Cifras y respawn de ítem PENDIENTE D-11 |
 | F6-02 | Pickup de armadura | PARTIALLY_IMPLEMENTED | P0 | Collect llama AddArmor. Sin assert propio. D-07 abierta |
 | F6-03 | Quad Damage con efecto real | INTEGRATED | P0 | Multiplica en DamageResolver. Qué es y cuánto dura: D-10 |
@@ -1793,7 +1793,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
   - MapDefinition apunta a esa escena.
   - El documento de layout de F5-05 existe o esta tarea no se marca hecha.
 - **Pruebas:** Recorrer las dos rutas con el controlador.
-- **Estado:** PARTIALLY_IMPLEMENTED. Geometría ampliada en `M01_TheSlaughterhouse`. Falta MapDefinition. No VALIDATED.
+- **Estado:** PARTIALLY_IMPLEMENTED. Complejo industrial en `M01_TheSlaughterhouse` (10 nov 2026). Rampa original conservada. Falta MapDefinition. El humo no recorre las escaleras. No VALIDATED.
 - **Subtareas:**
   - F5-02a Bloquear volúmenes.
   - F5-02b MapDefinition.
@@ -1819,7 +1819,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
   - Hay una plataforma o rampa que cambia de altura.
   - Un jugador no puede sellar las dos rutas a la vez con su cuerpo.
 - **Pruebas:** F5-08.
-- **Estado:** PARTIALLY_IMPLEMENTED. Dos flancos y pasarela a 3 m. El humo no recorrió esas rutas.
+- **Estado:** PARTIALLY_IMPLEMENTED. Flancos, foso a −1,2 m y pasarelas a 3,6 m y 6 m. El humo no recorrió esas rutas.
 - **Subtareas:**
   - F5-03a Segunda ruta.
   - F5-03b Altura.
@@ -1844,7 +1844,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
   - Un rayo desde cada spawn enemigo hasta el punto de aparición choca con geometría.
   - Hay puntos suficientes para dos humanos y dos monstruos.
 - **Pruebas:** F5-08.
-- **Estado:** PARTIALLY_IMPLEMENTED. Cuatro empties. El humo comprueba un solo par. Sin SpawnManager.
+- **Estado:** PARTIALLY_IMPLEMENTED. Cuatro empties, humanos en los muelles y monstruos al fondo de la sala. El humo comprueba un solo par. Sin SpawnManager.
 - **Subtareas:**
   - F5-04a Colocar puntos.
   - F5-04b Rayos de comprobación.
@@ -1870,7 +1870,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
   - El Quad Damage, aunque su efecto siga pendiente, tiene una ubicación disputable.
   - El layout está en el repositorio.
 - **Pruebas:** Revisión del documento contra la escena.
-- **Estado:** PARTIALLY_IMPLEMENTED. Marcadores en escena y `Documentation/MAPS.md`. Cifras PENDIENTE.
+- **Estado:** PARTIALLY_IMPLEMENTED. Marcadores recolocados en la escena ampliada y `Documentation/MAPS.md`. Cifras PENDIENTE.
 - **Subtareas:**
   - F5-05a Marcadores.
   - F5-05b Nota de disputa.
@@ -1974,7 +1974,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
   - M02 tiene dos rutas, spawns cubiertos y una puerta.
   - Si no hay tiempo, la tarea pasa a una nota de corte, no a DONE.
 - **Pruebas:** El mismo protocolo de F5-08.
-- **Estado:** PARTIALLY_IMPLEMENTED. Escena `M02_CastleOfTheDamned` (T-27). El nombre del GDD sigue siendo Iron Cathedral. Sin puerta de recorrido ni prueba de dos máquinas.
+- **Estado:** PARTIALLY_IMPLEMENTED. Escena `M02_CastleOfTheDamned` (T-27): recinto de unos 540 × 500 m, arco y torre de 22 m por cuadrante, torreón, atalayas, ruinas y plataformas. El nombre del GDD sigue siendo Iron Cathedral. Sin puerta de recorrido ni prueba de dos máquinas.
 - **Subtareas:**
   - F5-09a Decidir si entra en la demo.
   - F5-09b Blockout solo después del corte.
@@ -3301,7 +3301,7 @@ El índice es la fuente de estado. Las fichas históricas anteriores pueden cons
 - **Alcance:** REQUIRED
 - **Sistema:** Mapas
 - **Descripción:** Nivel real M03 según GDD.
-- **Estado:** PARTIALLY_IMPLEMENTED. Escena `M03_RuinsOfTheForgotten` (T-27). El GDD sigue llamando a este mapa The Pit. Humo de suelo pasado. Recorrido completo pendiente.
+- **Estado:** PARTIALLY_IMPLEMENTED. Escena `M03_RuinsOfTheForgotten` ampliada (T-27): plaza anillada, templo y terrazas. El GDD sigue llamando a este mapa The Pit. Humo de suelo pasado. Recorrido completo pendiente.
 - **Prioridad:** P3
 - **Dependencias:** F5-09
 - **Criterios de aceptación:** Blockout jugable con spawns, rutas e ítems.
@@ -3313,7 +3313,7 @@ El índice es la fuente de estado. Las fichas históricas anteriores pueden cons
 - **Alcance:** REQUIRED
 - **Sistema:** Mapas
 - **Descripción:** Nivel real M04 según GDD. La escena construida es `M04_TheLongestVoid` (T-27). El nombre escrito del GDD sigue siendo Blood Foundry.
-- **Estado:** PARTIALLY_IMPLEMENTED. Arena flotante sin suelo continuo. Humo de la plataforma central pasado. Sin teletransporte de caída. No VALIDATED.
+- **Estado:** PARTIALLY_IMPLEMENTED. Islas a 1,5 m, 3 m, 6 m y 10 m, sin suelo continuo. Humo de la plataforma central pasado. Sin teletransporte de caída. No VALIDATED.
 - **Prioridad:** P3
 - **Dependencias:** F5-10
 - **Criterios de aceptación:** Blockout jugable con spawns, rutas e ítems.

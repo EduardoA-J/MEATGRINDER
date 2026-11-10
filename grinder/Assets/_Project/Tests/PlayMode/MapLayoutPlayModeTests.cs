@@ -15,7 +15,8 @@ namespace Meatgrinder.Tests
         {
             yield return Load("M01_TheSlaughterhouse");
             Assert.IsNotNull(GameObject.Find("PB_Ramp"));
-            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 30);
+            Assert.IsNotNull(GameObject.Find("PB_KillFloor"));
+            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 100);
             Assert.IsNotNull(GameObject.Find("Spawn_Human_A"));
             Assert.IsNotNull(GameObject.Find("Spawn_Monster_A"));
             Assert.IsTrue(SpawnRayHitsGeometry("Spawn_Human_A", "Spawn_Monster_A"));
@@ -26,7 +27,13 @@ namespace Meatgrinder.Tests
         public IEnumerator CastleFloorHoldsThePlayer()
         {
             yield return Load("M02_CastleOfTheDamned");
-            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 30);
+            Assert.IsNotNull(GameObject.Find("PB_GreatHall"));
+            Assert.IsNotNull(GameObject.Find("PB_TowerNW_Crown"));
+            Assert.IsNotNull(GameObject.Find("PB_ArchNW_L"));
+            Assert.IsNotNull(GameObject.Find("PB_WardNorth"));
+            Assert.IsNotNull(GameObject.Find("PB_Keep_Crown"));
+            Assert.IsNotNull(GameObject.Find("PB_RuinSpan"));
+            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 350);
             Assert.IsTrue(SpawnRayHitsGeometry("Spawn_Human_A", "Spawn_Monster_A"));
             yield return WalkStaysAbove(-0.5f);
         }
@@ -35,7 +42,8 @@ namespace Meatgrinder.Tests
         public IEnumerator RuinsFloorHoldsThePlayer()
         {
             yield return Load("M03_RuinsOfTheForgotten");
-            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 20);
+            Assert.IsNotNull(GameObject.Find("PB_TempleFloor"));
+            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 90);
             Assert.IsTrue(SpawnRayHitsGeometry("Spawn_Human_A", "Spawn_Monster_A"));
             yield return WalkStaysAbove(1f);
         }
@@ -45,7 +53,8 @@ namespace Meatgrinder.Tests
         {
             yield return Load("M04_TheLongestVoid");
             Assert.IsNull(GameObject.Find("PB_Ground"));
-            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 15);
+            Assert.IsNotNull(GameObject.Find("PB_Core"));
+            Assert.GreaterOrEqual(Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None).Length, 60);
             Assert.IsTrue(SpawnRayHitsGeometry("Spawn_Human_A", "Spawn_Monster_A"));
             yield return WalkStaysAbove(2f);
         }

@@ -33,7 +33,7 @@ Método y detalle: `IMPLEMENTATION_STATUS_AUDIT.md`. No confundir con «% de la 
 | HUD | INTEGRATED local (salud/munición/retícula). Power-ups UI parcial. |
 | Fusion gameplay | NOT_STARTED. Solo sonda. |
 | Boot / menús / monstruos / ranked | NOT_STARTED |
-| M01–M04 | PARTIALLY_IMPLEMENTED. Blockout ProBuilder. Humo 4/4. No VALIDATED. T-27 |
+| M01–M04 | PARTIALLY_IMPLEMENTED. M02 regenerado (~540 × 500 m, torres, ruinas y plataformas) el 10 nov 2026. Humo de suelo de M02 pasado. Escaleras, ítems y Host Mode sin validar. T-27 |
 | Lanzacohetes, melee, pickups, respawn local | INTEGRATED en código. Cifras D-07/D-08/D-10/D-11 abiertas. Sin red |
 
 ## Checklist (recuento aproximado)
@@ -58,7 +58,7 @@ Método y detalle: `IMPLEMENTATION_STATUS_AUDIT.md`. No confundir con «% de la 
 - Play manual Greybox con teclado/ratón reales.
 - Power-ups o cohete como «terminados» por existir clases.
 - Multijugador de partida.
-- Ranked y monstruos. M01–M04 no están validados: el humo comprueba suelo, colisión, un rayo de spawn y que la rampa de M01 sigue en su sitio. No recorre escaleras, pickups ni Host Mode.
+- Ranked y monstruos. M01–M04 no están validados: el humo del 10 nov 2026 comprueba apertura, colisión, un rayo de spawn, la rampa de M01 y que M04 no tiene suelo continuo. M02 se regeneró después y su humo de suelo volvió a pasar. No recorre escaleras, pickups ni Host Mode. El material sigue siendo el shader de color de vértice de ProBuilder.
 - Cifras de D-07, D-08, D-10 y D-11. El código las lee de campos marcados PENDIENTE.
 
 ## Historial de pasadas (conservado)
