@@ -16,6 +16,7 @@ namespace Meatgrinder.Combat
 
         bool idAssigned;
         bool isDead;
+        float spawnProtectionRemaining;
 
         public float Current { get; private set; }
         public float Armor { get; private set; }
@@ -24,6 +25,7 @@ namespace Meatgrinder.Combat
         public float ArmorAbsorption => Mathf.Clamp01(armorAbsorption);
         public int TeamId => teamId;
         public bool IsAlive => isDead == false && Current > 0f;
+        public bool IsSpawnProtected => spawnProtectionRemaining > 0f;
 
         public int StableId
         {
@@ -100,12 +102,49 @@ namespace Meatgrinder.Combat
 
         public void AddHealth(float amount)
         {
+            AddHealth(amount, false);
+        }
+
+        public void AddHealth(float amount, bool allowAboveMax)
+        {
             if (amount <= 0f || isDead)
             {
                 return;
             }
 
-            Current = Mathf.Min(Max, Current + amount);
+            Current = allowAboveMax ? Current + amount : Mathf.Min(Max, Current + amount);
+        }
+
+        public void DecayToward(float floor, float amount)
+        {
+            if (isDead || amount <= 0f || Current <= floor)
+            {
+                return;
+            }
+
+            Current = Mathf.Max(floor, Current - amount);
+        }
+
+        public void BeginSpawnProtection(float seconds)
+        {
+            spawnProtectionRemaining = Mathf.Max(0f, seconds);
+        }
+
+        public void TickSpawnProtection(float deltaTime)
+        {
+            if (spawnProtectionRemaining <= 0f || deltaTime <= 0f)
+            {
+                return;
+            }
+
+            spawnProtectionRemaining = Mathf.Max(0f, spawnProtectionRemaining - deltaTime);
+        }
+
+        public void RespawnAtFullHealth()
+        {
+            isDead = false;
+            Current = Max;
+            EnsureId();
         }
 
         internal void SetTeam(int value)

@@ -59,6 +59,11 @@ namespace Meatgrinder.Presentation
                 feedback = GetComponent<PlayerImpactFeedback>();
             }
 
+            if (powerUps == null)
+            {
+                powerUps = GetComponent<Meatgrinder.Pickups.PowerUpManager>();
+            }
+
             Build();
         }
 
@@ -128,7 +133,16 @@ namespace Meatgrinder.Presentation
                 SetHitVisible(false);
             }
 
-            // Actualizar power-ups continuamente para mostrar tiempo restante
+            if (powerUps == null)
+            {
+                powerUps = GetComponent<Meatgrinder.Pickups.PowerUpManager>();
+                if (powerUps != null)
+                {
+                    powerUps.PowerUpActivated += OnPowerUpActivated;
+                    powerUps.PowerUpExpired += OnPowerUpExpired;
+                }
+            }
+
             if (powerUps != null && powerUpText != null)
             {
                 RefreshPowerUps();

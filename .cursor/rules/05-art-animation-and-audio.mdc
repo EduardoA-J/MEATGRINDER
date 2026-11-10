@@ -6,24 +6,22 @@ alwaysApply: false
 
 # Arte, animación y audio
 
-Dirección: FPS de lectura rápida, arquitectura gótica e industrial, metal, luz roja, contraste alto. Low poly aceptable si la silueta, el material y el efecto sostienen la demo. El enemigo se distingue del escenario.
+Dirección: FPS de lectura rápida, arquitectura gótica e industrial, metal, luz roja, contraste alto. Low poly aceptable si la silueta sostiene la partida. El enemigo se distingue del escenario. Prioridad P3 respecto al núcleo; el alcance es REQUIRED.
 
 ## Gore
 
-Sangre en impacto, decals con tope y caducidad, muerte animada o ragdoll simple, sonido de impacto y de muerte. El desmembramiento es expansión y, si llega, será por piezas de prefab. Los efectos no aplican daño. Se reciclan con pool. Hay opción para bajar partículas y decals. El VFX remoto se simplifica si cae el rendimiento. No puede cubrir al rival.
+Sangre, decals con tope, muerte animada o ragdoll simple. Desmembramiento REQUIRED (P-04, prioridad P4) por piezas de prefab si se aprueba el coste. Los efectos no aplican daño. Pool obligatorio. Opción de reducir partículas. No cubrir al rival.
 
 ## Animación
 
-La lista completa del GDD (secciones 16.1–16.3) es el objetivo de producción. La demo puede recortar clips antes de recortar pruebas de red. El daño y la muerte autoritativos no dependen del Animator local.
+Lista del GDD 16.1–16.3 = objetivo de producción. Se puede retrasar clips antes que pruebas de red; no se borra el alcance. Daño y muerte no dependen del Animator.
 
-Parámetros previstos: `MoveX`, `MoveY`, `Speed`, `Grounded`, `VerticalVelocity`, `Attack`, `Fire`, `Hit`, `Dead`.
-
-Manos y arma FPS quedan estables en la cámara. El disparo aplica daño aunque el clip no haya terminado.
+Parámetros previstos: `MoveX`, `MoveY`, `Speed`, `Grounded`, `VerticalVelocity`, `Attack`, `Fire`, `Hit`, `Dead`, melee.
 
 ## Audio
 
-Pasos por material, salto, aterrizaje, disparo, recarga, vacío, proyectil, explosión, monstruo, pickup, UI, ambiente industrial e infernal, música heavy, inicio, cambio de mapa, victoria, derrota y empate. Pasos y disparos cercanos se entienden. Música, efectos y volumen general son ajustables. Un sonido cosmético no puede confundirse con una señal de juego.
+Pasos, salto, disparo, recarga, proyectil, explosión, monstruo, pickup, UI, ambiente, música heavy, victoria/derrota. Volúmenes separados. Un sonido cosmético no imita señal de partida.
 
 ## Producción
 
-Cada asset externo lleva fuente, licencia, atribución y modificaciones en el registro de la tarea F0-11. Materiales compartidos. Pocas luces dinámicas. LOD solo cuando el modelo lo pida. Skills útiles cuando toque: `urp-postprocessing`, `audio-setup-mixers`, `optimize-audio`, `optimize-text-mesh-pro`. `asset-transformer-toolkit` exige `com.unity.industry.toolkit` >= 4, que no está instalado: no lo añadas por tu cuenta.
+Registro de licencias F0-11. No añadir `asset-transformer-toolkit` sin tarea. No gastes el ciclo en dioramas Greybox: arte de producto en M01+ cuando toque.

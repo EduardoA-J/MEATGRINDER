@@ -1,43 +1,47 @@
 # Decisiones
 
-Fecha: 2 de noviembre de 2026.
+Fecha base: 2 de noviembre de 2026. Actualización de alcance: 9 de noviembre de 2026.
 Una decisión «tomada» está escrita en el GDD sin contradicción interna, o está materializada en el proyecto. Una decisión «pendiente» necesita la aprobación de David antes de programarla. No se cierra nada por inferencia.
+Alcance del producto: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md).
 
 ## Tomadas
 
 | ID | Decisión | Evidencia |
 |---|---|---|
 | T-01 | El juego es un arena FPS asimétrico humano contra monstruo, sin extracción, puzzles ni habilidades de héroe. | GDD 1.1 y 7.2 |
-| T-02 | Plataforma de la demo: Windows PC. Pipeline: URP. Lenguaje: C#. | GDD portada; `PC_RPAsset.asset` asignado en GraphicsSettings |
-| T-03 | Editor declarado: Unity `6000.5.6f1`. | `grinder/ProjectSettings/ProjectVersion.txt` y respuesta de la sección 25 |
-| T-04 | Red del prototipo: Photon Fusion 2. La demo acepta sesión de prueba. El dedicado de producción se evalúa después. | GDD 13.1 y sección 25 |
-| T-21 | Topología: Host Mode (Client Host). El jugador host es la autoridad de estado sobre daño, disparos, salud, pickups y puntuación. El servidor dedicado queda descartado en esta fase. El presupuesto es el plan gratuito de Photon. El objetivo de red es una partida de 2 jugadores y la arquitectura preparada para 2v2. Shared Mode no se adopta sin una justificación técnica y una aprobación nueva. | Decisión de David, 3 de noviembre de 2026 |
+| T-02 | Plataforma del producto: Windows PC. Pipeline: URP. Lenguaje: C#. | GDD portada; `PC_RPAsset.asset` |
+| T-03 | Editor declarado: Unity `6000.5.6f1`. | `grinder/ProjectSettings/ProjectVersion.txt` |
+| T-04 | Red: Photon Fusion 2. Sesión de producto (Boot + menú). El dedicado de producción se evalúa cuando latencia/coste lo pidan. | GDD 13.1 y sección 25 |
+| T-21 | Topología: Host Mode (Client Host). El jugador host es la autoridad de estado sobre daño, disparos, salud, pickups y puntuación. Shared Mode no se adopta sin justificación y aprobación nueva. Arquitectura preparada para 2v2 y después 4v4 (ambos REQUIRED). | Decisión de David, 3 de noviembre de 2026 |
+| T-23 | Política de alcance juego completo: toda funcionalidad documentada es REQUIRED; prioridad ≠ exclusión; no demos descartables; Greybox es laboratorio. | David, 9 de noviembre de 2026; `GDD_SCOPE_ADDENDUM.md` |
 | T-22 | Prueba controlada: Fusion SDK 2.1.4 Stable, build 2500, importado en Unity `6000.5.6f1`. Compiló en batchmode con código 0. Photon Realtime 5.1.20. Esta prueba no es una certificación oficial de Photon para ese editor. El App ID quedó después en el asset local, fuera de git. | `grinder/Logs/fusion-import.log` y `Assets/Photon/Fusion/release_history.txt`, 3 de noviembre de 2026 |
 | T-05 | El resultado competitivo lo confirma la autoridad: daño, salud, muerte, pickup, puntuación, transición. | GDD 5.3, 13.2, 19 |
 | T-06 | Fuego amigo desactivado por defecto y configurable por modo. | GDD 5.3 |
-| T-07 | Armas de la demo: escopeta y lanzacohetes. Ametralladora, superescopeta y rayo son futuras. | GDD sección 6 |
-| T-08 | Salud y armadura son ítems de demo. Invulnerabilidad, berserk y regeneración son futuros. | GDD sección 8 |
+| T-07 | Arsenal REQUIRED: escopeta y lanzacohetes primero (P0); ametralladora, superescopeta y rayo REQUIRED (P-05, prioridad P3). | GDD sección 6 + T-23 |
+| T-08 | Ítems REQUIRED: salud, armadura, Quad Damage, invulnerabilidad, berserk, regeneración, haste, megahealth. Cifras pendientes en D-10/D-11. | GDD sección 8 + T-23 |
 | T-09 | Los humanos empiezan con un arma básica. Las demás se recogen del mapa. | GDD 6.2 |
 | T-10 | Al cambiar de mapa no se conservan las armas. Salud, armas e ítems se reinician según el modo. | GDD 10.4 y sección 25 |
 | T-11 | Los monstruos pueden recoger todos los potenciadores. | GDD sección 25 |
-| T-12 | En la demo, una desconexión no pausa la partida ni crea un bot. Se continúa y se marca. | GDD 11.4 |
-| T-13 | Ranked no es requisito de la demo de 8 semanas. | GDD 12 y 22 |
-| T-14 | Si hay retraso, se recorta contenido visual antes que las pruebas de red. | GDD sección 22 |
+| T-12 | Una desconexión no pausa la partida: se continúa y se marca. Bots de desconexión son REQUIRED (P-02) con prioridad posterior. | GDD 11.4 + T-23 |
+| T-13 | Ranked es REQUIRED (E11 / R-01…R-04). Prioridad P4 por dependencias de backend y núcleo jugable; no está excluido del producto. | GDD 12 + T-23 |
+| T-14 | Si hay retraso, se retrasa pulido visual antes que autoridad de red o combate. El alcance del checklist no se borra. | GDD sección 22 + T-23 |
 | T-15 | Código en inglés. ScriptableObjects para configuración. Estado de partida en la autoridad. | GDD apéndice A y 14.3 |
 | T-16 | Input System nuevo, no el Input Manager clásico. | `activeInputHandler: 1` y paquete 1.20.0 |
-| T-17 | M01 The Slaughterhouse es el mapa de demo. M03 y M04 son posteriores. | GDD 10.2 |
-| T-18 | El daño no se duplica por una misma confirmación. La muerte se registra una vez. Las asistencias quedan para después. | GDD 5.3 |
+| T-17 | Mapas REQUIRED: M01 → M02 → M03 → M04. Orden de construcción por dependencias, no exclusión. | GDD 10.2 + T-23 |
+| T-18 | El daño no se duplica por una misma confirmación. La muerte se registra una vez. Asistencias REQUIRED (P-06). | GDD 5.3 + T-23 |
 | T-19 | Los efectos cosméticos no deciden daño ni resultado. | GDD 9.2 |
 | T-20 | Assets originales, con licencia registrada o dominio público verificado. | GDD 2 |
+| T-26 | ProBuilder `6.1.4` es la herramienta de construcción de mapas. D-23 cerrada. No hay sample URP en esa versión: el shader de bloque es `ProBuilder6/Standard Vertex Color`, dentro del paquete. La subida automática de la rampa de M01 falló; David la recorrió a mano y esa pieza se conserva. M01 no está validado. | David, 9 de noviembre de 2026. `Packages/manifest.json`, `Documentation/test-results/m01-shell-playmode.xml` |
+| T-27 | Las escenas de mapa pedidas el 9 de noviembre de 2026 son `M01_TheSlaughterhouse`, `M02_CastleOfTheDamned`, `M03_RuinsOfTheForgotten` y `M04_TheLongestVoid`. Los nombres escritos del GDD para M02–M04 siguen siendo Iron Cathedral, The Pit y Blood Foundry. Esta instrucción no edita el GDD. | David, 9 de noviembre de 2026. `Documentation/MAPS.md` |
 
 ## Pendientes — necesitan aprobación
 
 | ID | Pregunta | Por qué no se puede cerrar sola |
 |---|---|---|
 | D-03 | Política de lag compensation para hitscan. | El GDD la condiciona a que la arquitectura la soporte. |
-| D-04 | Modo de la demo: Versus Campaign (cambio de roles) o Versus Continuous. | Sección 3.2 marca los dos como alta prioridad. Sección 25 escribe «se intercambian roles». Sección 22 no entrega el intercambio en una semana concreta. |
-| D-05 | Tamaño exigido: 2v2 de prototipo o 4v4 obligatorio. | 3.3 y 22 dicen 2v2 primero y 4v4 condicionado. La sección 25 escribe «4v4». |
-| D-06 | ¿El dash entra en la demo? | 4.1 lo deja opcional, con cooldown, y no es un poder. No hay respuesta en la sección 25. |
+| D-04 | ¿Qué modo versus se implementa primero: Campaign (cambio de roles) o Continuous? Ambos son REQUIRED. | Sección 3.2 marca los dos como alta prioridad. Sección 25 escribe «se intercambian roles». |
+| D-05 | Orden de capacidad: ¿validar 2v2 antes que 4v4? Ambos son REQUIRED. | 3.3/22 vs sección 25 «4v4». Propuesta técnica: 2v2 primero por dependencias de red. |
+| D-06 | ¿El dash entra en el núcleo jugable? | 4.1 lo deja opcional, con cooldown, y no es un poder. |
 | D-07 | Fórmula de armadura: porcentaje, tope, reducción por golpe. | 8 dice «absorbe parte del daño» y no da números. |
 | D-08 | Segundos de respawn y de protección anti spawn-kill. | 3.3 dice temporizador corto y protección mínima. Sin cifras. |
 | D-09 | uGUI o UI Toolkit para el HUD y los menús. | No está en el GDD. Propuesta de trabajo, no decisión de diseño: uGUI, porque `com.unity.ugui` 2.5.0 ya está. Hace falta un sí. |
@@ -54,6 +58,7 @@ Una decisión «tomada» está escrita en el GDD sin contradicción interna, o e
 | D-20 | Ragdoll simple o solo animación de muerte en la demo. | 9.1 acepta cualquiera de los dos. |
 | D-21 | Renombrar producto `grinder` / compañía `DefaultCompany` a MEATGRINDER. | Hecho de proyecto, ausente del GDD. |
 | D-22 | Quitar del flujo de trabajo, sin desinstalar todavía, los paquetes de plantilla que el GDD no usa. | Navigation, Visual Scripting, Timeline y Collab Proxy están instalados. Esta fase no los toca. |
+| D-24 | ¿Comprar Luna v2 (UI Toolkit) para menús, y dejar el HUD de combate en uGUI? | Luna no es uGUI. Requiere compra (Asset Store, asiento, EULA estándar). El HUD actual es uGUI (`CombatHud`). D-09 sigue abierta. No se compra ni se instala sin un sí. |
 
 ## Verificación de Fusion — 3 de noviembre de 2026
 

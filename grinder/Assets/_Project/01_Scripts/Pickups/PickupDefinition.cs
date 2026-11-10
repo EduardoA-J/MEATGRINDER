@@ -39,5 +39,23 @@ namespace Meatgrinder.Pickups
         public float EffectValue => effectValue;
         public WeaponDefinition Weapon => weapon;
         public int AmmoAmount => ammoAmount;
+
+        internal void Configure(
+            PickupType pickupType,
+            float pickupAmount,
+            PowerUpType effectType,
+            float effectDuration,
+            float value,
+            WeaponDefinition grantedWeapon,
+            int ammo)
+        {
+            type = pickupType;
+            amount = pickupAmount;
+            powerUpType = effectType;
+            duration = effectDuration;
+            effectValue = value;
+            weapon = grantedWeapon;
+            ammoAmount = ammo;
+        }
     }
 }

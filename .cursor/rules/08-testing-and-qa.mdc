@@ -6,18 +6,17 @@ alwaysApply: false
 
 # Pruebas
 
-Definition of Done del GDD, sección 23:
+Definition of Done del GDD, sección 23, aplicada al **juego completo**:
 
-- El comportamiento ocurre en la escena prevista.
-- Los datos configurables están nombrados y los pendientes están marcados.
-- Si hay red, hay prueba con dos clientes y la autoridad es quien confirma el estado.
-- UI, audio y VFX no duplican el evento.
-- El fallo previsible tiene respuesta (desconexión, timeout de carga, pickup repetido).
-- No quedan errores críticos conocidos sin registrar.
-- Existe una prueba repetible o un paso de checklist.
+- El comportamiento ocurre en la escena/flujo previstos (producto, no solo un stub).
+- Datos configurables nombrados; pendientes marcados `PENDIENTE`.
+- Si hay red: dos clientes y autoridad confirma el estado.
+- UI, audio y VFX no duplican el evento competitivo.
+- Fallo previsible con respuesta.
+- Sin errores críticos sin registrar.
+- Prueba repetible o checklist.
+- No marques VALIDATED por existir una clase, un ScriptableObject o un test aislado sin integración.
 
-No cierres una tarea de movimiento con «se siente bien». Compara el mismo recorrido. No cierres una tarea de daño sin un caso de un solo registro y un caso de muerte única.
+No cierres movimiento con «se siente bien». No cierres daño sin un solo registro y muerte única. No cierres pickups/power-ups sin efecto medible en el consumidor. No cierres melee sin `DamageType.Melee` vía resolver. No inventes resultados de pruebas no ejecutadas.
 
-Herramientas: Unity Test Framework 1.7.0 ya está en el manifiesto. Profiler y las herramientas de Fusion se usan en la fase 10, cuando el juego exista. No inventes resultados de una prueba que no se ejecutó.
-
-Una build de demo tiene que arrancar en Windows sin el Editor.
+Herramientas: Unity Test Framework. Profiler/Fusion tools en fase QA. Build Windows debe arrancar sin Editor.

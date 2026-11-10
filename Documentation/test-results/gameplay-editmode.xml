@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0,0801253">
+  <test-suite type="TestSuite" id="1000" name="grinder" fullname="grinder" runstate="Runnable" testcasecount="43" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.080125" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1049" name="Meatgrinder.Tests.EditMode.dll" fullname="F:/MAPAUNI/MEATGRINDER/grinder/Library/ScriptAssemblies/Meatgrinder.Tests.EditMode.dll" runstate="Runnable" testcasecount="43" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.069950" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="24032" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1050" name="Meatgrinder" fullname="Meatgrinder" runstate="Runnable" testcasecount="43" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.068573" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1051" name="Tests" fullname="Meatgrinder.Tests" runstate="Runnable" testcasecount="43" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.067810" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1019" name="GameplayEditModeTests" fullname="Meatgrinder.Tests.GameplayEditModeTests" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.065765" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1022" name="BerserkScalesMeleeAndLeavesHitscanAlone" fullname="Meatgrinder.Tests.GameplayEditModeTests.BerserkScalesMeleeAndLeavesHitscanAlone" methodname="BerserkScalesMeleeAndLeavesHitscanAlone" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1144668868" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.031038" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[PowerUp] Berserk activado: 2x daño melee durante 30s
+]]></output>
+            </test-case>
+            <test-case id="1020" name="GrantedRocketKeepsAmmoSeparateFromTheShotgun" fullname="Meatgrinder.Tests.GameplayEditModeTests.GrantedRocketKeepsAmmoSeparateFromTheShotgun" methodname="GrantedRocketKeepsAmmoSeparateFromTheShotgun" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="2096944474" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.003181" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1026" name="HasteRaisesGroundSpeed" fullname="Meatgrinder.Tests.GameplayEditModeTests.HasteRaisesGroundSpeed" methodname="HasteRaisesGroundSpeed" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="860037452" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.005485" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="PickupHealsAndGrantsTheRocket" fullname="Meatgrinder.Tests.GameplayEditModeTests.PickupHealsAndGrantsTheRocket" methodname="PickupHealsAndGrantsTheRocket" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1777029789" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.002118" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1021" name="QuadDamageDoublesTheConfirmedHit" fullname="Meatgrinder.Tests.GameplayEditModeTests.QuadDamageDoublesTheConfirmedHit" methodname="QuadDamageDoublesTheConfirmedHit" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1489795492" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.001273" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[PowerUp] Quad Damage activado: 2x durante 30s
+]]></output>
+            </test-case>
+            <test-case id="1024" name="RespawnRestoresHealthAfterThePendingDelay" fullname="Meatgrinder.Tests.GameplayEditModeTests.RespawnRestoresHealthAfterThePendingDelay" methodname="RespawnRestoresHealthAfterThePendingDelay" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="34047154" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.002025" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="SpawnProtectionExpires" fullname="Meatgrinder.Tests.GameplayEditModeTests.SpawnProtectionExpires" methodname="SpawnProtectionExpires" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1398258398" result="Passed" start-time="2026-11-10 00:20:38Z" end-time="2026-11-10 00:20:38Z" duration="0.000717" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/pc/AppData/LocalLow/DefaultCompany/grinder\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

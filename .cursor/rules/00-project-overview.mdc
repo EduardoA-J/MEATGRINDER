@@ -1,11 +1,6 @@
----
-description: Visión, alcance y fuente de verdad de MEATGRINDER. Léela antes de cualquier cambio.
-alwaysApply: true
----
-
 # MEATGRINDER
 
-Arena FPS asimétrico para Windows. Humanos con armas contra monstruos controlados por jugadores. Campaña = mapas de combate unidos por puertas. Detalle y trazabilidad: `Documentation/PROJECT_CONTEXT.md` y `Documentation/GDD_REQUIREMENTS.md`.
+Arena FPS asimétrico multijugador completo para Windows. Humanos con armas contra monstruos controlados por jugadores. Campaña = mapas de combate unidos por puertas. Alcance oficial: `Documentation/GDD_SCOPE_ADDENDUM.md`. Detalle: `Documentation/PROJECT_CONTEXT.md` y `Documentation/GDD_REQUIREMENTS.md`.
 
 ## Experiencia
 
@@ -13,25 +8,25 @@ El jugador se desplaza rápido, conserva control en el aire y usa la geometría.
 
 ## Referencias permitidas
 
-Quake (movimiento, proyectiles, control de recursos, verticalidad). DOOM clásico (arsenal, pasillos, puertas, munición, armadura). ULTRAKILL (agresividad y feedback; no copiar su sistema de estilo en la demo). Left 4 Dead Versus (dos equipos, monstruos jugables, intercambio de roles).
+Quake (movimiento, proyectiles, control de recursos, verticalidad). DOOM clásico (arsenal, pasillos, puertas, munición, armadura). ULTRAKILL (agresividad, feedback y medidor de estilo propio del proyecto). Left 4 Dead Versus (dos equipos, monstruos jugables, intercambio de roles).
 
 Los assets tienen que ser originales, con licencia registrada o de dominio público verificado.
 
-## Dentro del alcance de la demo de 8 semanas
+## Alcance del producto
 
-Versus jugable, dos armas (escopeta y lanzacohetes), monstruos seleccionables, salud, armadura, Quad Damage (efecto sin especificar), muerte, respawn, marcador, menú de sesión, gore básico y prueba entre máquinas. El prototipo de red recomendado por el GDD es 2 contra 2. 4 contra 4 y el segundo mapa son objetivos condicionados en la sección 22 y, a la vez, la sección 25 escribe «4v4». Esa contradicción está abierta en `Documentation/DECISIONS.md`.
+**REQUIRED:** todo lo documentado en el GDD/TDD y documentos derivados: versus, ranked, arsenal completo (escopeta, lanzacohetes, ametralladora, superescopeta, rayo), melee, monstruos jugables, salud, armadura, todos los power-ups documentados, M01–M04, menús, Boot, Host Mode, HUD, audio, VFX, gore, marcador, modos, bots de desconexión si están documentados, estilo, etc.
 
-## Fuera de alcance hasta nueva decisión
+La prioridad (P0–P4) ordena el trabajo. No elimina funcionalidades.
 
-Ranked, MMR, matchmaking, persistencia, backend, estadísticas, recompensas, anti-cheat avanzado, bots, extracción, puzzles, habilidades de héroe, ametralladora, superescopeta, rayo, invulnerabilidad, berserk, regeneración, barriles, desmembramiento simulado y el sistema de estilo de ULTRAKILL.
+Greybox es herramienta de prueba, no el producto.
 
 ## Hechos del repositorio
 
-- Proyecto Unity: `grinder/`. Producto actual: `grinder`. Versión de editor declarada: `6000.5.6f1`.
-- URP 17.5.0, espacio de color lineal, calidad activa en datos: PC.
-- Photon Fusion 2.1.4 Stable, build 2500, está en `grinder/Assets/Photon` y compiló en este editor (T-22). La topología cerrada es Host Mode (T-21). El App ID está en el asset local, fuera de git. Esa compilación no certifica el editor ante Photon.
-- No hay scripts de juego. La compilación verificada es la del SDK y la plantilla, no la de una partida.
+- Proyecto Unity: `grinder/`. Versión de editor: `6000.5.6f1`.
+- URP 17.5.0, color lineal, calidad PC.
+- Photon Fusion 2.1.4 Stable, Host Mode (T-21). App ID fuera de git.
+- Hay scripts de juego locales (movimiento, escopeta, combate). El multijugador de partida aún no está. Ver `IMPLEMENTATION_STATUS_AUDIT.md`.
 
 ## Regla de cambio
 
-Antes de editar código o escenas, localiza la tarea en `Documentation/MASTER_CHECKLIST.md`. Si no existe, no inventes la funcionalidad: pide una tarea. Una función multijugador no está terminada por funcionar en local.
+Antes de editar código o escenas, localiza la tarea en `Documentation/MASTER_CHECKLIST.md`. Si no existe, pide una tarea. Una función multijugador no está terminada por funcionar en local.

@@ -3,7 +3,8 @@
     "rootNamespace": "Meatgrinder.Pickups",
     "references": [
         "Meatgrinder.Combat",
-        "Meatgrinder.Weapons"
+        "Meatgrinder.Weapons",
+        "Meatgrinder.Movement"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

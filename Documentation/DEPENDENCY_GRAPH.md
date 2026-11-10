@@ -1,120 +1,99 @@
-# Grafo de dependencias
+# Grafo de dependencias — juego completo
 
-Fecha: 5 de noviembre de 2026. El grafo de tareas de abajo sigue siendo el del 2 de noviembre. La sección de ensamblados es el código local actual.
-Las flechas significan «hace falta antes». El detalle por tarea está en [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md).
+Fecha: 9 de noviembre de 2026.
+Detalle por tarea: [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md).
+
+Las flechas significan «hace falta antes». Ranked y ampliaciones están **en el grafo** con prioridad baja; no están fuera del producto.
 
 ## Cadena de sistemas
 
 ```mermaid
 flowchart TD
-  audit[F0 auditoria y editor 6.5.6]
-  fusion[Host Mode T-21. SDK 2.1.4 compilado. App ID local]
-  input[Input System]
-  arena[Arena gris]
-  move[Movimiento FPS]
-  cam[Camara]
-  combat[Combate y armas]
-  net[Sesion Fusion]
-  sync[Movimiento y dano en red]
+  audit[F0 editor y estructura]
+  fusionSdk[Fusion SDK Host Mode]
+  input[Input]
+  greybox[Greybox laboratorio]
+  move[Movimiento]
+  combat[Combate escopeta cohete melee]
+  pickups[Pickups y powerups]
+  boot[Boot y menus]
+  netPlayer[NetworkPlayer gameplay]
+  sync[Sync movimiento dano pickups]
   monsters[Monstruos]
-  map1[M01 y puertas]
-  items[Pickups]
-  ui[HUD y menus]
-  mode[Modo versus]
-  qa[QA build y 60 FPS]
+  m01[M01]
+  modes[Modos versus]
+  mapsRest[M02 M03 M04]
+  ranked[Ranked]
+  qa[QA y build]
 
   audit --> input
-  audit --> arena
-  audit --> fusion
-  input --> cam
-  cam --> move
-  arena --> move
+  audit --> greybox
+  audit --> fusionSdk
+  input --> move
+  greybox --> move
   move --> combat
-  fusion --> net
+  combat --> pickups
+  pickups --> combat
+  fusionSdk --> boot
+  boot --> netPlayer
   move --> sync
-  net --> sync
   combat --> sync
+  pickups --> sync
+  netPlayer --> sync
   sync --> monsters
-  arena --> map1
-  map1 --> items
-  sync --> items
-  sync --> ui
-  map1 --> mode
-  items --> mode
-  monsters --> mode
-  mode --> qa
-  ui --> qa
+  greybox --> m01
+  sync --> m01
+  m01 --> modes
+  monsters --> modes
+  modes --> mapsRest
+  modes --> qa
+  mapsRest --> qa
+  qa --> ranked
 ```
 
-Esa cadena es la que pide el encargo, aterrizada en el GDD: controlador, cámara, input, movimiento, combate, red, modo versus. Los monstruos y los ítems entran cuando el daño ya es autoritativo. El arte final no está en la cadena crítica.
+## Camino crítico P0 → P1
 
-## Camino crítico del MVP
+1. Asmdefs limpios (`IDamageModifiers` / sin ciclo Combat↔Pickups).
+2. F2-08 lanzacohetes cableado al jugador.
+3. F6-01/02/03 pickups con efecto real; Quad → DamageResolver.
+4. F2-13 melee; F2-14 Berserk.
+5. F2-04 respawn local.
+6. F0-08 Boot → F7-01/02 menú → F3-01 bootstrap producto.
+7. F3-03 NetworkPlayer → F3-04/06/07 sync → F3-12 dos clientes gameplay.
+8. F5-02 M01 blockout en paralelo seguro (escena nueva).
 
-1. F0-02 y F0-03 están hechas: Unity 6000.5.6f1 abrió `grinder/` y la plantilla compiló.
-2. F0-05 y F0-06 están hechas: Host Mode y Fusion 2.1.4 Stable, build 2500, compilado. El App ID está en el asset local.
-3. El movimiento local puede prepararse en paralelo.
-4. F0-07 estructura y F5-01 arena gris.
-5. F1-01 a F1-10 movimiento comprobable.
-6. F2-01, F2-02, F2-06, F2-07, F2-08 daño y las dos armas en local.
-7. F0-08 escena Boot antes de F3-01. El App ID ya está en el asset local.
-8. F3-02 está hecha con la sonda de `NetworkTest`. Siguen F3-01 (Boot), F3-03 (arena), F3-04, F3-07 y F3-10.
-9. F3-12 dos clientes.
-10. F7-04 y F7-05 HUD mínimo.
-11. F3-14 una pasada de latencia, aunque el umbral siga sin número.
-
-El SDK compiló, el App ID está en el asset local y la sonda Host/Client del 3 de noviembre de 2026 conectó dos procesos. El movimiento local ya no está bloqueado por la red. F3-01 sigue esperando la escena Boot.
-
-## Qué puede ir en paralelo
-
-| Mientras tanto | Se puede adelantar | No se puede adelantar |
-|---|---|---|
-| El App ID ya está en el asset local | F0-04, F0-11 y el movimiento local después de F0-07 | Commitear `PhotonAppSettings.asset`, importar la demo Shared, cambiar a Shared Mode |
-| F1 movimiento local | F2-01 y F2-02, que no necesitan cámara; fichas de diseño D-07, D-10, D-12 | F3-04, porque necesita el movimiento ya probado |
-| F2 armas en local | Blockout F5-01; modelo humano F8-02 si la licencia ya está | Proyectil en red F3-08 |
-| F3-12 dos clientes locales | UI de menú F7-01, si D-09 está cerrada | Matriz de LAN F3-13, 4v4, M02 |
-| M01 en blockout | Materiales F8-01 | Intercambio de roles F9-04, hasta F9-01 |
-
-F8, el kit visual y la música, quedan fuera del camino crítico por la regla de corte del GDD: si el calendario aprieta, se recorta arte antes que las pruebas de red.
-
-## Bloqueos que no son de código
-
-Estas tareas están `BLOCKED` porque falta una decisión o una herramienta, no porque falte una tarea previa de implementación:
-
-- F0-02 y F0-03 quedaron cerradas el 3 de noviembre de 2026.
-- F0-05 y F0-06 quedaron cerradas el 3 de noviembre de 2026. El App ID está en el asset local. F3-01 espera F0-08.
-- F0-10: PC de referencia.
-- F1-11: dash.
-- F2-03 y F6-02: fórmula de armadura.
-- F3-02 quedó cerrada el 3 de noviembre de 2026 con la sonda de `NetworkTest`. F3-01 sigue esperando la escena Boot. F3-03 espera la arena gris.
-- F3-09: lag compensation.
-- F4-02 y F4-06: fichas de monstruo y armas de monstruo.
-- F6-03, F6-04 y F6-06: Quad Damage, temporizadores y acumulación.
-- F9-01: modo de la demo.
-
-## Ensamblados locales — 5 de noviembre de 2026
-
-El movimiento no referencia armas. Las armas referencian combate y no referencian la interfaz. La presentación referencia combate, armas y jugadores, y lee eventos. Los jugadores referencian movimiento, combate, armas y el Input System.
+## Ensamblados (objetivo tras fix local)
 
 ```mermaid
 flowchart LR
   movement[Meatgrinder.Movement]
   combat[Meatgrinder.Combat]
   weapons[Meatgrinder.Weapons]
+  pickups[Meatgrinder.Pickups]
   players[Meatgrinder.Players]
   presentation[Meatgrinder.Presentation]
   movement --> players
   combat --> weapons
   combat --> players
   weapons --> players
+  pickups --> combat
+  pickups --> players
   combat --> presentation
   weapons --> presentation
   players --> presentation
+  pickups --> presentation
 ```
 
-Eso cubre el Greybox local: carrera, aire, salto, escopeta, salud y HUD. No hay `NetworkObject` en `LocalPlayer`. La sincronización de movimiento y daño sigue sin arista hecha. El lanzacohetes existe en código y en una prueba de PlayMode, y no está en la escena.
+`Combat` no debe referenciar `Pickups`. Los modificadores de daño se inyectan vía `IDamageModifiers`.
 
-## Fuera del grafo de la demo
+## Paralelo seguro vs coordinación
 
-E11 Ranked cuelga de F10-08 y de una aprobación nueva. No tiene arista hacia el MVP.
-E12 son propuestas. No bloquean ninguna tarea P0.
-M02 (F5-09) y 4v4 (F9-06) cuelgan de la matriz de red y del rendimiento. Si se retrasan, salen de la demo sin romper M01.
+| Paralelo | Coordinar |
+|---|---|
+| Fichas monstruo (docs), audio placeholder, UI menú sin combate, blockout M01 en escena nueva | DamageResolver, PowerUpManager, LocalPlayer prefab, asmdefs, Fusion spawn |
+
+## Ranked y ampliaciones
+
+E11 (R-01…R-04) cuelga del núcleo jugable + autoridad + decisión de backend. Sigue REQUIRED (P4).
+E12 (P-01…P-07) REQUIRED con P3–P4. No bloquean P0.
+M02–M04 y 4v4: REQUIRED; orden tras M01 y matriz de red.

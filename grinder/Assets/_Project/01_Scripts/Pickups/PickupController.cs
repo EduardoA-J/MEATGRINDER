@@ -1,4 +1,5 @@
 using Meatgrinder.Combat;
+using Meatgrinder.Weapons;
 using UnityEngine;
 
 namespace Meatgrinder.Pickups
@@ -63,20 +64,7 @@ namespace Meatgrinder.Pickups
                 return;
             }
 
-            // Verificar si puede recogerlo
-            if (CanPickup(health) == false)
-            {
-                return;
-            }
-
-            // Aplicar efecto
-            ApplyPickup(health);
-
-            // Emitir evento
-            PickedUp?.Invoke(definition, other.gameObject);
-
-            // Ocultar y comenzar respawn
-            Hide();
+            Collect(health);
         }
 
         bool CanPickup(HealthComponent health)
@@ -103,6 +91,24 @@ namespace Meatgrinder.Pickups
             }
         }
 
+        internal bool Collect(HealthComponent health)
+        {
+            if (available == false || definition == null || health == null || health.IsAlive == false)
+            {
+                return false;
+            }
+
+            if (CanPickup(health) == false)
+            {
+                return false;
+            }
+
+            ApplyPickup(health);
+            PickedUp?.Invoke(definition, health.gameObject);
+            Hide();
+            return true;
+        }
+
         void ApplyPickup(HealthComponent health)
         {
             if (definition == null)
@@ -121,13 +127,21 @@ namespace Meatgrinder.Pickups
                     break;
 
                 case PickupType.PowerUp:
-                    // Los power-ups se aplicarán a través del PowerUpManager
-                    // Por ahora solo registramos que se recogió
+                    PowerUpManager powers = health.GetComponent<PowerUpManager>();
+                    if (powers != null)
+                    {
+                        powers.Grant(definition, health);
+                    }
+
                     break;
 
                 case PickupType.Weapon:
-                    // Las armas se aplicarán a través del WeaponController
-                    // Por ahora solo registramos que se recogió
+                    WeaponController weapons = health.GetComponent<WeaponController>();
+                    if (weapons != null && definition.Weapon != null)
+                    {
+                        weapons.TryGrant(definition.Weapon, definition.AmmoAmount);
+                    }
+
                     break;
             }
         }

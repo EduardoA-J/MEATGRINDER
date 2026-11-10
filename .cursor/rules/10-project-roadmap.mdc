@@ -1,22 +1,28 @@
----
-description: Orden del MVP, de la demo de 8 semanas y de lo que queda fuera.
-alwaysApply: true
----
+# Roadmap — juego completo
 
-# Roadmap
+El GDD hablaba de 8 semanas y de un MVP. Eso ya no excluye funcionalidades. El orden de entrega sigue dependencias técnicas; el producto objetivo es el juego completo (`GDD_SCOPE_ADDENDUM.md`, `FULL_GAME_DEVELOPMENT_PLAN.md`).
 
-El plan del GDD son 8 semanas desde un inicio que no tiene fecha. A 2 de noviembre de 2026 el código de juego no ha empezado. El calendario está en riesgo; el orden de corte no: si el movimiento o la red se retrasan, se recorta arte antes que las pruebas de red.
+## Principio
 
-## MVP (primera prueba jugable)
+Priorizar sistemas definitivos e integrados. No construir demos descartables. Greybox no es el destino.
 
-Movimiento con los criterios de `03-gameplay-and-combat`. Arena gris. Cámara e Input System. Escopeta y lanzacohetes en local y luego en red. Daño y salud. Dos clientes Fusion. Muerte y respawn. HUD mínimo (salud, munición, conexión). Una pasada de estabilidad. Corresponde a las semanas 1–3 del GDD más un HUD mínimo, y a las tareas F1, F2 y F3 del checklist. 4v4 no entra en el MVP.
+## Fases de entrega (prioridad, no exclusión)
 
-## Demo de 8 semanas, después del MVP
+### P0 — Núcleo jugable
+Integridad de ensamblados. Combate local completo (escopeta + lanzacohetes cableados). Daño, salud, armadura. Pickups y al menos Quad Damage con efecto real. Melee (base para Berserk). Respawn local.
 
-Equipos, dos monstruos, ataque melee, M01, puertas, salud, armadura, Quad Damage cuando su efecto esté definido, marcador, resultados, gore y audio básicos, build Windows. 4v4 y M02 solo si el núcleo ya cumple las pruebas.
+### P1 — Primer ciclo de partida
+Boot, menú crear/unir, HUD cableado, Host Mode con jugador real (no solo sonda), sync de movimiento/salud/arma/daño, muerte/respawn en red.
 
-## Después de la demo
+### P2 — Sistemas del juego
+Monstruos jugables, asimetría, M01, puertas, layout de ítems, power-ups restantes, modos versus, marcador.
 
-Ranked y todo el epic E11. Mapas M03 y M04. Armas futuras. Más monstruos. Desmembramiento. Sistema de estilo. Servidor dedicado de producción, si la evaluación de costes y latencia lo pide.
+### P3 — Contenido y pulido
+M02–M04, arsenal ampliado, audio/VFX/animaciones, UI completa, gore, estilo.
 
-No adelantes un epic posterior porque la tarea actual se quedó corta. Déjala en REVIEW y registra el bloqueo.
+### P4 — Competitivo y ampliaciones
+Ranked (E11), matchmaking, temporadas, bots de desconexión, barriles, desmembramiento, 4v4 validado, optimización.
+
+## Corte bajo presión
+
+Si el calendario aprieta, se retrasa pulido visual antes que autoridad de red, combate o persistencia competitiva. No se borra alcance del checklist: se reordena prioridad.

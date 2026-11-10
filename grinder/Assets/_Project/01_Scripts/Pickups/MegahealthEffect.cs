@@ -26,7 +26,7 @@ namespace Meatgrinder.Pickups
             }
 
             normalMax = health.Max;
-            health.AddHealth(effectValue); // Añade salud adicional
+            health.AddHealth(effectValue, true);
             Debug.Log($"[PowerUp] Megahealth activado: +{effectValue} HP durante {duration}s");
         }
 
@@ -43,14 +43,9 @@ namespace Meatgrinder.Pickups
                 return;
             }
 
-            // Degradar salud por encima del límite normal
-            float excess = health.Current - normalMax;
-            if (excess > 0f && degradationPerSecond > 0f)
+            if (degradationPerSecond > 0f)
             {
-                // Reducir directamente sin pasar por ReceiveConfirmed
-                float reduction = Mathf.Min(excess, degradationPerSecond * deltaTime);
-                // Nota: necesitaríamos un método interno en HealthComponent para esto
-                // Por ahora solo reportamos
+                health.DecayToward(normalMax, degradationPerSecond * deltaTime);
             }
         }
     }

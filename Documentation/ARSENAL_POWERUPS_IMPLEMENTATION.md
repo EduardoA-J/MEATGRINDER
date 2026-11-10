@@ -1,26 +1,25 @@
 # Implementación del Arsenal y Power-ups — MEATGRINDER
 
+> **Corrección de alcance (9 nov 2026):** Documento histórico. Scaffolding ≠ INTEGRATED/VALIDATED. Ver `IMPLEMENTATION_STATUS_AUDIT.md`. Greybox no es el destino del producto. Arsenal ampliado (P-05), melee (F2-13) y Berserk (F2-14) son REQUIRED.
+
 Fecha: 5 de noviembre de 2026.
-Estado: IMPLEMENTACIÓN CORE COMPLETA - REQUIERE ASSETS VISUALES Y PRUEBAS
+Estado real contrastado 9 nov: PARTIALLY_IMPLEMENTED en arsenal/pickups; sin loadout de cohete; sin activación efectiva de power-ups en partida.
 
-## Resumen ejecutivo
+## Resumen ejecutivo (histórico; no usar como DONE)
 
-**✅ COMPLETADO:**
-1. **Lanzacohetes funcional** - proyectiles físicos, explosión con daño de área, viewmodel
-2. **Sistema de armadura** - absorción configurable (D-07 propuesta: 50%), integrado con DamageResolver
-3. **Sistema de pickups completo** - base reutilizable para salud, armadura, armas y power-ups
-4. **7 potenciadores implementados** - Quad Damage, Megahealth, Haste, Invulnerability, Berserk, Regeneration
-5. **PowerUpManager** - gestión de efectos temporales, modificadores centralizados
-6. **HUD ampliado** - armadura, power-ups activos con temporizadores
-7. **Cambio de armas** - escopeta y lanzacohetes, munición independiente, transiciones
+**Código presente (scaffolding):**
+1. Lanzacohetes (código/asset) — no cableado al jugador
+2. Armadura parcial (D-07 abierta)
+3. Pickups base
+4. Clases de power-ups + PowerUpManager
+5. HUD con campos de power-ups (referencia a menudo nula)
+6. WeaponController multi-slot (prefab con 1 arma)
 
-**⚠️ PENDIENTE:**
-- Assets visuales (modelos, VFX, audio)
-- Zonas de prueba en Greybox
-- ScriptableObject assets de pickups y power-ups
-- Pruebas EditMode y PlayMode
-- Integración con MovementSimulator para Haste
-- Método de degradación de Megahealth en HealthComponent
+**Pendiente real:**
+- Integración loadout / spawner / escena
+- Wiring PowerUpManager → DamageResolver / Movement / Melee
+- Assets, pruebas, red
+- Melee + Berserk
 
 ## 1. Lanzacohetes
 

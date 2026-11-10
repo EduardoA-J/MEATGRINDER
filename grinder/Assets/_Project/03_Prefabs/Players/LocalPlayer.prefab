@@ -249,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Meatgrinder.Weapons::Meatgrinder.Weapons.WeaponController
   loadout:
   - {fileID: 11400000, guid: 8ae29fe704be533408ef8468e12fb093, type: 2}
+  - {fileID: 11400000, guid: a7b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7, type: 2}
   activeIndex: 0
 --- !u!114 &3332020308699896869
 MonoBehaviour:

@@ -5,7 +5,7 @@ alwaysApply: false
 
 # Diseño
 
-GDD: `MEATGRINDER_GDD_TDD.docx`, secciones 1–12. Requisitos: `Documentation/GDD_REQUIREMENTS.md`.
+GDD: `MEATGRINDER_GDD_TDD.docx`, secciones 1–12. Alcance: `Documentation/GDD_SCOPE_ADDENDUM.md`. Requisitos: `Documentation/GDD_REQUIREMENTS.md`.
 
 ## Pilares
 
@@ -18,33 +18,27 @@ GDD: `MEATGRINDER_GDD_TDD.docx`, secciones 1–12. Requisitos: `Documentation/GD
 
 ## Bucle
 
-Menú → partida rápida o sala privada → sesión y equipos → mapa → combate y control de recursos → muerte y respawn → puerta → siguiente mapa → puntuación. En la variante de campaña escrita en la sección 25, los equipos intercambian roles y se comparan.
+Menú → partida rápida, sala privada o ranked → sesión y equipos → mapa → combate y control de recursos → muerte y respawn → puerta → siguiente mapa → puntuación / intercambio de roles cuando el modo lo pida.
 
-## Modos
+## Modos (todos REQUIRED)
 
-- Versus Campaign: misma ruta, intercambio de roles. Prioridad alta en el GDD.
-- Versus Continuous: combate por mapa y transición automática. Prioridad alta para la demo.
-- Private Match: código o invitación, mapa y reglas básicas. Prioridad media.
-- Ranked Versus: visión futura. No es requisito de la demo.
+- Versus Campaign: misma ruta, intercambio de roles.
+- Versus Continuous: combate por mapa y transición automática.
+- Private Match: código o invitación, mapa y reglas básicas.
+- Ranked Versus: REQUIRED (prioridad según backend y reglas; R-01…R-04).
 
-## Mapas
+## Mapas (todos REQUIRED)
 
-Arenas legibles, pasillos, al menos dos rutas y verticalidad si la geometría lo permite. Las puertas avanzan el recorrido. No piden llaves ni puzzles. El spawn no puede recibir disparos directos. Una ruta no puede quedar bloqueada para siempre. Las caídas mortales solo existen con el borde legible.
+Arenas legibles, pasillos, al menos dos rutas y verticalidad si la geometría lo permite. Puertas avanzan el recorrido. Sin llaves ni puzzles. Spawn sin disparo directo. Orden de construcción: M01 The Slaughterhouse → M02 Iron Cathedral → M03 The Pit → M04 Blood Foundry.
 
-Demo: M01 The Slaughterhouse. M02 Iron Cathedral solo si hay tiempo. M03 The Pit y M04 Blood Foundry quedan después de la demo.
+## Ítems (todos REQUIRED)
 
-## Ítems
-
-Salud y armadura entran en la demo. Quad Damage está en el plan de la semana 5 y en el checklist del GDD, pero la sección 8 no define su efecto: no inventes el multiplicador. Invulnerabilidad, berserk y regeneración son futuras.
-
-La recogida la confirma la autoridad. Dos jugadores no pueden obtener el mismo objeto. La política de acumular, reiniciar o ignorar la duración está sin cerrar.
+Salud, armadura, Quad Damage, invulnerabilidad, berserk, regeneración y el resto documentado. Quad Damage y acumulación: D-10 y D-11 pendientes de cifras; no inventar silenciosamente. La recogida la confirma la autoridad.
 
 ## Monstruos
 
-Diferencias permitidas: modelo, hitbox, animación, velocidad, salud y ataque básico. El GDD nombra un arquetipo (Demonio: garras, menos salud, cuerpo pequeño, movilidad moderadamente superior) y el checklist pide demonio ligero y demonio pesado. Las estadísticas del pesado no existen: no las inventes.
+Diferencias: modelo, hitbox, animación, velocidad, salud y ataque básico. Demonio ligero y demonio pesado en checklist; estadísticas del pesado pendientes (D-12). Ataque básico sin munición. Pueden recoger potenciadores; armas de fuego: D-13.
 
-Los monstruos no usan munición para su ataque básico. La sección 6.2 también dice que pueden recoger armas durante la partida. La sección 25 dice que pueden recoger todos los potenciadores.
+## Decisiones abiertas del GDD
 
-## Decisiones escritas en la sección 25 que chocan con otras secciones
-
-Trátalas como propuestas del propio GDD, no como cerradas, hasta que David las confirme en `Documentation/DECISIONS.md`: intercambio de roles, victoria por progreso del recorrido, tamaño 4v4, armas que no se conservan al cambiar de mapa, temporizadores «sí, algunos», sesión de prueba en lugar de servidor dedicado.
+Trátalas como pendientes hasta `Documentation/DECISIONS.md`: D-04 modo, D-05 2v2/4v4 (ambos en alcance; orden por dependencias), D-07 armadura, D-08 respawn, D-10 Quad, D-11 acumulación, D-13 armas de monstruo.

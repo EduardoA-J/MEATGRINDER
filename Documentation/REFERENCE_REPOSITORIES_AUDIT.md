@@ -28,6 +28,10 @@ No hay archivo `LICENSE`. La API de GitHub ya había respondido 404 para la lice
 
 Viewmodel de primitivas, HUD uGUI, retícula, marcas de impacto con un pool de 16 y el vestido de Greybox. Todo es código y geometría de este repositorio. Materiales duplicados del `Greybox.mat` de URP que ya estaba en el proyecto. No hay modelos, texturas ni audio de los clones.
 
+## Actualización — 9 de noviembre de 2026
+
+Clonado `https://github.com/paul8483/doom` en `F:\MAPAUNI\references\doom` (shallow). Fuera de `grinder/`. No es submódulo. El motor de ese repo no tiene licencia de proyecto: no se copia código ni el WAD. Evaluación y plan: `TOOLS_AND_REFERENCES.md`.
+
 ## Hallazgo del 5 de noviembre de 2026
 
 La frase de arriba que dice que no se tocó `MovementSimulator` describe la pasada de presentación del 4 de noviembre. El 5 de noviembre el wish de aire dejó de ser la carrera y `AirControl` pasó a 0. El algoritmo sigue siendo propio. El repositorio de Source recorta el módulo cuando ya se llegó al máximo y eso impide el strafe. No se copió ese recorte ni ningún archivo. Salvation's Descent aportó la idea de bloquear el disparo mientras el arma entra. El tiempo vive en `WeaponDefinition.DrawDuration`. No se importó su animator ni Odin. El detalle está en `MOVEMENT_WEAPON_REFERENCE_ANALYSIS.md`.

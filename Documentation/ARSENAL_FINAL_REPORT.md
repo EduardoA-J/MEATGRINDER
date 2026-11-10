@@ -1,7 +1,9 @@
 # Informe Final: Arsenal Completo y Power-Ups — MEATGRINDER
 
+> **Corrección de alcance (9 nov 2026):** Este informe es histórico y **sobreestima** la integración. La verdad de estado está en `IMPLEMENTATION_STATUS_AUDIT.md` y `MASTER_CHECKLIST.md`. Lanzacohetes = PARTIALLY_IMPLEMENTED (no en loadout). Power-ups = PARTIALLY_IMPLEMENTED (sin wiring a consumidores). Melee = NOT_STARTED. No usar este documento para marcar tareas VALIDATED.
+
 Fecha: 5 de noviembre de 2026
-Estado: **CÓDIGO CORE IMPLEMENTADO - REQUIERE ASSETS Y VALIDACIÓN**
+Estado histórico (obsoleto como verdad de producto): código core parcial — requiere integración y validación
 
 ---
 

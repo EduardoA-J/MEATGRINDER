@@ -19,7 +19,8 @@ namespace Meatgrinder.Movement
             Vector3 forward,
             Vector3 right,
             float deltaTime,
-            bool collisionGrounded)
+            bool collisionGrounded,
+            float speedScale = 1f)
         {
             if (tuning == null || deltaTime <= 0f)
             {
@@ -57,13 +58,14 @@ namespace Meatgrinder.Movement
                 wishDirection.Normalize();
             }
 
+            float scale = speedScale > 0f ? speedScale : 1f;
             if (state.IsGrounded)
             {
-                TickGround(ref state, intent, tuning, wishDirection, deltaTime);
+                TickGround(ref state, intent, tuning, wishDirection, deltaTime, scale);
             }
             else
             {
-                TickAir(ref state, tuning, wishDirection, deltaTime);
+                TickAir(ref state, tuning, wishDirection, deltaTime, scale);
             }
 
             Sanitize(ref state.Velocity);
@@ -80,7 +82,8 @@ namespace Meatgrinder.Movement
             in MovementIntent intent,
             MovementTuning tuning,
             Vector3 wishDirection,
-            float deltaTime)
+            float deltaTime,
+            float speedScale)
         {
             bool hop = intent.Jump && state.LandingAge <= tuning.BunnyHopWindow;
             if (hop == false)
@@ -91,9 +94,9 @@ namespace Meatgrinder.Movement
             Accelerate(
                 ref state.Velocity,
                 wishDirection,
-                tuning.GroundSpeed,
+                tuning.GroundSpeed * speedScale,
                 tuning.GroundAcceleration,
-                tuning.MaxSpeed,
+                tuning.MaxSpeed * speedScale,
                 deltaTime,
                 0f);
 
@@ -119,15 +122,16 @@ namespace Meatgrinder.Movement
             ref MovementState state,
             MovementTuning tuning,
             Vector3 wishDirection,
-            float deltaTime)
+            float deltaTime,
+            float speedScale)
         {
             state.Velocity.y -= tuning.Gravity * deltaTime;
             Accelerate(
                 ref state.Velocity,
                 wishDirection,
-                tuning.AirWishSpeed,
+                tuning.AirWishSpeed * speedScale,
                 tuning.AirAcceleration,
-                tuning.MaxSpeed,
+                tuning.MaxSpeed * speedScale,
                 deltaTime,
                 tuning.AirControl);
         }

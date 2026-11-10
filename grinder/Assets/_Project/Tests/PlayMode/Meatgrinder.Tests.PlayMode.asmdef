@@ -6,7 +6,8 @@
         "Meatgrinder.Combat",
         "Meatgrinder.Weapons",
         "Meatgrinder.Players",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.ProBuilder"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

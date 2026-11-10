@@ -169,3 +169,20 @@ Sensación de movimiento y ciclo del arma. No cambió Unity, URP ni Photon. El d
 | Armas | Escopeta con `DrawDuration` 0,18 s. Daño, perdigones y cadencia iguales que el 4 de noviembre. Sin rifle y sin lanzacohetes en la escena |
 | Greybox | `MovementCourse` al oeste. `Shotgun_Close` sigue en la galería |
 | Pasada manual | No realizada. F2-07 sigue en REVIEW |
+
+## Actualización — 9 de noviembre de 2026 (alcance + contraste de código)
+
+Redefinición documental a juego completo: `GDD_SCOPE_ADDENDUM.md`, `FULL_GAME_DEVELOPMENT_PLAN.md`, `IMPLEMENTATION_STATUS_AUDIT.md`, checklist reescrito. **Sin cambios de gameplay autorizados en esta pasada.**
+
+| Hecho | Valor observado |
+|---|---|
+| HEAD | `992bb92` — armor/pickups/rocket presentation |
+| Commits tras auditoría de arsenal | Sí: el tip incluye pickups/rocket respecto a estados previos; la auditoría de implementación del 9 nov los recontrasta |
+| Lanzacohetes | Asset + código + test artificial; no en `LocalPlayer` loadout; spawner null → PARTIALLY_IMPLEMENTED |
+| Pickups / PowerUpManager | Clases presentes; ApplyPickup power-up vacío; manager no cableado al resolver en escena → PARTIALLY_IMPLEMENTED |
+| Melee | Solo `DamageType.Melee` → NOT_STARTED |
+| Monstruos / Boot / M01 / Ranked | NOT_STARTED |
+| Fusion gameplay | Solo sonda NetworkTest → F3-02 VALIDATED como sonda; resto NOT_STARTED |
+| Cambios locales | `IDamageModifiers` + asmdef (ciclo Combat↔Pickups); no descartar |
+| Suite reejecutada este día | No |
+| % avance juego completo | ~16–18 % (ver `PROGRESS.md`) |

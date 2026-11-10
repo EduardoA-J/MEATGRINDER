@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4,4043931">
+  <test-suite type="TestSuite" id="1018" name="grinder" fullname="grinder" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4.404393" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1012" name="Meatgrinder.Tests.PlayMode.dll" fullname="F:/MAPAUNI/MEATGRINDER/grinder/Library/ScriptAssemblies/Meatgrinder.Tests.PlayMode.dll" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4.390478" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="23188" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1013" name="Meatgrinder" fullname="Meatgrinder" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4.388997" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1014" name="Tests" fullname="Meatgrinder.Tests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4.388040" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1004" name="M01ShellPlayModeTests" fullname="Meatgrinder.Tests.M01ShellPlayModeTests" classname="Meatgrinder.Tests.M01ShellPlayModeTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4.385761" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1005" name="PlayerMovesJumpsAndClimbsProBuilderGeometry" fullname="Meatgrinder.Tests.M01ShellPlayModeTests.PlayerMovesJumpsAndClimbsProBuilderGeometry" methodname="PlayerMovesJumpsAndClimbsProBuilderGeometry" classname="Meatgrinder.Tests.M01ShellPlayModeTests" runstate="Runnable" seed="1450593633" result="Failed" start-time="2026-11-09 23:57:36Z" end-time="2026-11-09 23:57:40Z" duration="4.364487" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: greater than 0.400000006f
+  But was:  0.0247212499f
+]]></message>
+                <stack-trace><![CDATA[at Meatgrinder.Tests.M01ShellPlayModeTests+<PlayerMovesJumpsAndClimbsProBuilderGeometry>d__0.MoveNext () [0x004bc] in F:\MAPAUNI\MEATGRINDER\grinder\Assets\_Project\Tests\PlayMode\M01ShellPlayModeTests.cs:87
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@1405238725ab\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[M01Test] rampPos=(3.50, 1.22, 4.00) col=BoxCollider bounds=Center: (3.50, 1.22, 4.00), Extents: (2.00, 1.27, 3.82)
+[M01Test] rampDelta y0=0,05 y1=0,02472125 pos=(3.50, 0.02, 1.86)
+Saving results to: C:/Users/pc/AppData/LocalLow/DefaultCompany/grinder\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

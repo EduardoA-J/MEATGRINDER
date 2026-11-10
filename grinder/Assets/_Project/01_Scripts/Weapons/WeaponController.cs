@@ -33,6 +33,7 @@ namespace Meatgrinder.Weapons
         public int Loaded => ready && slots.Length > 0 ? slots[activeIndex].Loaded : 0;
         public int Reserve => ready && slots.Length > 0 ? slots[activeIndex].Reserve : 0;
         public WeaponDefinition ActiveDefinition => ready && slots.Length > 0 ? loadout[activeIndex] : null;
+        public int SlotCount => ready ? slots.Length : 0;
 
         void Awake()
         {
@@ -203,6 +204,43 @@ namespace Meatgrinder.Weapons
             return ShotTicket.Ok(weapon, confirmation);
         }
 
+        public int TryGrant(WeaponDefinition weapon, int bonusAmmo)
+        {
+            Initialize();
+            if (weapon == null)
+            {
+                return -1;
+            }
+
+            int grant = bonusAmmo > 0 ? bonusAmmo : Mathf.Max(0, weapon.StartingReserve);
+            int existing = IndexOf(weapon);
+            if (existing >= 0)
+            {
+                Slot slot = slots[existing];
+                slot.Reserve += grant;
+                slots[existing] = slot;
+                StateChanged?.Invoke();
+                return existing;
+            }
+
+            int count = loadout.Length;
+            WeaponDefinition[] nextLoadout = new WeaponDefinition[count + 1];
+            Slot[] nextSlots = new Slot[count + 1];
+            for (int i = 0; i < count; i++)
+            {
+                nextLoadout[i] = loadout[i];
+                nextSlots[i] = slots[i];
+            }
+
+            nextLoadout[count] = weapon;
+            nextSlots[count].Loaded = Mathf.Clamp(weapon.StartingLoaded, 0, weapon.MagazineSize);
+            nextSlots[count].Reserve = grant;
+            loadout = nextLoadout;
+            slots = nextSlots;
+            StateChanged?.Invoke();
+            return count;
+        }
+
         internal void LoadForTests(WeaponDefinition[] weapons)
         {
             loadout = weapons;
@@ -257,6 +295,25 @@ namespace Meatgrinder.Weapons
             int moved = Mathf.Min(Mathf.Max(0, room), slot.Reserve);
             slot.Loaded += moved;
             slot.Reserve -= moved;
+        }
+
+        int IndexOf(WeaponDefinition weapon)
+        {
+            for (int i = 0; i < loadout.Length; i++)
+            {
+                WeaponDefinition candidate = loadout[i];
+                if (candidate == null)
+                {
+                    continue;
+                }
+
+                if (candidate == weapon || candidate.WeaponId == weapon.WeaponId)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         void BeginDraw()

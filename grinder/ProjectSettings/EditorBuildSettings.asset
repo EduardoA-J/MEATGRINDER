@@ -14,5 +14,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/00_Scenes/Maps/Greybox/Greybox.unity
     guid: e5abdd212cfb55a43b5aa79567730a45
+  - enabled: 1
+    path: Assets/_Project/00_Scenes/Maps/M01/M01_TheSlaughterhouse.unity
+    guid: 4ffb51c9061477b45a33b256c4f66c47
+  - enabled: 1
+    path: Assets/_Project/00_Scenes/Maps/M02/M02_CastleOfTheDamned.unity
+    guid: 0decab92fe91f0e43bf776c52400a363
+  - enabled: 1
+    path: Assets/_Project/00_Scenes/Maps/M03/M03_RuinsOfTheForgotten.unity
+    guid: 5f88996de8754a040972ff58255d64a6
+  - enabled: 1
+    path: Assets/_Project/00_Scenes/Maps/M04/M04_TheLongestVoid.unity
+    guid: b4b0eeffb36dd4f4a878bdec2020a510
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

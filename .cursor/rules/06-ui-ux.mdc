@@ -6,22 +6,18 @@ alwaysApply: false
 
 # UI
 
-El GDD, sección 18, no elige uGUI o UI Toolkit. Hasta D-09, la interfaz de jugador usa uGUI: el paquete `com.unity.ugui` 2.5.0 ya está instalado y el HUD de FPS encaja en Canvas. UI Toolkit queda para herramientas de editor nuevas. Antes de generar UI, lee la skill `ui` y después `ui-ugui`.
+Hasta D-09: uGUI (`com.unity.ugui` 2.5.0). UI Toolkit para herramientas de editor. Antes de generar UI: skill `ui` y luego `ui-ugui`.
 
-La UI refleja estado. No escribe salud, munición, equipo ni puntuación.
+La UI refleja estado. No escribe salud, munición, equipo, puntuación ni MMR.
 
-## Pantallas
+## Pantallas (REQUIRED)
 
-Main Menu (Play, Private Match, Settings, Credits, Quit). Play en la demo: crear o unirse a sesión. Private Match: sala, mapa, inicio. Team Select. Monster Select con estadísticas y vista previa. Loading. Scoreboard (puntos, bajas, muertes, latencia si existe). Match Results (ganador, puntuación, duración, revancha). Settings: sensibilidad, invertir eje, FOV, audio, calidad, gore.
+Main Menu (Play, Private Match, Ranked cuando exista, Settings, Credits, Quit). Crear/unir sesión. Private Match. Team Select. Monster Select. Loading. Scoreboard. Match Results. Settings. Menú de pausa: P-01 REQUIRED (P3).
 
 ## HUD
 
-Retícula visible. Salud con feedback de daño. Armadura. Arma, icono y munición. Potenciador con tiempo restante. Marcador. Feed de bajas. Indicador de conexión. Objetivo de mapa reducido a la puerta o al siguiente mapa.
+Retícula, salud, armadura, arma/munición, potenciador con tiempo, marcador, feed, conexión, estilo (P-07 cuando toque).
 
-## Accesibilidad pedida por el GDD
+## Accesibilidad
 
-FOV, sensibilidad, escala de UI, contraste de equipos y pickups, opción de reducir flashes, sangre y movimiento de cámara, subtítulos de avisos relevantes. Reasignación de controles si el alcance de la tarea lo incluye.
-
-## Fuera del GDD
-
-Un menú de pausa no está especificado. Si hace falta, es la propuesta P-01, no una pantalla obligatoria.
+FOV, sensibilidad, escala UI, contraste, reducir flashes/sangre/movimiento de cámara, subtítulos de avisos. Reasignación si la tarea lo incluye.

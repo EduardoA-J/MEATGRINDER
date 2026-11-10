@@ -1,7 +1,9 @@
 # Requisitos extraídos del GDD
 
 Fuente: `MEATGRINDER_GDD_TDD.docx`, leído completo el 2 de noviembre de 2026.
+Actualización de alcance: 9 de noviembre de 2026 — [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md).
 Trazabilidad: cada requisito apunta a tareas de [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md). Un requisito con decisión abierta no autoriza a inventar el dato que falta.
+**Todos los requisitos de este documento son REQUIRED para el juego completo.** Las menciones a «demo / semana N» indican prioridad histórica, no exclusión.
 
 ## Funcionales
 
@@ -11,18 +13,18 @@ Trazabilidad: cada requisito apunta a tareas de [MASTER_CHECKLIST.md](MASTER_CHE
 | RF-02 | Asignar equipos humanos y monstruos. El servidor valida la selección. | F3-05, F4-03, F7-03, F9-02 |
 | RF-03 | Spawn autorizado en zonas que no reciban disparo directo. | F3-03, F5-04, F5-08 |
 | RF-04 | Movimiento en primera persona: aceleración, fricción, salto, gravedad, aire, strafe, bunny hop, rampas y escalones. | F1-01 a F1-10 |
-| RF-05 | Escopeta y lanzacohetes configurados en `WeaponDefinition`. Munición limitada. Cambio de arma. Arma inicial y recogida. | F2-06 a F2-10 |
+| RF-05 | Arsenal: escopeta, lanzacohetes y armas ampliadas (P-05) en `WeaponDefinition`. Munición limitada. Cambio de arma. Arma inicial y recogida. Melee real (F2-13). | F2-06 a F2-14, P-05 |
 | RF-06 | `DamageInfo` único, salud, una muerte, respawn. Feed con atacante, víctima y arma. | F2-01, F2-02, F2-04, F2-12, F7-07 |
 | RF-07 | Armadura que absorbe parte del daño. Fórmula sin definir. | F2-03, F6-02 |
 | RF-08 | Pickups de salud y armadura en posición fija, con reaparición y sin doble recogida. | F6-01, F6-02, F6-04, F6-05 |
-| RF-09 | Quad Damage en la semana 5. Efecto, duración y acumulación sin definir. | F6-03, F6-06, F7-06 |
-| RF-10 | Monstruos seleccionables, hitbox coherente, ataque básico sin munición. | F4-01 a F4-07 |
+| RF-09 | Power-ups: Quad Damage, invulnerabilidad, berserk, regeneración, haste, megahealth. Efecto/duración/acumulación: D-10/D-11. | F6-03, F6-06, F6-08…F6-12, F7-06, F2-14 |
+| RF-10 | Monstruos seleccionables, hitbox coherente, ataque básico sin munición (melee). | F4-01 a F4-07 |
 | RF-11 | Puertas que cambian de mapa. El servidor ordena la carga. Se conserva la puntuación de campaña. Timeout y desconexión. | F5-06, F5-07, F3-15 |
 | RF-12 | Puntuación por bajas y por recorrido. El servidor calcula el resultado. Revancha. | F9-03, F9-05, F7-07, F7-08 |
 | RF-13 | Intercambio de roles para comparar recorridos. Contradice la prioridad de Versus Continuous. | F9-01, F9-04 |
 | RF-14 | Menús de la sección 18 y HUD de retícula, salud, armadura, arma, potenciador, marcador y conexión. | F7-01 a F7-10 |
 | RF-15 | Ajustes: sensibilidad, invertir eje, FOV, audio, calidad, gore, reducción de flashes y de movimiento de cámara, subtítulos de avisos, contraste. | F7-09 |
-| RF-16 | Desconexión en demo: la partida sigue y queda marcada. Sin reiniciar la puntuación al reconectar. | F3-11 |
+| RF-16 | Desconexión: la partida sigue y queda marcada. Sin reiniciar la puntuación al reconectar. Bots de desconexión: P-02. | F3-11, P-02 |
 | RF-17 | Humanos no conservan armas al cambiar de mapa. | F5-07, F9-02 |
 
 ## No funcionales
@@ -68,7 +70,7 @@ Trazabilidad: cada requisito apunta a tareas de [MASTER_CHECKLIST.md](MASTER_CHE
 | ID | Requisito | Tareas |
 |---|---|---|
 | RV-01 | Look gótico industrial, metal, luz roja, contraste, low poly aceptable. | F8-01, F8-05 |
-| RV-02 | Sangre, decals limitados, muerte animada o ragdoll simple. Desmembramiento fuera de la demo. | F8-06 |
+| RV-02 | Sangre, decals limitados, muerte animada o ragdoll simple. Desmembramiento REQUIRED (P-04, prioridad P4). | F8-06, P-04 |
 | RV-03 | Silueta de enemigo distinta del escenario. | F8-02, F8-03 |
 | RV-04 | Humanos: 1 modelo, manos FPS y silueta remota. Monstruos: 2. Armas: vista y mundo. | F8-02, F8-03, F8-04 |
 | RV-05 | Opción de reducir partículas, decals, flashes y sangre. | F7-09, F8-06 |
@@ -85,7 +87,7 @@ Trazabilidad: cada requisito apunta a tareas de [MASTER_CHECKLIST.md](MASTER_CHE
 
 | ID | Requisito | Tareas |
 |---|---|---|
-| RN-01 | Photon Fusion 2. Sesión de prueba en la demo. | F0-05, F0-06, F3-01 |
+| RN-01 | Photon Fusion 2 Host Mode. Sesión de producto (Boot + menú), no solo sonda. | F0-05, F0-06, F3-01, F0-08 |
 | RN-02 | Sincronizar spawn, movimiento, equipo, arma, salud, armadura, muerte, proyectiles, pickups, ronda, mapa y puntuación. | F3-04 a F3-08, F3-10, F6-07 |
 | RN-03 | Respuesta local inmediata y reconciliación. | F3-04 |
 | RN-04 | Un impacto no se cuenta dos veces. | F3-07, F2-12 |
@@ -112,6 +114,18 @@ Las que siguen abiertas van de D-03 a D-22 en [DECISIONS.md](DECISIONS.md). La r
 - Monstruos que no dependen de munición y, en la misma sección, pueden recoger armas.
 - La sección 11 salta de 11.2 a 11.4. No hay 11.3 en el documento.
 
-## Fuera de los requisitos de la demo
+## Requisitos que antes se leían como «fuera de demo» (ahora REQUIRED)
 
-Ranked completo (sección 12), MMR, temporadas, recompensas cosméticas, matchmaking, backend, ametralladora, superescopeta, rayo, invulnerabilidad, berserk, regeneración, barriles, desmembramiento, sistema de estilo, M03, M04, bots y anti-cheat avanzado. Están en el checklist como epic E11 o como propuestas E12, con estado BACKLOG y fuera del MVP.
+| ID | Requisito | Tareas | Prioridad guía |
+|---|---|---|---|
+| RF-R01 | Ranked Versus, MMR, temporadas, recompensas cosméticas, matchmaking, backend | R-01…R-04 | P4 |
+| RF-R02 | Ametralladora, superescopeta, rayo | P-05 | P3 |
+| RF-R03 | Invulnerabilidad, berserk, regeneración, haste, megahealth | F6-08…F6-12, F2-14 | P0–P2 |
+| RF-R04 | Barriles explosivos | P-03 | P4 |
+| RF-R05 | Desmembramiento | P-04 | P4 |
+| RF-R06 | Medidor de estilo propio | P-07 | P3 |
+| RF-R07 | M03 The Pit, M04 Blood Foundry | F5-10, F5-11 | P3 |
+| RF-R08 | Bots de desconexión | P-02 | P4 |
+| RF-R09 | 4v4 validado (además de 2v2) | F9-06 | P4 |
+
+Anti-cheat avanzado sigue sin especificación suficiente en el GDD: se registra como hueco, no se inventa.

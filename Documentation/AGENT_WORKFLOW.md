@@ -1,6 +1,7 @@
 # Flujo de agentes
 
-Fecha: 2 de noviembre de 2026.
+Fecha: 2 de noviembre de 2026. Actualización alcance: 9 de noviembre de 2026 (`GDD_SCOPE_ADDENDUM.md`).
+Los perfiles trabajan el **juego completo**. Prioridad ordena; no excluye.
 
 ## Qué existe de verdad
 
@@ -11,7 +12,7 @@ Fecha: 2 de noviembre de 2026.
 | Codex | Skills de usuario en `C:\Users\pc\.agents\skills`. No hay `AGENTS.md` previo ni configuración de Codex dentro de `grinder/`. Si David abre el mismo repo en Codex, `AGENTS.md` es la instrucción compartida. |
 | Game Team Orchestrator | Una skill. No es un equipo. Sus agentes (`game-designer`, `game-technical-director`, `game-unity-specialist`, `game-qa-lead`, y el resto) no están instalados. |
 | Unity Agent Plugin / MCP de Unity | No detectado. |
-| Photon | No instalado. |
+| Photon | Fusion 2.1.4 instalado (T-22). Gameplay net pendiente. |
 
 Los perfiles de abajo son roles de trabajo para repartir tareas. Una misma persona, o el agente de Cursor, puede llevar varios roles en serie. No son procesos autónomos lanzados a la vez.
 
@@ -19,7 +20,7 @@ Los perfiles de abajo son roles de trabajo para repartir tareas. Una misma perso
 
 ### Game Director
 
-- Responsabilidades: pilares, alcance de la demo, contradicciones D-04, D-05, D-10, D-12, D-13 y D-14. Acepta o rechaza recortes.
+- Responsabilidades: pilares, alcance del juego completo, contradicciones D-04, D-05, D-10, D-12, D-13 y D-14. Acepta o rechaza reordenaciones de prioridad; no borra alcance documentado.
 - Consulta: `01-game-design.mdc`, GDD, `DECISIONS.md`.
 - Herramientas: lectura del GDD. No necesita Editor.
 - Puede modificar: `Documentation/DECISIONS.md` cuando David confirme, y el estado de tareas de diseño.
@@ -37,7 +38,7 @@ Los perfiles de abajo son roles de trabajo para repartir tareas. Una misma perso
 
 ### Gameplay Programmer
 
-- Responsabilidades: movimiento, cámara, input, daño local, armas, salud, pickups en simulación local.
+- Responsabilidades: movimiento, cámara, input, daño, armas, melee, salud, pickups/power-ups integrados (arquitectura definitiva, no demos descartables).
 - Consulta: `03`, `07`, `physics-3d-collision` si hay un fallo de colisión.
 - Herramientas: Editor 6.5.6, Test Framework.
 - Puede modificar: `01_Scripts/Movement`, `Combat`, `Weapons`, `Pickups` y sus ScriptableObjects. No escribe autoridad de red dentro del arma.
@@ -68,7 +69,7 @@ Los perfiles de abajo son roles de trabajo para repartir tareas. Una misma perso
 - Consulta: `05`, `urp-postprocessing`, `validate-urp-render-graph-renderer-feature` solo si hay un feature.
 - Herramientas: URP 17.5. `asset-transformer-toolkit` no, mientras falte el paquete.
 - Puede modificar: `05_ArtModels/Materials`, profiles de Volume, prefabs de VFX. No cambia colisionadores de juego para que el material encaje.
-- Depende de: F5-02 para vestir M01. El MVP puede ir en gris.
+- Depende de: F5-02 para vestir M01. Greybox puede ir en gris; el producto se viste en mapas reales.
 - Entrega: el enemigo se distingue y el efecto tiene tope.
 
 ### 3D Artist / Animator

@@ -1,8 +1,10 @@
 # Auditoría del Arsenal y Power-ups
 
+> **Supersedida parcialmente (9 nov 2026):** Tras `992bb92` hay scaffolding de pickups/power-ups y rocket. El estado vigente está en `IMPLEMENTATION_STATUS_AUDIT.md`. Este archivo conserva el diagnóstico previo al commit de arsenal.
+
 Fecha: 5 de noviembre de 2026.
-Fuente: Inspección del código en `d:\git\jogo\grinder` tras la sesión de movimiento y armas del 5 de noviembre.
-Objetivo: Estado real antes de implementar el lanzacohetes completo, pickups y potenciadores del GDD.
+Fuente: Inspección del código tras la sesión de movimiento y armas del 5 de noviembre.
+Objetivo histórico: estado antes de implementar lanzacohetes/pickups.
 
 ## Resumen ejecutivo
 

@@ -23,6 +23,33 @@ namespace Meatgrinder.Players
         readonly List<HitscanHit> hits = new List<HitscanHit>(16);
         int seed = 1;
 
+        void Awake()
+        {
+            if (projectiles == null)
+            {
+                projectiles = GetComponent<LocalProjectileSpawner>();
+                if (projectiles == null)
+                {
+                    projectiles = gameObject.AddComponent<LocalProjectileSpawner>();
+                }
+            }
+
+            if (GetComponent<PlayerMelee>() == null)
+            {
+                gameObject.AddComponent<PlayerMelee>();
+            }
+
+            if (GetComponent<PlayerLife>() == null)
+            {
+                gameObject.AddComponent<PlayerLife>();
+            }
+
+            if (GetComponent<Meatgrinder.Pickups.PowerUpManager>() == null)
+            {
+                gameObject.AddComponent<Meatgrinder.Pickups.PowerUpManager>();
+            }
+        }
+
         void FixedUpdate()
         {
             if (weapons == null)
@@ -58,10 +85,12 @@ namespace Meatgrinder.Players
 
         public void FireFrom(Vector3 origin, Vector3 direction, int shotSeed)
         {
-            if (weapons == null || damage == null)
+            if (weapons == null || damage == null || (health != null && health.IsAlive == false))
             {
                 return;
             }
+
+            damage.Resolver.AttackerPowerUps = GetComponent<IDamageModifiers>();
 
             ShotTicket ticket = weapons.TryBeginShot();
             if (ticket.Accepted == false)
@@ -127,6 +156,9 @@ namespace Meatgrinder.Players
                     continue;
                 }
 
+                damage.Resolver.TargetPowerUps = hit.Target is HealthComponent body
+                    ? body.GetComponent<IDamageModifiers>()
+                    : null;
                 bool applied = damage.Resolver.Apply(new DamageInfo(
                     attackerId,
                     team,

@@ -43,6 +43,10 @@ namespace Meatgrinder.Weapons
                     continue;
                 }
 
+                launch.Resolver.AttackerPowerUps = launch.Owner != null
+                    ? launch.Owner.GetComponent<IDamageModifiers>()
+                    : launch.Resolver.AttackerPowerUps;
+                launch.Resolver.TargetPowerUps = health.GetComponent<IDamageModifiers>();
                 bool hit = launch.Resolver.Apply(new DamageInfo(
                     launch.AttackerId,
                     launch.AttackerTeam,

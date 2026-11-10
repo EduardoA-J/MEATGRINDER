@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Melee",
+                    "type": "Button",
+                    "id": "f6d24173-ae5b-4099-c234-519ebd7f840a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "WeaponSlot2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11aa22bb-33cc-44dd-85ee-6677889900ac",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Melee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

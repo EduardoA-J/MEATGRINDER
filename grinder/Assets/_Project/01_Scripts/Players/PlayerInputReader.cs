@@ -17,10 +17,12 @@ namespace Meatgrinder.Players
         InputAction reloadAction;
         InputAction slot1Action;
         InputAction slot2Action;
+        InputAction meleeAction;
         Vector2 lookDelta;
         bool loggedSample;
         bool attackLatched;
         bool reloadLatched;
+        bool meleeLatched;
         int slotLatched;
 
         public Vector2 Move => moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
@@ -45,6 +47,13 @@ namespace Meatgrinder.Players
         {
             int value = slotLatched;
             slotLatched = 0;
+            return value;
+        }
+
+        public bool ConsumeMelee()
+        {
+            bool value = meleeLatched;
+            meleeLatched = false;
             return value;
         }
 
@@ -86,6 +95,11 @@ namespace Meatgrinder.Players
             {
                 slotLatched = 2;
             }
+
+            if (meleeAction != null && meleeAction.WasPressedThisFrame())
+            {
+                meleeLatched = true;
+            }
         }
 
         internal void AssignAsset(InputActionAsset asset)
@@ -122,6 +136,7 @@ namespace Meatgrinder.Players
             reloadAction = playerMap.FindAction("Reload");
             slot1Action = playerMap.FindAction("WeaponSlot1");
             slot2Action = playerMap.FindAction("WeaponSlot2");
+            meleeAction = playerMap.FindAction("Melee", false);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Meatgrinder.Combat
         readonly HashSet<ulong> confirmations = new HashSet<ulong>();
 
         public bool FriendlyFire { get; set; }
-        public Meatgrinder.Pickups.PowerUpManager AttackerPowerUps { get; set; }
-        public Meatgrinder.Pickups.PowerUpManager TargetPowerUps { get; set; }
+        public IDamageModifiers AttackerPowerUps { get; set; }
+        public IDamageModifiers TargetPowerUps { get; set; }
 
         public bool Apply(in DamageInfo info)
         {
@@ -36,10 +36,23 @@ namespace Meatgrinder.Combat
                 return false;
             }
 
-            // Aplicar modificadores de power-ups ANTES de aplicar el daño
-            float finalDamage = info.Amount;
+            if (info.Target is HealthComponent protectedBody && protectedBody.IsSpawnProtected)
+            {
+                return false;
+            }
 
-            // Quad Damage del atacante (multiplica daño de salida)
+            // PENDIENTE D-10/D-11. Quad y Berserk se multiplican por separado.
+            // Melee: base × melee × quad × (1 - reducción). El resto omite el factor melee.
+            float finalDamage = info.Amount;
+            if (info.Type == DamageType.Melee && AttackerPowerUps != null)
+            {
+                float meleeMultiplier = AttackerPowerUps.GetMeleeMultiplier();
+                if (meleeMultiplier != 1f)
+                {
+                    finalDamage *= meleeMultiplier;
+                }
+            }
+
             if (AttackerPowerUps != null)
             {
                 float damageMultiplier = AttackerPowerUps.GetDamageMultiplier();

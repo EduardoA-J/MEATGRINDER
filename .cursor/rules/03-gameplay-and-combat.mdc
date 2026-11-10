@@ -24,19 +24,21 @@ Criterios comprobables, sin cifras inventadas:
 
 `Gravity` del movimiento es dato de diseño. La gravedad de PhysX del proyecto sigue en `{0, -9.81, 0}` y no es el valor de juego.
 
-## Armas de la demo
+## Arsenal (REQUIRED)
 
-Escopeta: hitscan o dispersión de rayos, fuerte de cerca, cae con la distancia. Lanzacohetes: proyectil con velocidad y radio. Munición limitada. El jugador humano empieza con un arma básica; el resto se recoge. Cambiar de arma no cancela estados críticos de forma abusiva.
+Escopeta: hitscan o dispersión de rayos, fuerte de cerca, cae con la distancia. Lanzacohetes: proyectil con velocidad y radio. Ametralladora, superescopeta y rayo: REQUIRED (P-05); priorizar tras el núcleo. Munición limitada. El humano empieza con un arma básica; el resto se recoge. Cambiar de arma no cancela estados críticos de forma abusiva.
 
-Ametralladora, superescopeta y rayo quedan fuera de la demo.
+## Melee (REQUIRED)
+
+Ataque cuerpo a cuerpo como sistema real de combate (humano y/o monstruo según GDD). Berserk debe multiplicar el melee real, no un stub. Una confirmación de daño por golpe vía `DamageResolver`.
 
 ## Daño
 
-Un ataque, una confirmación, un aplicación. Una muerte, un registro. Fuego amigo desactivado por defecto y configurable por modo. Asistencias: iteración posterior.
+Un ataque, una confirmación, una aplicación. Una muerte, un registro. Fuego amigo desactivado por defecto y configurable por modo. Asistencias: REQUIRED (P-06).
 
-La armadura «absorbe parte del daño». No hay fórmula en el GDD. Bloquea la implementación de la mitigación hasta D-07.
+La armadura «absorbe parte del daño». Fórmula D-07: si hay código provisional, márcalo `PENDIENTE` y no lo cierres como VALIDATED hasta la decisión.
 
-Respawn con temporizador corto y zona protegida el mínimo tiempo para evitar spawn-kill. Duraciones sin número: D-08.
+Respawn con temporizador corto y zona protegida. Duraciones: D-08.
 
 ## Feedback
 

@@ -1,157 +1,183 @@
-# Checklist maestro
+# Checklist maestro — juego completo
 
-Fecha: 2 de noviembre de 2026.
-Fuente: `MEATGRINDER_GDD_TDD.docx`. Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md).
+Fecha de redefinición: 9 de noviembre de 2026.
+Fuente: `MEATGRINDER_GDD_TDD.docx`. Alcance: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md). Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md). Estado código: [IMPLEMENTATION_STATUS_AUDIT.md](IMPLEMENTATION_STATUS_AUDIT.md).
 
-Estados usados: `BACKLOG`, `READY`, `IN PROGRESS`, `BLOCKED`, `REVIEW`, `DONE`.
-`DONE` solo con prueba realizada. En `DONE` están la auditoría (F0-01, F0-12), el editor (F0-02, F0-03), Fusion (F0-05, F0-06), la sonda F3-02, la estructura F0-07, el movimiento local verificado el 3 de noviembre de 2026 (F1-01, F1-02, F1-04 a F1-10 y F5-01) y el combate local verificado el 4 de noviembre de 2026 (F2-01, F2-02, F2-06, F2-09, F2-11 y F2-12). F0-09 y F1-03 siguen en `REVIEW`: el vector en vivo no se leyó en una ventana de Play. F2-07 queda en `REVIEW`: las pruebas automáticas de la escopeta pasaron y Greybox ya tiene blancos, pero nadie ha pulsado Play en el Editor. El 5 de noviembre el movimiento se reajustó y la escopeta bloquea el disparo mientras se saca; EditMode 36/36 y PlayMode 7/7. Esa pasada manual sigue pendiente, así que F1 y F2-07 no cambian de estado. El App ID de Photon está en el asset local y fuera de git.
+## Política
 
-Prioridad: P0 bloquea el MVP, P1 entra en la demo de 8 semanas, P2 es demo si el núcleo aguanta, P3 queda fuera.
-Complejidad: S, M, L, XL. Es orden de magnitud, no una estimación en días. El GDD no da velocidades de equipo.
+Toda tarea de este checklist es **Alcance: `REQUIRED`**. La prioridad (P0–P4) ordena el trabajo; no excluye funcionalidades. Greybox no es el producto.
 
-Recuento: 13 epics, 119 tareas, 248 subtareas.
+## Estados de implementación (obligatorios)
+
+| Estado | Significado |
+|---|---|
+| `NOT_STARTED` | Sin código útil para la tarea |
+| `IN_PROGRESS` | Trabajo activo |
+| `PARTIALLY_IMPLEMENTED` | Código/assets sin flujo jugable completo |
+| `IMPLEMENTED` | Lógica completa en aislamiento |
+| `INTEGRATED` | Cableado al jugador/escena/partida |
+| `VALIDATED` | INTEGRATED + prueba repetible (y dos clientes si es red) |
+| `BLOCKED` | Falta decisión o dependencia externa |
+
+Migración desde el esquema antiguo: `DONE`→`VALIDATED` solo si había prueba; `REVIEW`→`PARTIALLY_IMPLEMENTED` o `INTEGRATED` según cableado; `BACKLOG`/`READY`→`NOT_STARTED`; `BLOCKED` se conserva. **No se marca VALIDATED por cambiar el alcance.**
+
+Prioridad: `P0` núcleo jugable · `P1` primer ciclo de partida · `P2` sistemas del juego · `P3` contenido/pulido · `P4` competitivo/ampliaciones.
+Complejidad: S, M, L, XL (orden de magnitud, no días).
+
+Recuento: 13 epics, **128 tareas** (119 históricas + F2-13, F2-14, F5-10, F5-11, F6-08…F6-12), subtareas históricas conservadas.
 
 ## Epics
 
-| Epic | Fase | Tareas |
+| Epic | Prioridad guía | Tareas |
 |---|---|---|
-| E00 Preparación | 0 | 12 |
-| E01 Movimiento | 1 | 11 |
-| E02 Combate | 2 | 12 |
-| E03 Red | 3 | 17 |
-| E04 Monstruos | 4 | 8 |
-| E05 Mapas | 5 | 9 |
-| E06 Ítems | 6 | 7 |
-| E07 UI | 7 | 10 |
-| E08 Arte y audio | 8 | 8 |
-| E09 Modos | 9 | 6 |
-| E10 QA | 10 | 8 |
-| E11 Ranked | Posterior | 4 |
-| E12 Propuestas | Propuesta | 7 |
+| E00 Preparación | P0 | 12 |
+| E01 Movimiento | P0 | 11 |
+| E02 Combate | P0 | 14 |
+| E03 Red | P1 | 17 |
+| E04 Monstruos | P2 | 8 |
+| E05 Mapas | P2–P3 | 11 |
+| E06 Ítems | P0–P2 | 12 |
+| E07 UI | P1–P3 | 10 |
+| E08 Arte y audio | P3 | 8 |
+| E09 Modos | P2 | 6 |
+| E10 QA | P1–P4 | 8 |
+| E11 Ranked | P4 | 4 |
+| E12 Ampliaciones (antes «propuestas») | P3–P4 | 7 |
 
 ## Índice
 
-| ID | Tarea | Estado | Depende de |
-|---|---|---|---|
-| F0-01 | Auditoría de repositorio, GDD y herramientas | DONE | Ninguna |
-| F0-02 | Instalar Unity 6000.5.6f1 y abrir grinder | DONE | Ninguna. Requiere acción de David en Unity Hub. |
-| F0-03 | Registrar la primera compilación | DONE | F0-02 |
-| F0-04 | Política de ramas Git | READY | Ninguna |
-| F0-05 | Elegir la versión de Photon Fusion 2 y el modo de sesión | DONE | David autorizó la prueba de 2.1.4 el 3 de noviembre de 2026 |
-| F0-06 | Instalar Photon Fusion 2 | DONE | F0-02, F0-05 |
-| F0-07 | Crear Assets/_Project y ensamblados vacíos | DONE | F0-03 |
-| F0-08 | Escena Boot vacía | BACKLOG | F0-07 |
-| F0-09 | Mapa de input de juego | REVIEW | F0-03, decisión D-17 si se van a borrar acciones |
-| F0-10 | Acordar el PC de referencia | BLOCKED | David |
-| F0-11 | Registro de licencias | READY | Ninguna |
-| F0-12 | Inventario de paquetes de plantilla no pedidos | DONE | F0-01 |
-| F1-01 | MovementTuning | DONE | F0-07 |
-| F1-02 | Cámara FPS | DONE | F0-09 |
-| F1-03 | Input de Move, Look y Jump | REVIEW | F0-09 |
-| F1-04 | Aceleración en suelo y fricción | DONE | F1-01, F1-03, F5-01 |
-| F1-05 | Salto y gravedad de diseño | DONE | F1-04 |
-| F1-06 | Control aéreo | DONE | F1-05 |
-| F1-07 | Strafe jumping | DONE | F1-02, F1-06 |
-| F1-08 | Bunny hopping | DONE | F1-05, F1-07 |
-| F1-09 | Rampas, escalones y plataformas | DONE | F1-04, F5-01 |
-| F1-10 | Prueba repetible de movimiento | DONE | F1-04, F1-05, F1-06, F1-07, F1-08, F1-09 |
-| F1-11 | Decidir el dash | BLOCKED | David |
-| F2-01 | DamageInfo y DamageResolver | DONE | F0-07 |
-| F2-02 | HealthComponent | DONE | F2-01 |
-| F2-03 | Mitigación de armadura | BLOCKED | D-07, F2-01 |
-| F2-04 | Muerte única y respawn | BACKLOG | F2-02, F3-03 para el respawn en red; en local puede probarse antes |
-| F2-05 | Protección de spawn | BACKLOG | F2-04 |
-| F2-06 | WeaponDefinition y WeaponController | DONE | F0-07, F2-01 |
-| F2-07 | Escopeta | REVIEW | F2-06, F1-02 |
-| F2-08 | Lanzacohetes y explosión | BACKLOG | F2-06 |
-| F2-09 | Munición y cambio de arma | DONE | F2-06 |
-| F2-10 | Recogida de arma en el mapa | BACKLOG | F2-06, F6-05 |
-| F2-11 | Feedback local de impacto | DONE | F2-07 |
-| F2-12 | Pruebas EditMode de daño | DONE | F2-01, F2-02, F2-04, F2-09 |
-| F3-01 | Bootstrap de Fusion | BLOCKED | F0-08. El SDK y el App ID local ya están. Falta la escena Boot |
-| F3-02 | Crear, unir y salir de sesión | DONE | F3-01. La prueba usó NetworkTest; la escena Boot sigue pendiente |
-| F3-03 | Spawn autorizado | BLOCKED | F3-02, F5-04 |
-| F3-04 | Movimiento replicado con predicción | BACKLOG | F1-10, F3-03, D-19 puede seguir abierta si la prueba solo registra el error observado |
-| F3-05 | Equipos | BACKLOG | F3-03 |
-| F3-06 | Sincronizar arma, salud y armadura | BACKLOG | F2-02, F2-06, F3-05 |
-| F3-07 | Daño autoritativo | BACKLOG | F2-01, F2-07, F3-06 |
-| F3-08 | Proyectiles autoritativos | BACKLOG | F2-08, F3-07 |
-| F3-09 | Política de lag compensation | BLOCKED | D-03, F3-07 |
-| F3-10 | Muerte y respawn en red | BACKLOG | F2-04, F2-05, F3-07 |
-| F3-11 | Desconexión de la demo | BACKLOG | F3-02 |
-| F3-12 | Dos clientes en la misma máquina | BACKLOG | F3-02, F3-04 |
-| F3-13 | LAN e internet | BACKLOG | F3-12, F3-07 |
-| F3-14 | Latencia y pérdida de paquetes | BACKLOG | F3-04, F3-07 |
-| F3-15 | Transición de mapa en red | BACKLOG | F5-07, F3-02 |
-| F3-16 | Muertes casi simultáneas | BACKLOG | F3-10 |
-| F3-17 | Recogida simultánea | BACKLOG | F6-05, F3-06 |
-| F4-01 | MonsterDefinition | BACKLOG | F0-07 |
-| F4-02 | Ficha del demonio ligero y del pesado | BLOCKED | David, F4-01 |
-| F4-03 | Selección validada por la autoridad | BACKLOG | F3-05, F4-02 |
-| F4-04 | Hitboxes | BACKLOG | F4-02 |
-| F4-05 | Ataque melee | BACKLOG | F2-01, F4-04 |
-| F4-06 | Armas y potenciadores para el monstruo | BLOCKED | D-13, F2-10, F6-05, F4-03 |
-| F4-07 | Identidad visual en red | BACKLOG | F4-03, F3-06, F8-03 |
-| F4-08 | Prueba de asimetría 2v2 | BACKLOG | F4-05, F3-13, F5-02 |
-| F5-01 | Arena gris | DONE | F0-07 |
-| F5-02 | Blockout de M01 The Slaughterhouse | BACKLOG | F5-01, F1-10 |
-| F5-03 | Dos rutas y verticalidad | BACKLOG | F5-02 |
-| F5-04 | Spawns separados | BACKLOG | F5-02 |
-| F5-05 | Layout de ítems y armas | BACKLOG | F5-02 |
-| F5-06 | Puertas de recorrido | BACKLOG | F5-02 |
-| F5-07 | Carga del siguiente estado | BACKLOG | F5-06, F9-01 |
-| F5-08 | Pruebas de spawn-kill y de bloqueo | BACKLOG | F5-03, F5-04, F1-09 |
-| F5-09 | M02 Iron Cathedral | BACKLOG | F10-02, F5-08 |
-| F6-01 | Pickup de salud | BACKLOG | F2-02, F6-05 |
-| F6-02 | Pickup de armadura | BLOCKED | F2-03, F6-05 |
-| F6-03 | Definir e implementar Quad Damage | BLOCKED | D-10, F6-06 |
-| F6-04 | Temporizadores de reaparición | BLOCKED | D-11, F6-01 |
-| F6-05 | Autoridad y anti doble recogida | BACKLOG | F2-01, F3-07 |
-| F6-06 | Acumulación de efectos | BLOCKED | D-11 |
-| F6-07 | Réplica de pickups | BACKLOG | F6-05, F3-06 |
-| F7-01 | Menú principal | BACKLOG | F0-08, D-09 |
-| F7-02 | Crear y unirse | BACKLOG | F3-02, F7-01 |
-| F7-03 | Selección de equipo y de monstruo | BACKLOG | F4-03, F7-02 |
-| F7-04 | HUD de salud, armadura y munición | BACKLOG | F2-02, F2-09, F3-06 |
-| F7-05 | Retícula | BACKLOG | F1-02 |
-| F7-06 | Indicador de potenciador | BACKLOG | F6-03, F6-07 |
-| F7-07 | Marcador y feed | BACKLOG | F3-07, F3-10, F9-03 |
-| F7-08 | Resultados y revancha | BACKLOG | F9-05, F7-07 |
-| F7-09 | Ajustes | BACKLOG | F7-01, F1-02 |
-| F7-10 | Errores de conexión | BACKLOG | F3-02, F3-11, F7-02 |
-| F8-01 | Materiales base y volumen | BACKLOG | F5-02 |
-| F8-02 | Humano, manos FPS y silueta remota | BACKLOG | F0-11, F1-02 |
-| F8-03 | Dos monstruos | BACKLOG | F4-02, F0-11 |
-| F8-04 | Modelos de escopeta y lanzacohetes | BACKLOG | F2-06, F0-11 |
-| F8-05 | Kit de M01 | BACKLOG | F5-02, F8-01 |
-| F8-06 | VFX de disparo, sangre y decals con tope | BACKLOG | F2-11, F7-09 |
-| F8-07 | Set de audio de combate | BACKLOG | F2-07, F2-08, F0-11 |
-| F8-08 | Animación mínima de presentación | BACKLOG | F8-02, F8-03, F4-05 |
-| F9-01 | Cerrar el modo de la demo | BLOCKED | David |
-| F9-02 | Reglas de equipo de la demo | BACKLOG | F3-05, F9-01 |
-| F9-03 | Puntuación | BACKLOG | F9-01, F3-10, F5-07 |
-| F9-04 | Intercambio de roles | BACKLOG | F9-01, F9-03, F5-07 |
-| F9-05 | Fin de partida y revancha | BACKLOG | F9-03, F3-02 |
-| F9-06 | Validación 4v4 | BACKLOG | F3-13, F4-08, F10-04, D-05 |
-| F10-01 | Matriz funcional | BACKLOG | F1-10, F2-12, F6-07, F5-08, F7-10 |
-| F10-02 | Matriz de red | BACKLOG | F3-12, F3-13, F3-14, F3-15, F3-16, F3-17 |
-| F10-03 | Balance | BACKLOG | F4-08, F5-08, F6-03 |
-| F10-04 | Rendimiento | BACKLOG | F0-10, F8-06, F3-13 |
-| F10-05 | Build de Windows | BACKLOG | F10-01 |
-| F10-06 | Arranque fuera del Editor | BACKLOG | F10-05, F7-01 |
-| F10-07 | README de instalación y controles | BACKLOG | F1-03, F7-02, F10-05 |
-| F10-08 | Cierre por Definition of Done | BACKLOG | F10-01, F10-02, F10-06 |
-| R-01 | Fórmula de MMR y reglas congeladas | BACKLOG | F10-08, David |
-| R-02 | Identidad y backend de resultados | BACKLOG | R-01 |
-| R-03 | Matchmaking y abandonos | BACKLOG | R-02 |
-| R-04 | Temporadas, rangos y recompensas cosméticas | BACKLOG | R-02 |
-| P-01 | Menú de pausa | BACKLOG | David |
-| P-02 | Bots de desconexión | BACKLOG | F10-08 |
-| P-03 | Barriles explosivos | BACKLOG | F10-08 |
-| P-04 | Desmembramiento por piezas | BACKLOG | F8-06, F10-04 |
-| P-05 | Ametralladora, superescopeta y rayo | BACKLOG | F10-08 |
-| P-06 | Asistencias | BACKLOG | F7-07 |
-| P-07 | Medidor de estilo | BACKLOG | F10-08 |
+Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
+
+| ID | Tarea | Estado | P | Depende de |
+|---|---|---|---|---|
+| F0-01 | Auditoría de repositorio, GDD y herramientas | VALIDATED | P0 | Ninguna |
+| F0-02 | Instalar Unity 6000.5.6f1 y abrir grinder | VALIDATED | P0 | Ninguna |
+| F0-03 | Registrar la primera compilación | VALIDATED | P0 | F0-02 |
+| F0-04 | Política de ramas Git | NOT_STARTED | P3 | Ninguna |
+| F0-05 | Elegir la versión de Photon Fusion 2 y el modo de sesión | VALIDATED | P0 | David / T-21 |
+| F0-06 | Instalar Photon Fusion 2 | VALIDATED | P0 | F0-02, F0-05 |
+| F0-07 | Crear Assets/_Project y ensamblados | VALIDATED | P0 | F0-03 |
+| F0-08 | Escena Boot de producto | NOT_STARTED | P1 | F0-07 |
+| F0-09 | Mapa de input de juego | PARTIALLY_IMPLEMENTED | P0 | F0-03, D-17 |
+| F0-10 | Acordar el PC de referencia | BLOCKED | P4 | David |
+| F0-11 | Registro de licencias | NOT_STARTED | P3 | Ninguna |
+| F0-12 | Inventario de paquetes de plantilla no pedidos | VALIDATED | P0 | F0-01 |
+| F1-01 | MovementTuning | VALIDATED | P0 | F0-07 |
+| F1-02 | Cámara FPS | VALIDATED | P0 | F0-09 |
+| F1-03 | Input de Move, Look y Jump | PARTIALLY_IMPLEMENTED | P0 | F0-09 |
+| F1-04 | Aceleración en suelo y fricción | VALIDATED | P0 | F1-01, F1-03, F5-01 |
+| F1-05 | Salto y gravedad de diseño | VALIDATED | P0 | F1-04 |
+| F1-06 | Control aéreo | VALIDATED | P0 | F1-05 |
+| F1-07 | Strafe jumping | VALIDATED | P0 | F1-02, F1-06 |
+| F1-08 | Bunny hopping | VALIDATED | P0 | F1-05, F1-07 |
+| F1-09 | Rampas, escalones y plataformas | VALIDATED | P0 | F1-04, F5-01 |
+| F1-10 | Prueba repetible de movimiento | VALIDATED | P0 | F1-04…F1-09 |
+| F1-11 | Decidir el dash | BLOCKED | P2 | David / D-06 |
+| F2-01 | DamageInfo y DamageResolver | VALIDATED | P0 | F0-07 |
+| F2-02 | HealthComponent | VALIDATED | P0 | F2-01 |
+| F2-03 | Mitigación de armadura | PARTIALLY_IMPLEMENTED | P0 | D-07, F2-01 |
+| F2-04 | Muerte única y respawn | INTEGRATED | P0 | Local. Duración PENDIENTE D-08. Sin red |
+| F2-05 | Protección de spawn | INTEGRATED | P1 | F2-04. Segundos PENDIENTE D-08 |
+| F2-06 | WeaponDefinition y WeaponController | VALIDATED | P0 | F0-07, F2-01 |
+| F2-07 | Escopeta | INTEGRATED | P0 | F2-06, F1-02 |
+| F2-08 | Lanzacohetes y explosión | INTEGRATED | P0 | Loadout local + explosión por DamageResolver. Cifras PENDIENTE |
+| F2-09 | Munición y cambio de arma | VALIDATED | P0 | F2-06 |
+| F2-10 | Recogida de arma en el mapa | PARTIALLY_IMPLEMENTED | P1 | Grant local. Sin autoridad F6-05 ni pickup en mapa |
+| F2-11 | Feedback local de impacto | VALIDATED | P0 | F2-07 |
+| F2-12 | Pruebas EditMode de daño | VALIDATED | P0 | F2-01, F2-02, F2-09 |
+| F2-13 | Melee humano (sistema real) | INTEGRATED | P0 | Daño por DamageResolver. Cifras y tecla PENDIENTE |
+| F2-14 | Berserk integrado con melee | INTEGRATED | P0 | Escala el melee. Multiplicador PENDIENTE |
+| F3-01 | Bootstrap de Fusion en Boot | BLOCKED | P1 | F0-08 |
+| F3-02 | Crear, unir y salir de sesión (sonda) | VALIDATED | P1 | Sonda NetworkTest; Boot pendiente |
+| F3-03 | Spawn autorizado de jugador de juego | NOT_STARTED | P1 | F3-02, F5-04 |
+| F3-04 | Movimiento replicado con predicción | NOT_STARTED | P1 | F1-10, F3-03 |
+| F3-05 | Equipos | NOT_STARTED | P1 | F3-03 |
+| F3-06 | Sincronizar arma, salud y armadura | NOT_STARTED | P1 | F2-02, F2-06, F3-05 |
+| F3-07 | Daño autoritativo | NOT_STARTED | P1 | F2-01, F2-07, F3-06 |
+| F3-08 | Proyectiles autoritativos | NOT_STARTED | P1 | F2-08, F3-07 |
+| F3-09 | Política de lag compensation | BLOCKED | P2 | D-03, F3-07 |
+| F3-10 | Muerte y respawn en red | NOT_STARTED | P1 | F2-04, F2-05, F3-07 |
+| F3-11 | Desconexión (partida continúa y se marca) | NOT_STARTED | P2 | F3-02 |
+| F3-12 | Dos clientes en la misma máquina (gameplay) | NOT_STARTED | P1 | F3-02, F3-04 |
+| F3-13 | LAN e internet | NOT_STARTED | P2 | F3-12, F3-07 |
+| F3-14 | Latencia y pérdida de paquetes | NOT_STARTED | P2 | F3-04, F3-07 |
+| F3-15 | Transición de mapa en red | NOT_STARTED | P2 | F5-07, F3-02 |
+| F3-16 | Muertes casi simultáneas | NOT_STARTED | P2 | F3-10 |
+| F3-17 | Recogida simultánea | NOT_STARTED | P2 | F6-05, F3-06 |
+| F4-01 | MonsterDefinition | NOT_STARTED | P2 | F0-07 |
+| F4-02 | Ficha del demonio ligero y del pesado | BLOCKED | P2 | David, F4-01, D-12 |
+| F4-03 | Selección validada por la autoridad | NOT_STARTED | P2 | F3-05, F4-02 |
+| F4-04 | Hitboxes | NOT_STARTED | P2 | F4-02 |
+| F4-05 | Ataque melee de monstruo | NOT_STARTED | P2 | F2-01, F4-04, F2-13 |
+| F4-06 | Armas y potenciadores para el monstruo | BLOCKED | P2 | D-13, F2-10, F6-05, F4-03 |
+| F4-07 | Identidad visual en red | NOT_STARTED | P3 | F4-03, F3-06, F8-03 |
+| F4-08 | Prueba de asimetría 2v2 | NOT_STARTED | P2 | F4-05, F3-13, F5-02 |
+| F5-01 | Arena gris (laboratorio) | VALIDATED | P0 | F0-07 |
+| F5-02 | Blockout de M01 The Slaughterhouse | PARTIALLY_IMPLEMENTED | P2 | Arena y pasillos ProBuilder. Rampa original conservada. Sin MapDefinition. No VALIDATED |
+| F5-03 | Dos rutas y verticalidad (M01) | PARTIALLY_IMPLEMENTED | P2 | Flancos y pasarela en escena. Recorrido completo no caminado |
+| F5-04 | Spawns separados (M01) | PARTIALLY_IMPLEMENTED | P2 | 4 marcadores. Un rayo en humo. Sin SpawnManager |
+| F5-05 | Layout de ítems y armas (M01) | PARTIALLY_IMPLEMENTED | P2 | Marcadores + `MAPS.md`. Cifras PENDIENTE. Sin MapDefinition |
+| F5-06 | Puertas de recorrido | NOT_STARTED | P2 | F5-02 |
+| F5-07 | Carga del siguiente estado | NOT_STARTED | P2 | F5-06, F9-01 |
+| F5-08 | Pruebas de spawn-kill y de bloqueo | NOT_STARTED | P2 | F5-03, F5-04, F1-09 |
+| F5-09 | M02 Castle of the Damned (GDD: Iron Cathedral) | PARTIALLY_IMPLEMENTED | P3 | Escena ProBuilder. T-27. Humo de suelo. No VALIDATED. Sin Host Mode |
+| F5-10 | M03 Ruins of the Forgotten (GDD: The Pit) | PARTIALLY_IMPLEMENTED | P3 | Escena abierta ProBuilder. T-27. Humo de suelo. No VALIDATED |
+| F5-11 | M04 The Longest Void (GDD: Blood Foundry) | PARTIALLY_IMPLEMENTED | P3 | Arena flotante. T-27. Sin suelo continuo. No VALIDATED |
+| F6-01 | Pickup de salud | INTEGRATED | P0 | Recogida local. Cifras y respawn de ítem PENDIENTE D-11 |
+| F6-02 | Pickup de armadura | PARTIALLY_IMPLEMENTED | P0 | Collect llama AddArmor. Sin assert propio. D-07 abierta |
+| F6-03 | Quad Damage con efecto real | INTEGRATED | P0 | Multiplica en DamageResolver. Qué es y cuánto dura: D-10 |
+| F6-04 | Temporizadores de reaparición | BLOCKED | P1 | D-11, F6-01 |
+| F6-05 | Autoridad y anti doble recogida | NOT_STARTED | P1 | F2-01, F3-07 |
+| F6-06 | Acumulación de efectos | BLOCKED | P1 | D-11 |
+| F6-07 | Réplica de pickups | NOT_STARTED | P1 | F6-05, F3-06 |
+| F6-08 | Invulnerabilidad | PARTIALLY_IMPLEMENTED | P2 | F6-05, D-11 |
+| F6-09 | Haste (velocidad) cableado a movimiento | INTEGRATED | P1 | ISpeedScale. Cifra PENDIENTE D-11 |
+| F6-10 | Berserk (definición y pickup) | INTEGRATED | P0 | Multiplica melee. Cifra PENDIENTE |
+| F6-11 | Regeneración | PARTIALLY_IMPLEMENTED | P2 | F6-05, D-11 |
+| F6-12 | Megahealth | PARTIALLY_IMPLEMENTED | P2 | F6-01, F6-05 |
+| F7-01 | Menú principal | NOT_STARTED | P1 | F0-08, D-09 |
+| F7-02 | Crear y unirse | NOT_STARTED | P1 | F3-02, F7-01 |
+| F7-03 | Selección de equipo y de monstruo | NOT_STARTED | P2 | F4-03, F7-02 |
+| F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | F2-02, F2-09 (red: F3-06) |
+| F7-05 | Retícula | INTEGRATED | P1 | F1-02 |
+| F7-06 | Indicador de potenciador | PARTIALLY_IMPLEMENTED | P1 | F6-03, cableado PowerUpManager |
+| F7-07 | Marcador y feed | NOT_STARTED | P2 | F3-07, F3-10, F9-03 |
+| F7-08 | Resultados y revancha | NOT_STARTED | P2 | F9-05, F7-07 |
+| F7-09 | Ajustes | NOT_STARTED | P3 | F7-01, F1-02 |
+| F7-10 | Errores de conexión | NOT_STARTED | P1 | F3-02, F3-11, F7-02 |
+| F8-01 | Materiales base y volumen | NOT_STARTED | P3 | F5-02 |
+| F8-02 | Humano, manos FPS y silueta remota | NOT_STARTED | P3 | F0-11, F1-02 |
+| F8-03 | Dos monstruos (arte) | NOT_STARTED | P3 | F4-02, F0-11 |
+| F8-04 | Modelos de escopeta y lanzacohetes | NOT_STARTED | P3 | F2-06, F0-11 |
+| F8-05 | Kit de M01 | NOT_STARTED | P3 | F5-02, F8-01 |
+| F8-06 | VFX de disparo, sangre y decals con tope | NOT_STARTED | P3 | F2-11, F7-09 |
+| F8-07 | Set de audio de combate | NOT_STARTED | P3 | F2-07, F2-08, F0-11 |
+| F8-08 | Animación mínima de presentación | NOT_STARTED | P3 | F8-02, F8-03, F4-05 |
+| F9-01 | Cerrar el modo versus de producto | BLOCKED | P2 | David / D-04 |
+| F9-02 | Reglas de equipo | NOT_STARTED | P2 | F3-05, F9-01 |
+| F9-03 | Puntuación | NOT_STARTED | P2 | F9-01, F3-10, F5-07 |
+| F9-04 | Intercambio de roles | NOT_STARTED | P2 | F9-01, F9-03, F5-07 |
+| F9-05 | Fin de partida y revancha | NOT_STARTED | P2 | F9-03, F3-02 |
+| F9-06 | Validación 4v4 | NOT_STARTED | P4 | F3-13, F4-08, F10-04, D-05 |
+| F10-01 | Matriz funcional | NOT_STARTED | P2 | F1-10, F2-12, F6-07, F5-08, F7-10 |
+| F10-02 | Matriz de red | NOT_STARTED | P2 | F3-12…F3-17 |
+| F10-03 | Balance | NOT_STARTED | P3 | F4-08, F5-08, F6-03 |
+| F10-04 | Rendimiento | NOT_STARTED | P4 | F0-10, F8-06, F3-13 |
+| F10-05 | Build de Windows | NOT_STARTED | P2 | F10-01 |
+| F10-06 | Arranque fuera del Editor | NOT_STARTED | P2 | F10-05, F7-01 |
+| F10-07 | README de instalación y controles | NOT_STARTED | P2 | F1-03, F7-02, F10-05 |
+| F10-08 | Cierre por Definition of Done | NOT_STARTED | P2 | F10-01, F10-02, F10-06 |
+| R-01 | Fórmula de MMR y reglas congeladas | NOT_STARTED | P4 | Núcleo jugable + David |
+| R-02 | Identidad y backend de resultados | NOT_STARTED | P4 | R-01 |
+| R-03 | Matchmaking y abandonos | NOT_STARTED | P4 | R-02 |
+| R-04 | Temporadas, rangos y recompensas cosméticas | NOT_STARTED | P4 | R-02 |
+| P-01 | Menú de pausa | NOT_STARTED | P3 | David |
+| P-02 | Bots de desconexión | NOT_STARTED | P4 | F3-11 |
+| P-03 | Barriles explosivos | NOT_STARTED | P4 | F2-08, F5-05 |
+| P-04 | Desmembramiento por piezas | NOT_STARTED | P4 | F8-06, F10-04 |
+| P-05 | Ametralladora, superescopeta y rayo | NOT_STARTED | P3 | F2-06, F2-08 |
+| P-06 | Asistencias | NOT_STARTED | P3 | F7-07 |
+| P-07 | Medidor de estilo | NOT_STARTED | P3 | Combate integrado |
 
 ## Fichas
 
@@ -1767,7 +1793,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - MapDefinition apunta a esa escena.
   - El documento de layout de F5-05 existe o esta tarea no se marca hecha.
 - **Pruebas:** Recorrer las dos rutas con el controlador.
-- **Estado:** BACKLOG
+- **Estado:** PARTIALLY_IMPLEMENTED. Geometría ampliada en `M01_TheSlaughterhouse`. Falta MapDefinition. No VALIDATED.
 - **Subtareas:**
   - F5-02a Bloquear volúmenes.
   - F5-02b MapDefinition.
@@ -1793,7 +1819,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Hay una plataforma o rampa que cambia de altura.
   - Un jugador no puede sellar las dos rutas a la vez con su cuerpo.
 - **Pruebas:** F5-08.
-- **Estado:** BACKLOG
+- **Estado:** PARTIALLY_IMPLEMENTED. Dos flancos y pasarela a 3 m. El humo no recorrió esas rutas.
 - **Subtareas:**
   - F5-03a Segunda ruta.
   - F5-03b Altura.
@@ -1818,7 +1844,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - Un rayo desde cada spawn enemigo hasta el punto de aparición choca con geometría.
   - Hay puntos suficientes para dos humanos y dos monstruos.
 - **Pruebas:** F5-08.
-- **Estado:** BACKLOG
+- **Estado:** PARTIALLY_IMPLEMENTED. Cuatro empties. El humo comprueba un solo par. Sin SpawnManager.
 - **Subtareas:**
   - F5-04a Colocar puntos.
   - F5-04b Rayos de comprobación.
@@ -1844,7 +1870,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - El Quad Damage, aunque su efecto siga pendiente, tiene una ubicación disputable.
   - El layout está en el repositorio.
 - **Pruebas:** Revisión del documento contra la escena.
-- **Estado:** BACKLOG
+- **Estado:** PARTIALLY_IMPLEMENTED. Marcadores en escena y `Documentation/MAPS.md`. Cifras PENDIENTE.
 - **Subtareas:**
   - F5-05a Marcadores.
   - F5-05b Nota de disputa.
@@ -1948,7 +1974,7 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
   - M02 tiene dos rutas, spawns cubiertos y una puerta.
   - Si no hay tiempo, la tarea pasa a una nota de corte, no a DONE.
 - **Pruebas:** El mismo protocolo de F5-08.
-- **Estado:** BACKLOG
+- **Estado:** PARTIALLY_IMPLEMENTED. Escena `M02_CastleOfTheDamned` (T-27). El nombre del GDD sigue siendo Iron Cathedral. Sin puerta de recorrido ni prueba de dos máquinas.
 - **Subtareas:**
   - F5-09a Decidir si entra en la demo.
   - F5-09b Blockout solo después del corte.
@@ -3216,25 +3242,140 @@ Recuento: 13 epics, 119 tareas, 248 subtareas.
 ### P-07 Medidor de estilo
 
 - **ID:** P-07
-- **Fase:** Propuesta
-- **Epic:** E12 Propuestas
+- **Alcance:** REQUIRED
+- **Fase:** P3
+- **Epic:** E12 Ampliaciones
 - **Nombre:** Medidor de estilo
-- **Descripción:** ULTRAKILL inspira el feedback, no su sistema de estilo completo.
-- **Objetivo:** No convertir la demo en otro juego.
-- **Justificación:** GDD sección 2.
-- **Dependencias:** F10-08
-- **Archivos o sistemas:** Ninguno
-- **Skills o plugins:** Ninguna
+- **Descripción:** Medidor de estilo propio del proyecto (inspiración ULTRAKILL de feedback, sin copiar UI ajena). No modifica el daño base.
+- **Objetivo:** Feedback de agresividad legible en partida.
+- **Justificación:** GDD sección 2 + adenda de alcance.
+- **Dependencias:** Combate integrado
+- **Archivos o sistemas:** Presentation / UI
+- **Skills o plugins:** ui
 - **Responsable:** Game Director
 - **Prioridad:** P3
 - **Complejidad:** L
-- **Riesgos:** Un multiplicador de puntuación que cambie el modo antes de congelar las reglas.
+- **Riesgos:** Multiplicador de puntuación que cambie el modo antes de congelar reglas.
 - **Criterios de aceptación:**
-  - No hay medidor de estilo en el HUD de la demo.
-  - Cualquier versión futura no modifica el daño base.
-- **Pruebas:** Revisión del HUD.
-- **Estado:** BACKLOG
+  - El medidor existe en el HUD de producto cuando la tarea se cierre.
+  - No modifica el daño base ni la autoridad.
+- **Pruebas:** Revisión del HUD + partida de prueba.
+- **Estado:** NOT_STARTED
 - **Subtareas:**
-  - P-07a Fuera del HUD.
-  - P-07b Reabrir solo con el núcleo validado.
+  - P-07a Definir reglas de estilo sin tocar daño.
+  - P-07b Integrar HUD y validar.
+
+---
+
+## Fichas nuevas — 9 de noviembre de 2026
+
+El índice es la fuente de estado. Las fichas históricas anteriores pueden conservar texto «demo/BACKLOG»; al ejecutar una tarea, actualiza su ficha al esquema nuevo.
+
+### F2-13 Melee humano (sistema real)
+
+- **ID:** F2-13
+- **Alcance:** REQUIRED
+- **Sistema:** Combate
+- **Descripción:** Ataque cuerpo a cuerpo del humano: input, hit detect, daño vía `DamageResolver` con `DamageType.Melee`.
+- **Estado:** INTEGRATED
+- **Prioridad:** P0
+- **Dependencias:** F2-01, F1-02
+- **Criterios de aceptación:** El jugador ejecuta melee funcional; el daño pasa por el resolver; se registra una confirmación por golpe. Alcance, daño y cooldown son PENDIENTE. Tecla V provisional: el GDD no fija el botón.
+- **Pruebas:** EditMode de daño melee + PlayMode local.
+
+### F2-14 Berserk integrado con melee
+
+- **ID:** F2-14
+- **Alcance:** REQUIRED
+- **Sistema:** Combate / Pickups
+- **Descripción:** Con Berserk activo, el daño melee se multiplica según el efecto; sin melee no se cierra.
+- **Estado:** INTEGRATED
+- **Prioridad:** P0
+- **Dependencias:** F2-13, F6-10
+- **Criterios de aceptación:** Con Berserk el melee escala de forma medible; sin Berserk el melee usa el valor base. El multiplicador sale del pickup y sigue PENDIENTE.
+- **Pruebas:** EditMode con `IDamageModifiers` / PowerUpManager.
+
+### F5-10 M03 The Pit
+
+- **ID:** F5-10
+- **Alcance:** REQUIRED
+- **Sistema:** Mapas
+- **Descripción:** Nivel real M03 según GDD.
+- **Estado:** PARTIALLY_IMPLEMENTED. Escena `M03_RuinsOfTheForgotten` (T-27). El GDD sigue llamando a este mapa The Pit. Humo de suelo pasado. Recorrido completo pendiente.
+- **Prioridad:** P3
+- **Dependencias:** F5-09
+- **Criterios de aceptación:** Blockout jugable con spawns, rutas e ítems.
+- **Pruebas:** Recorrido de spawn-kill y bloqueo.
+
+### F5-11 M04 Blood Foundry
+
+- **ID:** F5-11
+- **Alcance:** REQUIRED
+- **Sistema:** Mapas
+- **Descripción:** Nivel real M04 según GDD. La escena construida es `M04_TheLongestVoid` (T-27). El nombre escrito del GDD sigue siendo Blood Foundry.
+- **Estado:** PARTIALLY_IMPLEMENTED. Arena flotante sin suelo continuo. Humo de la plataforma central pasado. Sin teletransporte de caída. No VALIDATED.
+- **Prioridad:** P3
+- **Dependencias:** F5-10
+- **Criterios de aceptación:** Blockout jugable con spawns, rutas e ítems.
+- **Pruebas:** Recorrido de spawn-kill y bloqueo.
+
+### F6-08 Invulnerabilidad
+
+- **ID:** F6-08
+- **Alcance:** REQUIRED
+- **Sistema:** Pickups
+- **Descripción:** Power-up de invulnerabilidad con duración; la autoridad confirma el estado.
+- **Estado:** PARTIALLY_IMPLEMENTED
+- **Prioridad:** P2
+- **Dependencias:** F6-05, D-11
+- **Criterios de aceptación:** Durante el efecto el jugador no recibe daño competitivo; al expirar vuelve a normal.
+- **Pruebas:** EditMode + PlayMode local; red cuando exista F6-07.
+
+### F6-09 Haste cableado a movimiento
+
+- **ID:** F6-09
+- **Alcance:** REQUIRED
+- **Sistema:** Pickups / Movimiento
+- **Descripción:** Multiplicador de velocidad leído por el simulador de movimiento.
+- **Estado:** PARTIALLY_IMPLEMENTED
+- **Prioridad:** P1
+- **Dependencias:** F1-01, F6-05
+- **Criterios de aceptación:** Con Haste activo la velocidad cambia de forma medible; al expirar se restaura.
+- **Pruebas:** EditMode de movimiento con modificador.
+
+### F6-10 Berserk (definición y pickup)
+
+- **ID:** F6-10
+- **Alcance:** REQUIRED
+- **Sistema:** Pickups
+- **Descripción:** Definición, pickup y activación de Berserk. El efecto útil de combate se cierra en F2-14.
+- **Estado:** PARTIALLY_IMPLEMENTED
+- **Prioridad:** P0
+- **Dependencias:** F6-05
+- **Criterios de aceptación:** El pickup activa el efecto en el manager; la UI puede leerlo.
+- **Pruebas:** Activación local; integración melee en F2-14.
+
+### F6-11 Regeneración
+
+- **ID:** F6-11
+- **Alcance:** REQUIRED
+- **Sistema:** Pickups / Combate
+- **Descripción:** Regeneración de salud durante un efecto temporal.
+- **Estado:** PARTIALLY_IMPLEMENTED
+- **Prioridad:** P2
+- **Dependencias:** F6-05, D-11
+- **Criterios de aceptación:** La salud sube según la regla definida (PENDIENTE si faltan cifras) sin superar el tope.
+- **Pruebas:** EditMode de tick de regeneración.
+
+### F6-12 Megahealth
+
+- **ID:** F6-12
+- **Alcance:** REQUIRED
+- **Sistema:** Pickups
+- **Descripción:** Pickup de mega salud (sobre-salud o boost según definición).
+- **Estado:** PARTIALLY_IMPLEMENTED
+- **Prioridad:** P2
+- **Dependencias:** F6-01, F6-05
+- **Criterios de aceptación:** Aplica el boost de salud documentado; no doble recogida.
+- **Pruebas:** EditMode + escena con pickup.
 

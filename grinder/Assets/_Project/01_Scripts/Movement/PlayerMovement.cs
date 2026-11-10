@@ -16,6 +16,7 @@ namespace Meatgrinder.Movement
         IPlanarInput scriptedInput;
         MovementState state;
         bool collisionGrounded;
+        ISpeedScale speedScale;
         bool jumpWasHeld;
         float jumpBuffer;
 
@@ -78,6 +79,18 @@ namespace Meatgrinder.Movement
                     out bool jump);
                 intent.Jump = jump;
             }
+            if (speedScale == null)
+            {
+                speedScale = GetComponent<ISpeedScale>();
+            }
+
+            float scale = 1f;
+            if (speedScale != null)
+            {
+                float sampled = speedScale.GetSpeedMultiplier();
+                scale = sampled > 0f ? sampled : 1f;
+            }
+
             MovementSimulator.Tick(
                 ref state,
                 intent,
@@ -85,7 +98,8 @@ namespace Meatgrinder.Movement
                 transform.forward,
                 transform.right,
                 deltaTime,
-                collisionGrounded);
+                collisionGrounded,
+                scale);
 
             CollisionFlags flags = controller.Move(state.Velocity * deltaTime);
             if ((flags & CollisionFlags.Above) != 0 && state.Velocity.y > 0f)
