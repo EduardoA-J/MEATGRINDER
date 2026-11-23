@@ -16,13 +16,16 @@ MonoBehaviour:
   displayName: Salud
   type: 0
   amount: 25
-  respawnTime: 30
+  respawnTime: 20
   canPickupWhenFull: 0
-  visualPrefab: {fileID: 0}
-  pickupSound: {fileID: 0}
+  visualPrefab: {fileID: 4837501541199757456, guid: 68675b10410803d469a6ebe31a8f3d87, type: 3}
+  pickupSound: {fileID: 8300000, guid: 105ad0772a5f6874990e9865543d8aad, type: 3}
   pickupVfx: {fileID: 0}
   powerUpType: 0
   duration: 0
   effectValue: 0
   weapon: {fileID: 0}
   ammoAmount: 0
+  overhealthCap: 200
+  overhealthDelay: 5
+  overhealthDecay: 5

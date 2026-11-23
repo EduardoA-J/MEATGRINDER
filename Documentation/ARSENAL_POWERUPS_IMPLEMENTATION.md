@@ -1,5 +1,17 @@
 # Implementación del Arsenal y Power-ups — MEATGRINDER
 
+## Estado vigente — 22 noviembre 2026
+
+Los apartados inferiores describen scaffolding histórico. Ahora el prefab `LocalPlayer` y M01–M04 conectan el arsenal, seis poderes, vida, muerte, loot, HUD y presentación al flujo Boot/sesión local. `DamageResolver` sigue siendo la única resolución de daño; `Combat` no referencia `Pickups`.
+
+Primera aparición y respawn solo melee. `Shotgun_Weapon` y `Rocket_Weapon` entregan las armas; `Shell_Ammo` y `Rocket_AmmoOnly` entregan munición independiente. El antiguo `Rocket_Ammo` continúa como pickup mixto heredado de arma/munición: no confundirlo con `Rocket_AmmoOnly`. Inventario de muerte conserva cantidades exactas, no entrega cargadores nuevos al recuperarlo.
+
+Melee tiene preparación, ventana de impacto y recuperación; el daño se confirma una sola vez y respeta cobertura. Escopeta/cohete muestran modelos propios mediante `WeaponVisualRig`, con sockets, entrada, retroceso y recarga procedurales. Hay proyectil visible con estela, impactos/explosiones con pool y clips sintéticos originales. Estos recursos son provisionales; no equivalen a animaciones esqueléticas ni audio final.
+
+Los seis poderes tienen prefab, símbolo propio, temporizador y barra de duración. Quad ×4 y Berserk ×2 multiplican conjuntamente; invulnerabilidad, haste, regeneración y megahealth actúan sobre los sistemas correspondientes. Las cifras aprobadas están en `DECISIONS.md` y los ScriptableObjects. El vacío atraviesa sus defensas y mata en máximo 5 s desde detección.
+
+Evidencia vigente: `test-results/product/`, `PROGRESS.md`. El arsenal ampliado, monstruos y autoridad Fusion siguen REQUIRED y pendientes. Ninguna referencia externa se ha importado como código o paquete.
+
 > **Corrección de alcance (9 nov 2026):** Documento histórico. Scaffolding ≠ INTEGRATED/VALIDATED. Ver `IMPLEMENTATION_STATUS_AUDIT.md`. Greybox no es el destino del producto. Arsenal ampliado (P-05), melee (F2-13) y Berserk (F2-14) son REQUIRED.
 
 Fecha: 5 de noviembre de 2026.

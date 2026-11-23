@@ -1,6 +1,6 @@
 # Checklist maestro — juego completo
 
-Fecha de redefinición: 9 de noviembre de 2026.
+Fecha de redefinición: 9 de noviembre de 2026. Actualización de decisiones e integración local: 22 de noviembre de 2026.
 Fuente: `MEATGRINDER_GDD_TDD.docx`. Alcance: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md). Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md). Estado código: [IMPLEMENTATION_STATUS_AUDIT.md](IMPLEMENTATION_STATUS_AUDIT.md).
 
 ## Política
@@ -24,15 +24,15 @@ Migración desde el esquema antiguo: `DONE`→`VALIDATED` solo si había prueba;
 Prioridad: `P0` núcleo jugable · `P1` primer ciclo de partida · `P2` sistemas del juego · `P3` contenido/pulido · `P4` competitivo/ampliaciones.
 Complejidad: S, M, L, XL (orden de magnitud, no días).
 
-Recuento: 13 epics, **128 tareas** (119 históricas + F2-13, F2-14, F5-10, F5-11, F6-08…F6-12), subtareas históricas conservadas.
+Recuento: 13 epics, **130 tareas** (119 históricas + F1-12, F2-13, F2-14, F2-15, F5-10, F5-11, F6-08…F6-12), subtareas históricas conservadas.
 
 ## Epics
 
 | Epic | Prioridad guía | Tareas |
 |---|---|---|
 | E00 Preparación | P0 | 12 |
-| E01 Movimiento | P0 | 11 |
-| E02 Combate | P0 | 14 |
+| E01 Movimiento | P0 | 12 |
+| E02 Combate | P0 | 15 |
 | E03 Red | P1 | 17 |
 | E04 Monstruos | P2 | 8 |
 | E05 Mapas | P2–P3 | 11 |
@@ -46,7 +46,7 @@ Recuento: 13 epics, **128 tareas** (119 históricas + F2-13, F2-14, F5-10, F5-11
 
 ## Índice
 
-Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
+Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Actualización local 22 nov: el índice y `PROGRESS.md` prevalecen sobre las fichas históricas inferiores. `INTEGRATED` local no acredita autoridad Fusion ni dos clientes. Arte, audio y animación procedurales son una primera pasada, no recursos finales.
 
 | ID | Tarea | Estado | P | Depende de |
 |---|---|---|---|---|
@@ -57,10 +57,10 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
 | F0-05 | Elegir la versión de Photon Fusion 2 y el modo de sesión | VALIDATED | P0 | David / T-21 |
 | F0-06 | Instalar Photon Fusion 2 | VALIDATED | P0 | F0-02, F0-05 |
 | F0-07 | Crear Assets/_Project y ensamblados | VALIDATED | P0 | F0-03 |
-| F0-08 | Escena Boot de producto | NOT_STARTED | P1 | F0-07 |
+| F0-08 | Escena Boot de producto | INTEGRATED | P1 | GameBootstrap y sesión persistente; menú → cuatro mapas → resultados → Boot. Fusion pendiente |
 | F0-09 | Mapa de input de juego | PARTIALLY_IMPLEMENTED | P0 | F0-03, D-17 |
-| F0-10 | Acordar el PC de referencia | BLOCKED | P4 | David |
-| F0-11 | Registro de licencias | NOT_STARTED | P3 | Ninguna |
+| F0-10 | Acordar el PC de referencia | PARTIALLY_IMPLEMENTED | P4 | David |
+| F0-11 | Registro de licencias | PARTIALLY_IMPLEMENTED | P3 | Procedencia en REFERENCE_REPOSITORIES_AUDIT; licencia de distribución de FBX aportados pendiente |
 | F0-12 | Inventario de paquetes de plantilla no pedidos | VALIDATED | P0 | F0-01 |
 | F1-01 | MovementTuning | VALIDATED | P0 | F0-07 |
 | F1-02 | Cámara FPS | VALIDATED | P0 | F0-09 |
@@ -72,22 +72,24 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
 | F1-08 | Bunny hopping | VALIDATED | P0 | F1-05, F1-07 |
 | F1-09 | Rampas, escalones y plataformas | VALIDATED | P0 | F1-04, F5-01 |
 | F1-10 | Prueba repetible de movimiento | VALIDATED | P0 | F1-04…F1-09 |
-| F1-11 | Decidir el dash | BLOCKED | P2 | David / D-06 |
+| F1-11 | Decidir el dash | NOT_STARTED | P2 | Se mantiene fuera de esta fase por decisión de David |
+| F1-12 | Sprint y agacharse | INTEGRATED | P0 | F1-03, D-17 |
 | F2-01 | DamageInfo y DamageResolver | VALIDATED | P0 | F0-07 |
 | F2-02 | HealthComponent | VALIDATED | P0 | F2-01 |
-| F2-03 | Mitigación de armadura | PARTIALLY_IMPLEMENTED | P0 | D-07, F2-01 |
-| F2-04 | Muerte única y respawn | INTEGRATED | P0 | Local. Duración PENDIENTE D-08. Sin red |
-| F2-05 | Protección de spawn | INTEGRATED | P1 | F2-04. Segundos PENDIENTE D-08 |
+| F2-03 | Mitigación de armadura | INTEGRATED | P0 | D-07, F2-01. 100/50 % configurable |
+| F2-04 | Muerte única y respawn | INTEGRATED | P0 | Local; 4 s, melee-only, punto diferente, un PlayerLife por escena. Red/manual completo pendientes |
+| F2-05 | Protección de spawn | INTEGRATED | P1 | F2-04, D-08. Ataque la cancela |
 | F2-06 | WeaponDefinition y WeaponController | VALIDATED | P0 | F0-07, F2-01 |
 | F2-07 | Escopeta | INTEGRATED | P0 | F2-06, F1-02 |
-| F2-08 | Lanzacohetes y explosión | INTEGRATED | P0 | Loadout local + explosión por DamageResolver. Cifras PENDIENTE |
+| F2-08 | Lanzacohetes y explosión | INTEGRATED | P0 | Proyectil, autodaño reducido, rocket jump e impacto por DamageResolver |
 | F2-09 | Munición y cambio de arma | VALIDATED | P0 | F2-06 |
-| F2-10 | Recogida de arma en el mapa | PARTIALLY_IMPLEMENTED | P1 | Grant local. Sin autoridad F6-05 ni pickup en mapa |
+| F2-10 | Recogida de arma en el mapa | INTEGRATED | P1 | Grant/ammo y loot local; autoridad Fusion pendiente |
 | F2-11 | Feedback local de impacto | VALIDATED | P0 | F2-07 |
 | F2-12 | Pruebas EditMode de daño | VALIDATED | P0 | F2-01, F2-02, F2-09 |
-| F2-13 | Melee humano (sistema real) | INTEGRATED | P0 | Daño por DamageResolver. Cifras y tecla PENDIENTE |
-| F2-14 | Berserk integrado con melee | INTEGRATED | P0 | Escala el melee. Multiplicador PENDIENTE |
-| F3-01 | Bootstrap de Fusion en Boot | BLOCKED | P1 | F0-08 |
+| F2-13 | Melee humano (sistema real) | INTEGRATED | P0 | Preparación/impacto/recuperación, cobertura, un daño y vista procedural; tecla V o disparo sin arma |
+| F2-14 | Berserk integrado con melee | INTEGRATED | P0 | Multiplica junto con Quad; ×2 provisional |
+| F2-15 | Loot de muerte y caída al vacío | INTEGRATED | P0 | Prefab loot con cantidades exactas; vacío ≤5 s, cámara y oscuridad, respawn y pruebas de escena; red pendiente |
+| F3-01 | Bootstrap de Fusion en Boot | NOT_STARTED | P1 | Boot local ya existe; integración Fusion fuera del encargo actual |
 | F3-02 | Crear, unir y salir de sesión (sonda) | VALIDATED | P1 | Sonda NetworkTest; Boot pendiente |
 | F3-03 | Spawn autorizado de jugador de juego | NOT_STARTED | P1 | F3-02, F5-04 |
 | F3-04 | Movimiento replicado con predicción | NOT_STARTED | P1 | F1-10, F3-03 |
@@ -113,46 +115,46 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
 | F4-07 | Identidad visual en red | NOT_STARTED | P3 | F4-03, F3-06, F8-03 |
 | F4-08 | Prueba de asimetría 2v2 | NOT_STARTED | P2 | F4-05, F3-13, F5-02 |
 | F5-01 | Arena gris (laboratorio) | VALIDATED | P0 | F0-07 |
-| F5-02 | Blockout de M01 The Slaughterhouse | PARTIALLY_IMPLEMENTED | P2 | Complejo industrial ProBuilder. Rampa original conservada. Sin MapDefinition. No VALIDATED |
+| F5-02 | Blockout de M01 The Slaughterhouse | PARTIALLY_IMPLEMENTED | P2 | ProBuilder y primera pasada industrial texturada; MapDefinition. Rampa y llegada conservadas; recorrido completo pendiente |
 | F5-03 | Dos rutas y verticalidad (M01) | PARTIALLY_IMPLEMENTED | P2 | Flancos, foso y pasarelas a 3,6 m y 6 m. Recorrido completo no caminado |
 | F5-04 | Spawns separados (M01) | PARTIALLY_IMPLEMENTED | P2 | 4 marcadores en los muelles y la sala. Un rayo en humo. Sin SpawnManager |
-| F5-05 | Layout de ítems y armas (M01) | PARTIALLY_IMPLEMENTED | P2 | Marcadores recolocados + `MAPS.md`. Cifras PENDIENTE. Sin MapDefinition |
-| F5-06 | Puertas de recorrido | NOT_STARTED | P2 | F5-02 |
-| F5-07 | Carga del siguiente estado | NOT_STARTED | P2 | F5-06, F9-01 |
+| F5-05 | Layout de ítems y armas (M01) | INTEGRATED | P2 | Armas/munición/poderes y tuning válidos; MapDefinition. Balance espacial pendiente |
+| F5-06 | Puertas de recorrido | INTEGRATED | P2 | Llave compartida, puerta opcional Quad y salida por mapa; autoridad de red pendiente |
+| F5-07 | Carga del siguiente estado | INTEGRATED | P2 | Flujo local M01→M02→M03→M04→resultados; reglas Versus pendientes |
 | F5-08 | Pruebas de spawn-kill y de bloqueo | NOT_STARTED | P2 | F5-03, F5-04, F1-09 |
 | F5-09 | M02 Castle of the Damned (GDD: Iron Cathedral) | PARTIALLY_IMPLEMENTED | P3 | Recinto ~540 m, torre gigante por cuadrante, torreón, atalayas y ruinas. T-27. Humo de suelo. No VALIDATED. Sin Host Mode |
 | F5-10 | M03 Ruins of the Forgotten (GDD: The Pit) | PARTIALLY_IMPLEMENTED | P3 | Plaza, templo y terrazas. T-27. Humo de suelo. No VALIDATED |
 | F5-11 | M04 The Longest Void (GDD: Blood Foundry) | PARTIALLY_IMPLEMENTED | P3 | Islas a varias alturas. T-27. Sin suelo continuo. No VALIDATED |
-| F6-01 | Pickup de salud | INTEGRATED | P0 | Recogida local. Cifras y respawn de ítem PENDIENTE D-11 |
-| F6-02 | Pickup de armadura | PARTIALLY_IMPLEMENTED | P0 | Collect llama AddArmor. Sin assert propio. D-07 abierta |
-| F6-03 | Quad Damage con efecto real | INTEGRATED | P0 | Multiplica en DamageResolver. Qué es y cuánto dura: D-10 |
-| F6-04 | Temporizadores de reaparición | BLOCKED | P1 | D-11, F6-01 |
+| F6-01 | Pickup de salud | INTEGRATED | P0 | Recogida local, +25, respawn 20 s y HUD por evento |
+| F6-02 | Pickup de armadura | INTEGRATED | P0 | +25 y fórmula D-07 |
+| F6-03 | Quad Damage con efecto real | INTEGRATED | P0 | ×4 durante 30 s en armas y melee |
+| F6-04 | Temporizadores de reaparición | INTEGRATED | P1 | Recursos 20 s, poderes 60 s |
 | F6-05 | Autoridad y anti doble recogida | NOT_STARTED | P1 | F2-01, F3-07 |
-| F6-06 | Acumulación de efectos | BLOCKED | P1 | D-11 |
+| F6-06 | Acumulación de efectos | INTEGRATED | P1 | Reinicio sin apilar; tipos distintos coexisten |
 | F6-07 | Réplica de pickups | NOT_STARTED | P1 | F6-05, F3-06 |
-| F6-08 | Invulnerabilidad | PARTIALLY_IMPLEMENTED | P2 | F6-05, D-11 |
-| F6-09 | Haste (velocidad) cableado a movimiento | INTEGRATED | P1 | ISpeedScale. Cifra PENDIENTE D-11 |
-| F6-10 | Berserk (definición y pickup) | INTEGRATED | P0 | Multiplica melee. Cifra PENDIENTE |
-| F6-11 | Regeneración | PARTIALLY_IMPLEMENTED | P2 | F6-05, D-11 |
-| F6-12 | Megahealth | PARTIALLY_IMPLEMENTED | P2 | F6-01, F6-05 |
-| F7-01 | Menú principal | NOT_STARTED | P1 | F0-08, D-09 |
-| F7-02 | Crear y unirse | NOT_STARTED | P1 | F3-02, F7-01 |
+| F6-08 | Invulnerabilidad | INTEGRATED | P2 | 10 s; el vacío sigue dañando |
+| F6-09 | Haste (velocidad) cableado a movimiento | INTEGRATED | P1 | ×1,3, sprint/crouch separados |
+| F6-10 | Berserk (definición y pickup) | INTEGRATED | P0 | ×2 melee durante 20 s |
+| F6-11 | Regeneración | INTEGRATED | P2 | 10 HP/s durante 10 s |
+| F6-12 | Megahealth | INTEGRATED | P2 | Cap 200, demora 5 s, decaimiento 5 HP/s |
+| F7-01 | Menú principal | INTEGRATED | P1 | uGUI propio, navegación, selección de mapa, carga; no Luna |
+| F7-02 | Crear y unirse | PARTIALLY_IMPLEMENTED | P1 | Crear práctica local: mapa, ajustes y confirmación. Crear/unir red pendiente |
 | F7-03 | Selección de equipo y de monstruo | NOT_STARTED | P2 | F4-03, F7-02 |
 | F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | F2-02, F2-09 (red: F3-06) |
 | F7-05 | Retícula | INTEGRATED | P1 | F1-02 |
-| F7-06 | Indicador de potenciador | PARTIALLY_IMPLEMENTED | P1 | F6-03, cableado PowerUpManager |
+| F7-06 | Indicador de potenciador | INTEGRATED | P1 | Seis símbolos, timers y barras por efecto; pruebas y capturas reales |
 | F7-07 | Marcador y feed | NOT_STARTED | P2 | F3-07, F3-10, F9-03 |
-| F7-08 | Resultados y revancha | NOT_STARTED | P2 | F9-05, F7-07 |
-| F7-09 | Ajustes | NOT_STARTED | P3 | F7-01, F1-02 |
+| F7-08 | Resultados y revancha | PARTIALLY_IMPLEMENTED | P2 | Resultados locales y reinicio; marcador/victoria/roles competitivos pendientes |
+| F7-09 | Ajustes | INTEGRATED | P3 | Volumen, sensibilidad, FOV, reducir movimiento/destellos, pantalla/resolución |
 | F7-10 | Errores de conexión | NOT_STARTED | P1 | F3-02, F3-11, F7-02 |
-| F8-01 | Materiales base y volumen | NOT_STARTED | P3 | F5-02 |
-| F8-02 | Humano, manos FPS y silueta remota | NOT_STARTED | P3 | F0-11, F1-02 |
+| F8-01 | Materiales base y volumen | INTEGRATED | P3 | Materiales/texturas propios URP en cuatro mapas; acabado y rendimiento pendientes |
+| F8-02 | Humano, manos FPS y silueta remota | PARTIALLY_IMPLEMENTED | P3 | Guantes procedurales y tres modelos como blancos; rig/silueta remota pendientes |
 | F8-03 | Dos monstruos (arte) | NOT_STARTED | P3 | F4-02, F0-11 |
-| F8-04 | Modelos de escopeta y lanzacohetes | NOT_STARTED | P3 | F2-06, F0-11 |
-| F8-05 | Kit de M01 | NOT_STARTED | P3 | F5-02, F8-01 |
-| F8-06 | VFX de disparo, sangre y decals con tope | NOT_STARTED | P3 | F2-11, F7-09 |
-| F8-07 | Set de audio de combate | NOT_STARTED | P3 | F2-07, F2-08, F0-11 |
-| F8-08 | Animación mínima de presentación | NOT_STARTED | P3 | F8-02, F8-03, F4-05 |
+| F8-04 | Modelos de escopeta y lanzacohetes | INTEGRATED | P3 | Prefabs propios con ModelSocket/MuzzleSocket, vista, recarga/retroceso; arte provisional |
+| F8-05 | Kit de M01 | PARTIALLY_IMPLEMENTED | P3 | Tanques, controles, raíles, señales y materiales integrados; kit final pendiente |
+| F8-06 | VFX de disparo, sangre y decals con tope | INTEGRATED | P3 | Proyectil/estela y pool de efectos; revisión visual y coste final pendientes |
+| F8-07 | Set de audio de combate | PARTIALLY_IMPLEMENTED | P3 | Clips sintéticos propios conectados a eventos; diseño y mezcla final pendientes |
+| F8-08 | Animación mínima de presentación | PARTIALLY_IMPLEMENTED | P3 | Armas/melee/cámara/targets/puertas procedurales; rigs de personajes pendientes |
 | F9-01 | Cerrar el modo versus de producto | BLOCKED | P2 | David / D-04 |
 | F9-02 | Reglas de equipo | NOT_STARTED | P2 | F3-05, F9-01 |
 | F9-03 | Puntuación | NOT_STARTED | P2 | F9-01, F3-10, F5-07 |
@@ -171,7 +173,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
 | R-02 | Identidad y backend de resultados | NOT_STARTED | P4 | R-01 |
 | R-03 | Matchmaking y abandonos | NOT_STARTED | P4 | R-02 |
 | R-04 | Temporadas, rangos y recompensas cosméticas | NOT_STARTED | P4 | R-02 |
-| P-01 | Menú de pausa | NOT_STARTED | P3 | David |
+| P-01 | Menú de pausa | INTEGRATED | P3 | Escape, cursor, bloqueo de input/tiempo, opciones/reinicio/resultados/Boot; local |
 | P-02 | Bots de desconexión | NOT_STARTED | P4 | F3-11 |
 | P-03 | Barriles explosivos | NOT_STARTED | P4 | F2-08, F5-05 |
 | P-04 | Desmembramiento por piezas | NOT_STARTED | P4 | F8-06, F10-04 |
@@ -411,10 +413,10 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
 - **Riesgos:** Romper el binding de la plantilla que nadie usa todavía.
 - **Criterios de aceptación:**
   - Existen acciones Move, Look, Jump y Attack enlazadas a teclado y ratón.
-  - Crouch y Sprint no alimentan el controlador de MEATGRINDER mientras D-17 siga abierta.
+  - Crouch y Sprint alimentan el controlador de MEATGRINDER según D-17.
   - El juego no lee el Input Manager antiguo.
-- **Pruebas:** EditMode `GameActionsBindWasdSpaceAndMouseWithoutCrouch` comprueba Move, Look, Jump y Attack, y que no hay Crouch ni Sprint. En PlayMode batchmode la tecla W del dispositivo de prueba queda pulsada y enlazada, pero `InputAction.ReadValue` sigue en cero: el monitor de acciones ignora `InputUpdateType.Editor`. Falta el vector en una ventana de Play con ratón real.
-- **Estado:** REVIEW
+- **Pruebas:** EditMode `GameActionsBindWasdSpaceMouseSprintAndCrouch` comprueba Move, Look, Jump, Attack, Sprint y Crouch. En PlayMode batchmode la tecla W del dispositivo de prueba queda pulsada y enlazada, pero `InputAction.ReadValue` sigue en cero: el monitor de acciones ignora `InputUpdateType.Editor`. Falta el vector en una ventana de Play con ratón real.
+- **Estado:** INTEGRATED
 - **Subtareas:**
   - F0-09a Listar acciones del GDD.
   - F0-09b Crear el asset de juego sin reutilizar Crouch como mecánica.
@@ -1870,7 +1872,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED.
   - El Quad Damage, aunque su efecto siga pendiente, tiene una ubicación disputable.
   - El layout está en el repositorio.
 - **Pruebas:** Revisión del documento contra la escena.
-- **Estado:** PARTIALLY_IMPLEMENTED. Marcadores recolocados en la escena ampliada y `Documentation/MAPS.md`. Cifras PENDIENTE.
+- **Estado:** PARTIALLY_IMPLEMENTED. Marcadores recolocados en la escena ampliada y `Documentation/MAPS.md`. Valores iniciales aprobados y configurables.
 - **Subtareas:**
   - F5-05a Marcadores.
   - F5-05b Nota de disputa.
@@ -3280,7 +3282,7 @@ El índice es la fuente de estado. Las fichas históricas anteriores pueden cons
 - **Estado:** INTEGRATED
 - **Prioridad:** P0
 - **Dependencias:** F2-01, F1-02
-- **Criterios de aceptación:** El jugador ejecuta melee funcional; el daño pasa por el resolver; se registra una confirmación por golpe. Alcance, daño y cooldown son PENDIENTE. Tecla V provisional: el GDD no fija el botón.
+- **Criterios de aceptación:** El jugador ejecuta melee funcional; el daño pasa por el resolver; se registra una confirmación por golpe. Alcance, daño y cooldown usan el conjunto inicial aprobado y siguen configurables. Tecla V provisional: el GDD no fija el botón.
 - **Pruebas:** EditMode de daño melee + PlayMode local.
 
 ### F2-14 Berserk integrado con melee
@@ -3292,7 +3294,7 @@ El índice es la fuente de estado. Las fichas históricas anteriores pueden cons
 - **Estado:** INTEGRATED
 - **Prioridad:** P0
 - **Dependencias:** F2-13, F6-10
-- **Criterios de aceptación:** Con Berserk el melee escala de forma medible; sin Berserk el melee usa el valor base. El multiplicador sale del pickup y sigue PENDIENTE.
+- **Criterios de aceptación:** Con Berserk el melee escala de forma medible; sin Berserk el melee usa el valor base. El multiplicador sale del pickup y se combina con Quad según D-11.
 - **Pruebas:** EditMode con `IDamageModifiers` / PowerUpManager.
 
 ### F5-10 M03 The Pit
@@ -3364,7 +3366,7 @@ El índice es la fuente de estado. Las fichas históricas anteriores pueden cons
 - **Estado:** PARTIALLY_IMPLEMENTED
 - **Prioridad:** P2
 - **Dependencias:** F6-05, D-11
-- **Criterios de aceptación:** La salud sube según la regla definida (PENDIENTE si faltan cifras) sin superar el tope.
+- **Criterios de aceptación:** La salud sube 10 HP/s durante 10 s sin superar el máximo normal.
 - **Pruebas:** EditMode de tick de regeneración.
 
 ### F6-12 Megahealth
@@ -3376,6 +3378,6 @@ El índice es la fuente de estado. Las fichas históricas anteriores pueden cons
 - **Estado:** PARTIALLY_IMPLEMENTED
 - **Prioridad:** P2
 - **Dependencias:** F6-01, F6-05
-- **Criterios de aceptación:** Aplica el boost de salud documentado; no doble recogida.
+- **Criterios de aceptación:** Aplica +100 hasta cap 200, espera 5 s y decae 5 HP/s hasta 100; no doble recogida.
 - **Pruebas:** EditMode + escena con pickup.
 

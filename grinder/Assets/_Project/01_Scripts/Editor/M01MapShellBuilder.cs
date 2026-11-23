@@ -84,7 +84,9 @@ namespace Meatgrinder.Editor
         {
             const float angle = 18f;
             const float length = 8f;
-            const float thickness = 0.08f;
+            // Give the walkable ramp a collision volume that survives the
+            // CharacterController skin width; the visible mesh remains the thin shell.
+            const float thickness = 0.4f;
             float radians = angle * Mathf.Deg2Rad;
             float centerY = 0.02f
                 + (Mathf.Sin(radians) * (length * 0.5f))

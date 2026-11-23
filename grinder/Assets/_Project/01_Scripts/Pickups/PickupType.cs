@@ -5,6 +5,7 @@ namespace Meatgrinder.Pickups
         Health,
         Armor,
         Weapon,
-        PowerUp
+        PowerUp,
+        Ammo
     }
 }

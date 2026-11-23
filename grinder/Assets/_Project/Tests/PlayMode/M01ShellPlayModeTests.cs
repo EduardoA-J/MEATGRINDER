@@ -1,5 +1,6 @@
 using System.Collections;
 using Meatgrinder.Movement;
+using Meatgrinder.Players;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.ProBuilder;
@@ -68,11 +69,6 @@ namespace Meatgrinder.Tests
 
             GameObject ramp = GameObject.Find("PB_Ramp");
             Assert.IsNotNull(ramp);
-            Collider rampCollider = ramp.GetComponent<Collider>();
-            Debug.Log(
-                "[M01Test] rampPos=" + ramp.transform.position
-                + " col=" + (rampCollider != null ? rampCollider.GetType().Name : "none")
-                + " bounds=" + (rampCollider != null ? rampCollider.bounds.ToString() : "none"));
             player.transform.SetPositionAndRotation(
                 new Vector3(ramp.transform.position.x, 0.05f, ramp.transform.position.z - 5.5f),
                 Quaternion.identity);
@@ -83,7 +79,6 @@ namespace Meatgrinder.Tests
                 yield return new WaitForFixedUpdate();
             }
 
-            Debug.Log("[M01Test] rampDelta y0=" + beforeRamp + " y1=" + player.transform.position.y + " pos=" + player.transform.position);
             Assert.Greater(player.transform.position.y, beforeRamp + 0.35f);
         }
 

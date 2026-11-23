@@ -46,14 +46,10 @@ namespace Meatgrinder.Pickups
                 return;
             }
 
-            timeRemaining -= deltaTime;
-            if (timeRemaining <= 0f)
-            {
-                Deactivate();
-                return;
-            }
-
-            OnTick(deltaTime);
+            float elapsed = Mathf.Clamp(deltaTime, 0f, timeRemaining);
+            OnTick(elapsed);
+            timeRemaining = Mathf.Max(0f, timeRemaining - elapsed);
+            if (active && timeRemaining <= 0f) Deactivate();
         }
 
         public virtual void Extend(float additionalDuration)

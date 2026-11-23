@@ -12,6 +12,7 @@ namespace Meatgrinder.Players
 
         [SerializeField] private float recoilRecovery = 40f; // PENDIENTE
 
+        PlayerMovement movement;
         float pitch;
         float yaw;
         float recoilOffset;
@@ -19,6 +20,9 @@ namespace Meatgrinder.Players
         public float Pitch => pitch;
         public float Yaw => yaw;
         public Camera View => view;
+        public bool MenuControlsCursor { get; set; }
+        public float SensitivityScale { get; set; } = 1f;
+        public float FieldOfViewOverride { get; set; }
 
         void Awake()
         {
@@ -27,6 +31,7 @@ namespace Meatgrinder.Players
                 view = GetComponentInChildren<Camera>();
             }
 
+            movement = GetComponent<PlayerMovement>();
             yaw = transform.eulerAngles.y;
             LockCursor();
             ApplyPose();
@@ -39,7 +44,7 @@ namespace Meatgrinder.Players
                 return;
             }
 
-            if (Application.isBatchMode == false)
+            if (Application.isBatchMode == false && !MenuControlsCursor)
             {
                 UpdateCursor();
             }
@@ -51,6 +56,13 @@ namespace Meatgrinder.Players
 
             Vector2 delta = input != null ? input.LookDelta : Vector2.zero;
             ApplyLook(delta);
+        }
+
+        public void ResetLook(Quaternion rotation)
+        {
+            yaw = rotation.eulerAngles.y;
+            pitch = recoilOffset = 0f;
+            ApplyPose();
         }
 
         public void AddRecoil(float degrees)
@@ -82,9 +94,9 @@ namespace Meatgrinder.Players
                 return;
             }
 
-            yaw += delta.x * tuning.LookSensitivity;
+            yaw += delta.x * tuning.LookSensitivity * SensitivityScale;
             pitch = Mathf.Clamp(
-                pitch - (delta.y * tuning.LookSensitivity),
+                pitch - (delta.y * tuning.LookSensitivity * SensitivityScale),
                 tuning.MinPitch,
                 tuning.MaxPitch);
             ApplyPose();
@@ -98,10 +110,10 @@ namespace Meatgrinder.Players
                 return;
             }
 
-            float eye = Mathf.Max(0.2f, tuning.Height - 0.15f);
+            float eye = Mathf.Max(0.2f, (movement != null ? movement.BodyHeight : tuning.Height) - 0.15f);
             view.transform.localPosition = new Vector3(0f, eye, 0f);
             view.transform.localRotation = Quaternion.Euler(pitch - recoilOffset, 0f, 0f);
-            view.fieldOfView = tuning.FieldOfView;
+            view.fieldOfView = FieldOfViewOverride > 0f ? FieldOfViewOverride : tuning.FieldOfView;
             view.nearClipPlane = 0.05f;
         }
 

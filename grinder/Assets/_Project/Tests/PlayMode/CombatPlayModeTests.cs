@@ -99,7 +99,7 @@ namespace Meatgrinder.Tests
 
             Assert.Less(open.Current, 90f);
             Assert.AreEqual(90f, covered.Current, 0.001f);
-            Assert.AreEqual(90f, shooter.Current, 0.001f);
+            Assert.Less(shooter.Current, 90f);
         }
 
         HealthComponent CreateHealth(Vector3 position, float max, int id, int team)

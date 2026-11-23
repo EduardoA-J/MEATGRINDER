@@ -6,6 +6,25 @@ Alcance del producto: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md).
 
 ## Tomadas
 
+### Resoluciones de David — 22 de noviembre de 2026
+
+Esta sección prevalece sobre las filas históricas que contradiga. Registra decisiones de diseño, no implementación ni validación. Encargo actual: integración local y mapas; conservar Fusion sin migrar gameplay, sin instalar paquetes ni assets de pago y sin commits, merges o push.
+
+- **D-07 cerrada:** armadura máxima 100; absorbe 50 % del daño, consumiendo un punto de armadura por punto absorbido. El daño que no puede absorber pasa a salud.
+- **D-08 cerrada:** respawn tras 4 segundos, con 100 de vida, 1 segundo de protección, sin armadura ni potenciadores y solo melee. La primera aparición también es solo melee. La protección termina inmediatamente al atacar. Se elige otro punto seguro, nunca el punto de la muerte.
+- **Loot de muerte:** soltar las armas y la munición que el jugador tenía, nada más, en el lugar de muerte; el jugador no recibe munición nueva al recuperarlo. El lote caduca a los 90 s. En el vacío cae con el jugador y se pierde.
+- **Vacío (corrección expresa de David, 22 de noviembre):** muerte como máximo 5 segundos después de detectar la caída fuera de la zona jugable, con pérdida progresiva de vida, vibración de cámara y oscurecimiento de la vista. Se conserva la gracia configurable de 1 s y la pérdida del 25 % de vida inicial por segundo, pero al alcanzar el límite se aplica el daño letal restante. Ignora armadura, invulnerabilidad y regeneración. Respawn normal de 4 s; no hay retorno gratuito a una plataforma. `LifeTuning.MaximumVoidDuration` limita el intervalo; la opción de reducir movimiento reduce el efecto de cámara.
+- **Cohetes:** autodaño y rocket jump. El autodaño usa el 25 % del daño de explosión antes de armadura; el impulso máximo provisional es 10 m/s con caída por distancia. Quad no multiplica el autodaño.
+- **D-10 cerrada:** Quad multiplica por 4 el daño de armas y melee durante 30 segundos.
+- **D-11 cerrada en modelo y cifras provisionales:** recoger el mismo potenciador reinicia su duración sin sumar potencia; efectos diferentes coexisten. Quad y Berserk multiplican conjuntamente el melee. Quad ×4/30 s; Berserk ×2/20 s; Invulnerabilidad 10 s; Haste ×1,3/20 s; Regeneración 10 HP/s durante 10 s; Megahealth +100 hasta 200, espera 5 s y degrada a 5 HP/s. Los valores permanecen configurables para balance.
+- **D-06/D-17 cerrada:** incorporar sprint y agacharse; no incorporar dash en esta fase. Sprint 12 m/s, agacharse 4 m/s y altura reducida configurable, sin stamina; se conserva la gravedad y el salto existentes.
+- **Mapas y llaves:** combinar zonas de exploración con zonas de combate puro. Las llaves abren rutas de avance y accesos opcionales a power-ups; las puertas desbloqueadas quedan abiertas para todos. Esto sustituye la prohibición anterior de llaves de recorrido. No autoriza añadir puzzles complejos.
+- **D-24 cerrada:** no comprar Luna. Implementar un menú propio inspirado en Quake 2, con animaciones, pantallas de carga, ajustes y funciones equivalentes pertinentes. No se autoriza importar código ni assets de Luna. El framework de UI no fue confirmado expresamente.
+- **Balance provisional aprobado:** se adopta el conjunto inicial configurable basado en las referencias estudiadas; no se presenta como balance definitivo. Escopeta 8 perdigones ×12, intervalo 0,7 s, cargador 6 y recarga 1,4 s; cohete 120 de explosión/4 m/24 m/s, cargador 4, reserva 12 y recarga 2 s; melee 20/2,2 m/0,55 s; salud y armadura +25; munición +6 cartuchos o +4 cohetes; recursos 20 s y poderes 60 s.
+- **D-15 resuelta como base mínima:** el equipo i5-10400, Intel UHD Graphics 630, aproximadamente 16 GB de RAM y salida 1366 × 768 es la base mínima de pruebas. El gameplay principal se probará también en equipos superiores; su configuración y objetivo de FPS final siguen pendientes.
+
+Las preguntas históricas de abajo permanecen como trazabilidad. No reabrir las partes resueltas en esta sección ni dar por resueltas sus cifras pendientes.
+
 | ID | Decisión | Evidencia |
 |---|---|---|
 | T-01 | El juego es un arena FPS asimétrico humano contra monstruo, sin extracción, puzzles ni habilidades de héroe. | GDD 1.1 y 7.2 |
@@ -18,8 +37,8 @@ Alcance del producto: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md).
 | T-05 | El resultado competitivo lo confirma la autoridad: daño, salud, muerte, pickup, puntuación, transición. | GDD 5.3, 13.2, 19 |
 | T-06 | Fuego amigo desactivado por defecto y configurable por modo. | GDD 5.3 |
 | T-07 | Arsenal REQUIRED: escopeta y lanzacohetes primero (P0); ametralladora, superescopeta y rayo REQUIRED (P-05, prioridad P3). | GDD sección 6 + T-23 |
-| T-08 | Ítems REQUIRED: salud, armadura, Quad Damage, invulnerabilidad, berserk, regeneración, haste, megahealth. Cifras pendientes en D-10/D-11. | GDD sección 8 + T-23 |
-| T-09 | Los humanos empiezan con un arma básica. Las demás se recogen del mapa. | GDD 6.2 |
+| T-08 | Ítems REQUIRED: salud, armadura, Quad Damage, invulnerabilidad, berserk, regeneración, haste, megahealth. Las cifras iniciales configurables están fijadas en la resolución del 22 de noviembre. | GDD sección 8 + T-23 |
+| T-09 | Primera aparición y respawn solo con melee; armas de fuego y munición se recogen del mapa. Sustituye la formulación inicial de «arma básica». | Resolución expresa de David, 22 de noviembre de 2026; GDD 6.2 histórico |
 | T-10 | Al cambiar de mapa no se conservan las armas. Salud, armas e ítems se reinician según el modo. | GDD 10.4 y sección 25 |
 | T-11 | Los monstruos pueden recoger todos los potenciadores. | GDD sección 25 |
 | T-12 | Una desconexión no pausa la partida: se continúa y se marca. Bots de desconexión son REQUIRED (P-02) con prioridad posterior. | GDD 11.4 + T-23 |
@@ -41,24 +60,24 @@ Alcance del producto: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md).
 | D-03 | Política de lag compensation para hitscan. | El GDD la condiciona a que la arquitectura la soporte. |
 | D-04 | ¿Qué modo versus se implementa primero: Campaign (cambio de roles) o Continuous? Ambos son REQUIRED. | Sección 3.2 marca los dos como alta prioridad. Sección 25 escribe «se intercambian roles». |
 | D-05 | Orden de capacidad: ¿validar 2v2 antes que 4v4? Ambos son REQUIRED. | 3.3/22 vs sección 25 «4v4». Propuesta técnica: 2v2 primero por dependencias de red. |
-| D-06 | ¿El dash entra en el núcleo jugable? | 4.1 lo deja opcional, con cooldown, y no es un poder. |
-| D-07 | Fórmula de armadura: porcentaje, tope, reducción por golpe. | 8 dice «absorbe parte del daño» y no da números. |
-| D-08 | Segundos de respawn y de protección anti spawn-kill. | 3.3 dice temporizador corto y protección mínima. Sin cifras. |
-| D-09 | uGUI o UI Toolkit para el HUD y los menús. | No está en el GDD. Propuesta de trabajo, no decisión de diseño: uGUI, porque `com.unity.ugui` 2.5.0 ya está. Hace falta un sí. |
-| D-10 | Qué hace Quad Damage y cuánto dura. | Semana 5 y checklist lo incluyen. La tabla de la sección 8 no lo define. «Tres potenciadores» (1.4) no nombra los tres. |
-| D-11 | Qué ítems usan temporizador fijo y qué pasa si se recoge el mismo efecto otra vez. | Sección 25: «sí, algunos». Sección 8.1 pide definir reinicio, extensión o ignorar. |
+| D-06 | Resuelta para esta fase: incorporar sprint y agacharse; excluir dash. | Resolución de David, 22 de noviembre de 2026. |
+| D-07 | Resuelta arriba: armadura 100, absorción 50 %. | Resolución de David, 22 de noviembre de 2026. |
+| D-08 | Resuelta arriba: respawn 4 s, protección 1 s y punto seguro distinto. | Resolución de David, 22 de noviembre de 2026. |
+| D-09 | uGUI para HUD y menú propio inspirado en Quake 2. | Resolución de David, 22 de noviembre de 2026. |
+| D-10 | Resuelta arriba: Quad ×4 durante 30 s. | Resolución de David, 22 de noviembre de 2026. |
+| D-11 | Resuelta arriba: reinicio de duración, coexistencia y cifras provisionales. | Resolución de David, 22 de noviembre de 2026. |
 | D-12 | Estadísticas del demonio ligero y del demonio pesado. | El checklist pide dos modelos. La sección 7.2 solo describe un Demonio. |
 | D-13 | ¿Los monstruos recogen armas de fuego o solo potenciadores? | 6.2 dice que también pueden agarrar armas. La sección 25 solo afirma los potenciadores. |
 | D-14 | Victoria: progreso del recorrido, bajas, o una combinación. | 11.2 da puntos por bajas y por recorrido. La sección 25 dice «progreso recorrido». |
-| D-15 | PC de referencia para el objetivo de 60 FPS. | 20.1 lo pide «acordado» y no está descrito. |
+| D-15 | Base mínima resuelta; objetivo y equipo principal siguen pendientes. | Resolución de David, 22 de noviembre de 2026. |
 | D-16 | Fecha de inicio de las 8 semanas. | El plan no tiene calendario. Hoy el código de juego no existe. |
-| D-17 | Crouch y Sprint del asset de input de plantilla. | Existen en `InputSystem_Actions.inputactions`. El GDD no los pide. |
+| D-17 | Resuelta arriba: Sprint y Crouch entran; dash no. | Resolución de David, 22 de noviembre de 2026. |
 | D-18 | Gravedad de diseño frente a PhysX `-9.81`. | El movimiento lleva su propio parámetro `Gravity` en ScriptableObject. |
 | D-19 | Tolerancia visual de la reconciliación de movimiento. | 4.3 pide coincidencia «dentro de la tolerancia definida» y no la define. |
 | D-20 | Ragdoll simple o solo animación de muerte en la demo. | 9.1 acepta cualquiera de los dos. |
 | D-21 | Renombrar producto `grinder` / compañía `DefaultCompany` a MEATGRINDER. | Hecho de proyecto, ausente del GDD. |
 | D-22 | Quitar del flujo de trabajo, sin desinstalar todavía, los paquetes de plantilla que el GDD no usa. | Navigation, Visual Scripting, Timeline y Collab Proxy están instalados. Esta fase no los toca. |
-| D-24 | ¿Comprar Luna v2 (UI Toolkit) para menús, y dejar el HUD de combate en uGUI? | Luna no es uGUI. Requiere compra (Asset Store, asiento, EULA estándar). El HUD actual es uGUI (`CombatHud`). D-09 sigue abierta. No se compra ni se instala sin un sí. |
+| D-24 | No comprar Luna v2. El menú propio se implementará con el framework UI ya disponible y cubrirá sus funciones pertinentes. | Resolución de David, 22 de noviembre de 2026. |
 
 ## Verificación de Fusion — 3 de noviembre de 2026
 
@@ -97,7 +116,7 @@ Plan gratuito, leído en [photonengine.com/fusion/pricing](https://www.photoneng
 
 ## Implementación local — 5 de noviembre de 2026
 
-Estas filas describen código que ya está en el proyecto. Los números siguen en `PENDIENTE`. No cierran D-06, D-07, D-09 ni D-18.
+Estas filas describen código que ya está en el proyecto. Los valores de balance aprobados siguen siendo configurables para pruebas; no cierran D-03, D-04, D-05, D-06, D-12, D-13, D-14 ni D-18.
 
 | ID | Decisión | Evidencia |
 |---|---|---|

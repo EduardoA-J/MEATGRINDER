@@ -1,9 +1,21 @@
 # Mapas
 
-Fecha: 10 de noviembre de 2026.
+## Integración visual y flujo local — 22 noviembre 2026
+
+Esta actualización prevalece sobre las descripciones históricas inferiores. `ProductSceneInstaller` añade contenido a las escenas existentes; no ejecuta la regeneración de `MapAuthor`. Comprueba que el transform y collider de `PB_Ramp` y `PB_RampLanding` de M01 permanezcan iguales. La geometría histórica y los cambios locales anteriores se conservan.
+
+- Las cuatro escenas tienen `MapDefinition`, `GameBootstrap`, puntos de aparición, ajustes de vida/melee/vacío, armas recogibles, munición independiente y seis power-ups con definición válida. Primera aparición y respawn solo melee.
+- M01 incorpora tanques, tuberías/raíles de procesado, controles y señalización; M02 contrafuertes, ventanas y braseros; M03 columnas, piezas caídas y relieve; M04 bases suspendidas, anclajes y balizas. Materiales URP texturados propios. Son una primera pasada de arte, no escenarios finales certificados.
+- Cada mapa tiene una llave junto a un recurso de salud, una puerta de acceso al Quad y otra de avance. `MapRouteState` abre ambas para el estado local compartido. Salidas: M01 `(0,0,75)`, M02 `(0,0,84)`, M03 `(0,3.6,78)`, M04 `(0,10.5,42)`. M01→M02→M03→M04; la última salida muestra resultados locales. La regla de victoria Versus sigue pendiente.
+- Tres modelos aportados se integran como blancos locales destructibles cerca de la primera aparición. No son monstruos controlables ni IA. El cuarto modelo, de casi dos millones de vértices, permanece fuera de las escenas.
+- Vacío detectado bajo Y=-8 en M01–M03 y Y=-4 en M04; muerte en máximo 5 s desde detección, con daño progresivo y feedback de cámara. Loot perdido; respawn normal tras 4 s en otro punto seguro.
+
+Entrar por `Assets/_Project/00_Scenes/Boot.unity`. La selección permite abrir cualquiera de los cuatro mapas. No ejecutar los generadores históricos para conservar esta pasada de contenido. Quedan pendientes recorrido humano completo, análisis de spawn-kill, accesibilidad de todas las rutas y perfiles de rendimiento en equipos de gameplay.
+
+Fecha: 22 de noviembre de 2026.
 Herramienta: ProBuilder 6.1.4. Material compartido: `Assets/_Project/00_Scenes/Maps/M01/M01_Blockout.mat` (`ProBuilder6/Standard Vertex Color`). La identidad de cada mapa sale del color de vértice, de la niebla y de luces puntuales. No se añadieron paquetes ni texturas nuevas. Las piezas siguen siendo mallas editables.
 
-Estado de las cuatro escenas: `PARTIALLY_IMPLEMENTED`. Ninguna es `VALIDATED`. No hay `MapDefinition`, ni `SpawnManager`, ni prueba con dos clientes. Host Mode queda para una fase posterior.
+Estado de las cuatro escenas: `PARTIALLY_IMPLEMENTED`. Ninguna es `VALIDATED`. Las escenas tienen pickups locales configurados con ScriptableObjects y spawns editables; no hay todavía `MapDefinition`, puertas/llaves, `SpawnManager` autoritativo ni prueba con dos clientes.
 
 Nombres: T-27. El GDD sigue escribiendo M02 Iron Cathedral, M03 The Pit y M04 Blood Foundry. Las escenas de esta página no reescriben el GDD.
 
@@ -11,27 +23,29 @@ Nombres: T-27. El GDD sigue escribiendo M02 Iron Cathedral, M03 The Pit y M04 Bl
 
 El salto del jugador es de unos 1,28 m (`jumpVelocity` 7,5 y `gravity` 22). El escalón automático es 0,4 m y la pendiente límite 46°. Las escaleras de esta pasada suben 0,3 m por peldaño y avanzan 0,32–1,0 m según el tramo. Los enlaces obligatorios son losas que se solapan o escaleras. No hay huecos que exijan strafe jump.
 
-Los colliders nuevos son `BoxCollider` del tamaño de la pieza ProBuilder, también en cilindros y dovelas. La rampa `PB_Ramp` no se regeneró. Sigue en `(3.5, 1.218, 4)`.
+Los colliders nuevos son `BoxCollider` del tamaño de la pieza ProBuilder, también en cilindros y dovelas. La rampa `PB_Ramp` se conserva en `(3.5, 1.218, 4)`, con inclinación normalizada de −18° y una plataforma de llegada que continúa la ruta.
 
 La geometría de M02, M03 y M04 se vuelve a generar con `Meatgrinder/Maps/Build M02 Castle`, `Build M03 Ruins` y `Build M04 Void`. M01 solo sustituye `M01_Expansion`. `Meatgrinder/Maps/Create M01 Shell` sigue negándose a recrear la escena.
 
 Conteos aproximados de piezas `PB_` tras la generación del 10 de noviembre: M01 ~132, M03 ~132, M04 ~91. M02 se regenera con el recinto ampliado; el humo exige al menos 350 mallas. Incluyen escalones, columnas (basa, fuste y capitel) y arcos de dovelas giradas.
 
-## Cifras de ítems — PENDIENTE
+## Cifras de ítems — balance provisional aprobado
 
 Los assets de `Assets/_Project/02_ScriptableObjects/Pickups/` usan los valores que ya tenía el código, no cifras del GDD:
 
 | Asset | Tipo | Valor | Pendiente |
 |---|---|---|---|
-| `Health_Small` | Salud | 25 | D-11, cantidad |
-| `Armor_Small` | Armadura | 25 | D-07 y D-11 |
-| `Quad` | Quad Damage | duración 30, efecto 2 | D-10 y D-11 |
-| `Berserk` | Berserk | duración 30, efecto 2 | D-10 y D-11 |
-| `Rocket_Ammo` | Arma / munición | 4 cohetes | Cantidad no está en el GDD |
+| `Health_Small` | Salud | 25 | Configurable para balance |
+| `Armor_Small` | Armadura | 25; máximo 100 y absorción 50 % | Configurable para balance |
+| `Quad` | Quad Damage | duración 30, efecto ×4 | Configurable para balance |
+| `Berserk` | Berserk | duración 20, efecto ×2 | Configurable para balance |
+| `Rocket_Ammo` | Arma / munición | 4 cohetes | Configurable para balance |
+
+También se generan `Invulnerability` (10 s), `Haste` (20 s, ×1,3), `Regeneration` (10 s, 10 HP/s) y `Megahealth` (+100 hasta 200, demora 5 s, decaimiento 5 HP/s). Los poderes reaparecen a 60 s; salud, armadura y munición a 20 s.
 
 Recoger el mismo power-up reinicia el efecto. No suma duraciones. Eso es la regla provisional de D-11.
 
-El respawn del jugador usa `PlayerLife` ya existente. El retardo de 3 s y la protección de 1 s siguen siendo D-08. Cada escena apunta `spawnPoint` del jugador de esa escena a `Spawn_Human_A`. No hay un gestor de spawns ni un teletransporte de caída.
+El respawn del jugador usa `PlayerLife`: 4 s, vida 100, sin armadura/poderes y solo melee, con protección de 1 s que se cancela al atacar. Se evita el punto de muerte mediante marcadores seguros; sigue siendo autoridad local y no hay gestor Fusion. La caída al vacío usa daño `DamageType.Void`, después de una gracia de 1 s, sin teletransporte gratuito.
 
 ## M01 — The Slaughterhouse
 
@@ -133,7 +147,7 @@ Luz fría, niebla casi negra y cuatro luces puntuales cian y ámbar.
 
 Eso no recorre escaleras, pasarelas, foso, cripta ni puentes. No recoge ítems y no prueba dos clientes. Por eso las tareas F5-02, F5-03, F5-04, F5-05, F5-09, F5-10 y F5-11 quedan en `PARTIALLY_IMPLEMENTED`.
 
-Tampoco es un pase de arte de producción: un solo shader de color de vértice, sin kit modular texturizado.
+La pasada local adicional valida el flujo de movimiento y las escenas con PlayMode completo 12/12 (`local-integration-playmode-final.xml`), incluida la subida de la rampa M01. Eso no valida loot, vacío, recorrido completo, puertas/llaves ni dos clientes. Tampoco es un pase de arte de producción: un solo shader de color de vértice, sin kit modular texturizado.
 
 ## Cómo seguir editando
 

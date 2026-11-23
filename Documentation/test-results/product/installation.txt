@@ -1,0 +1,2 @@
+Installed Boot, four map definitions, local session, player tuning, visual prefabs, pickups, map presentation. Existing map geometry preserved.
+2026-11-22T21:20:57.0250702Z

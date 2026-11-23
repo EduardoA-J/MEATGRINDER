@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fefec1f220b7e04ca3b86558c10de52, type: 3}
+  m_Name: ProductTheme
+  m_EditorClassIdentifier: Meatgrinder.Presentation::Meatgrinder.Presentation.PresentationTheme
+  powerIcons:
+  - {fileID: 21300000, guid: 3ee7002f3575b024f9575fd526a66ab9, type: 3}
+  - {fileID: 21300000, guid: aeea335350d891945bbf0e08a2624cda, type: 3}
+  - {fileID: 21300000, guid: a0f6fc8c0b57c5347801494cda628ec3, type: 3}
+  - {fileID: 21300000, guid: 907b2de86a317ad48ba0ed05cdb8270f, type: 3}
+  - {fileID: 21300000, guid: c72a35efd3c94b144b99b8c944372249, type: 3}
+  - {fileID: 21300000, guid: f3d64cf87736d1e4eb4c41bd486ae122, type: 3}
+  feedbackSounds:
+  - {fileID: 8300000, guid: 8370694f6151ba941aa8b03be3b1ecb6, type: 3}
+  - {fileID: 8300000, guid: cacd4a652a9f3b94ab99c66b72662771, type: 3}
+  - {fileID: 8300000, guid: a3bf2c46c1bd3f649aa642dfc61d170d, type: 3}
+  - {fileID: 8300000, guid: 0e082954be0097a46a579d071211b759, type: 3}
+  - {fileID: 8300000, guid: 950c7fe79bdbf41449f515b868680010, type: 3}
+  - {fileID: 8300000, guid: c92e04666782c1a4bb907d7567bbf8f0, type: 3}
+  - {fileID: 8300000, guid: 105ad0772a5f6874990e9865543d8aad, type: 3}
+  - {fileID: 8300000, guid: 52d2f5b297f9e724e922de24f548b5e1, type: 3}
+  - {fileID: 8300000, guid: 6d6ac75756018c541a09935cd9567fd6, type: 3}
+  - {fileID: 8300000, guid: b3d24363bcea8c647873023bc853b644, type: 3}

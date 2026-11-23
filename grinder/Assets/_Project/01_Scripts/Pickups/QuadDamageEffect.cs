@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Meatgrinder.Pickups
 {
     // Multiplica el daño temporalmente
-    // D-10 propuesta: 2x durante 30s
+    // D-10: x4 durante 30 s; la cifra permanece configurable en PickupDefinition.
     public sealed class QuadDamageEffect : PowerUpEffect
     {
         public QuadDamageEffect(float duration, float multiplier) 

@@ -237,8 +237,68 @@ namespace Meatgrinder.Weapons
             nextSlots[count].Reserve = grant;
             loadout = nextLoadout;
             slots = nextSlots;
+            if (count == 0) BeginDraw();
             StateChanged?.Invoke();
             return count;
+        }
+
+        public bool SelectWeapon(string id)
+        {
+            Initialize();
+            for (int i = 0; i < loadout.Length; i++)
+                if (loadout[i] != null && loadout[i].WeaponId == id) return Select(i);
+            return false;
+        }
+
+        public bool HasWeapon(WeaponDefinition weapon) { Initialize(); return weapon != null && IndexOf(weapon) >= 0; }
+
+        public bool AddAmmo(WeaponDefinition weapon, int amount)
+        {
+            Initialize();
+            int index = weapon != null ? IndexOf(weapon) : -1;
+            if (index < 0 || amount <= 0) return false;
+            slots[index].Reserve += amount;
+            StateChanged?.Invoke();
+            return true;
+        }
+
+        public WeaponInventoryEntry[] CaptureInventory()
+        {
+            Initialize();
+            var result = new WeaponInventoryEntry[slots.Length];
+            for (int i = 0; i < slots.Length; i++) result[i] = new WeaponInventoryEntry(loadout[i], slots[i].Loaded, slots[i].Reserve);
+            return result;
+        }
+
+        public void ClearInventory()
+        {
+            loadout = System.Array.Empty<WeaponDefinition>();
+            slots = System.Array.Empty<Slot>();
+            ready = true;
+            activeIndex = 0;
+            drawRemaining = 0f;
+            StateChanged?.Invoke();
+        }
+
+        public bool ReceiveInventory(WeaponInventoryEntry[] inventory)
+        {
+            if (!equipped || inventory == null) return false;
+            bool received = false;
+            foreach (var entry in inventory)
+            {
+                if (entry.Weapon == null) continue;
+                int index = IndexOf(entry.Weapon);
+                if (index < 0)
+                {
+                    index = TryGrant(entry.Weapon, 0);
+                    slots[index].Loaded = Mathf.Clamp(entry.Loaded, 0, entry.Weapon.MagazineSize);
+                    slots[index].Reserve = Mathf.Max(0, entry.Reserve);
+                }
+                else slots[index].Reserve += Mathf.Max(0, entry.Loaded) + Mathf.Max(0, entry.Reserve);
+                received = true;
+            }
+            if (received) StateChanged?.Invoke();
+            return received;
         }
 
         internal void LoadForTests(WeaponDefinition[] weapons)

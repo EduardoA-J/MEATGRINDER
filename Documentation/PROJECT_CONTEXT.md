@@ -8,6 +8,8 @@ Estado de código: [`IMPLEMENTATION_STATUS_AUDIT.md`](IMPLEMENTATION_STATUS_AUDI
 
 ## Qué estamos haciendo
 
+Estado operativo actualizado (22 nov 2026): Boot/menús uGUI y flujo de sesión local están integrados con M01–M04, armas/melee/poderes, llaves/puertas, HUD y muerte/respawn. Arte y audio siguen siendo una primera pasada. Evidencia y límites actuales en `PROGRESS.md` y `IMPLEMENTATION_STATUS_AUDIT.md`; no usar los estados históricos del 9 nov como diagnóstico actual. Encargo vigente: conservar Fusion sin integrar gameplay de red, sin paquetes/versiones nuevos y sin commits/push. David fijó vacío de máximo 5 s con cámara/oscurecimiento; decisiones anteriores permanecen registradas en `DECISIONS.md`.
+
 MEATGRINDER es un arena FPS multijugador **completo** para Windows. Un equipo de humanos armados juega contra un equipo de monstruos controlados por personas. Los mapas de combate se encadenan con puertas. El conocimiento del escenario, la puntería y el temporizador de los ítems deciden la partida.
 
 La fantasía de juego es desplazarse rápido, mantener el control en el aire, pegar tiros legibles y elegir entre alcance (humano) o cerrar distancia (monstruo).

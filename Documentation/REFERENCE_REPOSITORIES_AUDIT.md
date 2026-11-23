@@ -1,5 +1,20 @@
 # Auditoría de repositorios de referencia
 
+## Aplicación de referencias — 22 noviembre 2026
+
+Se revisaron los tres clones locales (`salvations-descent`, `SourceEngineMovementUnity`, `doom`): separación de inventario/vista, cambio de arma, melee por fases, movimiento por parámetros, pickups, puertas y flujo de pantallas. Se reprodujeron esos comportamientos con código propio adaptado a `DamageResolver`, Input System y los ensamblados existentes. No se copiaron sus scripts, WAD, modelos, sonidos, shaders ni plugins comerciales. No se encontraron licencias de proyecto que autoricen copiar los tres juegos; las licencias de subdependencias no se extienden al proyecto completo.
+
+Inventario de los cuatro FBX aportados en `models/`, importados sin modificar originales a `Assets/_Project/05_ArtModels/Imported/`:
+
+- `20261110234906_b0c92559`: 116.370 vértices, modelo humanoide; integrado en `TrainingTarget_0`.
+- `20261111001453_9a59cb6b`: 93.174 vértices, figura con túnica; integrado en `TrainingTarget_1`.
+- `20261111002122_967857ff`: 115.869 vértices, humanoide con armadura; integrado en `TrainingTarget_2`.
+- `20261110235955_ece0d8da`: 1.975.614 vértices; importado e inspeccionado, fuera de escenas por coste. No hay presupuesto de producción aprobado para esa densidad.
+
+Los cuatro FBX tienen un renderer estático, sin SkinnedMeshRenderer, Animator ni clips importados (comprobado con Unity). Los tres targets usan `ModelSocket`, escala normalizada a dos metros, collider y salud propios; la caída de muerte es procedural. No constituyen monstruos jugables ni un rig de animación terminado. Métricas y previews: `test-results/product/models.txt` y PNG por modelo. Pendientes LOD, rig/anatomía/hitboxes de producto y mediciones de GPU.
+
+Registro de procedencia de esta pasada: FBX = aportados por David (licencia de distribución no incluida, pendiente registrar fuente); geometría de armas, materiales/texturas, seis iconos y clips sintéticos = generados específicamente para MEATGRINDER; uGUI/URP/ProBuilder = paquetes ya presentes. No se añadieron paquetes ni recursos de pago. F0-11 permanece parcial hasta completar las licencias de todos los recursos externos.
+
 Fecha: 4 de noviembre de 2026.
 Clones, fuera del proyecto Unity: `F:\MAPAUNI\references\salvations-descent` y `F:\MAPAUNI\references\SourceEngineMovementUnity`. No se copió ningún archivo al repositorio de MEATGRINDER.
 

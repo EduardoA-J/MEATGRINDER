@@ -8,6 +8,7 @@ namespace Meatgrinder.Weapons
         float age;
         bool active;
         bool exploded;
+        public event System.Action<Vector3> Exploded;
 
         public void Launch(ProjectileLaunch shot)
         {
@@ -47,18 +48,14 @@ namespace Meatgrinder.Weapons
                 ? launch.Direction.normalized
                 : Vector3.forward;
             float distance = launch.Weapon.ProjectileSpeed * deltaTime;
-            if (Physics.SphereCast(
-                    transform.position,
-                    launch.Weapon.ProjectileRadius,
-                    direction,
-                    out RaycastHit hit,
-                    distance,
-                    Physics.DefaultRaycastLayers,
-                    QueryTriggerInteraction.Ignore)
-                && IsOwner(hit.collider) == false)
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, launch.Weapon.ProjectileRadius,
+                direction, distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            foreach (RaycastHit hit in hits)
             {
+                if (IsOwner(hit.collider)) continue;
                 transform.position = hit.point;
-                launch.Origin = hit.point + (hit.normal * 0.05f);
+                launch.Origin = hit.point + hit.normal * 0.05f;
                 Explode();
                 return;
             }
@@ -75,6 +72,7 @@ namespace Meatgrinder.Weapons
 
             exploded = true;
             int damaged = ExplosionQuery.Apply(launch);
+            Exploded?.Invoke(launch.Origin);
             if (launch.Presenter != null)
             {
                 launch.Presenter.Present(launch.Origin, damaged > 0);

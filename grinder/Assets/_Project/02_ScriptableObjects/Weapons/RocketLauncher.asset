@@ -36,6 +36,8 @@ MonoBehaviour:
   blastEdgeScale: 0.2
   recoilPitch: 2
   drawDuration: 0.25
-  projectilePrefab: {fileID: 0}
-  shotSound: {fileID: 0}
+  projectilePrefab: {fileID: 2878848622924036361, guid: 468b36b4357ea574687cf8d0d60b9a81, type: 3}
+  shotSound: {fileID: 8300000, guid: cacd4a652a9f3b94ab99c66b72662771, type: 3}
   impactVfx: {fileID: 0}
+  selfDamageScale: 0.25
+  blastImpulse: 10

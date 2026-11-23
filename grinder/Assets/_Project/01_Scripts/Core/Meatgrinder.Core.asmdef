@@ -1,0 +1,5 @@
+{
+  "name": "Meatgrinder.Core",
+  "rootNamespace": "Meatgrinder.Core",
+  "references": ["Meatgrinder.Players", "Meatgrinder.Movement", "Meatgrinder.Combat", "Meatgrinder.Weapons", "Meatgrinder.Pickups", "Unity.InputSystem"]
+}

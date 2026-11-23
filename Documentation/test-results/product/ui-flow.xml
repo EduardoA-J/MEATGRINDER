@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4,3559898">
+  <test-suite type="TestSuite" id="1031" name="grinder" fullname="grinder" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4.355990" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1025" name="Meatgrinder.Tests.PlayMode.dll" fullname="F:/MAPAUNI/MEATGRINDER/grinder/Library/ScriptAssemblies/Meatgrinder.Tests.PlayMode.dll" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4.345585" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="26172" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1026" name="Meatgrinder" fullname="Meatgrinder" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4.344333" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1027" name="Tests" fullname="Meatgrinder.Tests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4.343295" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1017" name="ProductFlowPlayModeTests" fullname="Meatgrinder.Tests.ProductFlowPlayModeTests" classname="Meatgrinder.Tests.ProductFlowPlayModeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4.341161" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1018" name="BootMenuMapPauseResultsAndReturnAreConnected" fullname="Meatgrinder.Tests.ProductFlowPlayModeTests.BootMenuMapPauseResultsAndReturnAreConnected" methodname="BootMenuMapPauseResultsAndReturnAreConnected" classname="Meatgrinder.Tests.ProductFlowPlayModeTests" runstate="Runnable" seed="2134964127" result="Passed" start-time="2026-11-23 02:08:22Z" end-time="2026-11-23 02:08:26Z" duration="4.323784" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[PowerUp] Haste activado: 1,3x velocidad durante 20s
+[PowerUp] Quad Damage activado: 4x durante 30s
+[PowerUp] Invulnerability activado: 100% reducción durante 10s
+[PowerUp] Regeneration activado: 10 HP/s durante 10s
+[PowerUp] Berserk activado: 2x daño melee durante 20s
+Saving results to: C:/Users/pc/AppData/LocalLow/DefaultCompany/grinder\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

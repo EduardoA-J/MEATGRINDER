@@ -1,6 +1,6 @@
 # Grafo de dependencias — juego completo
 
-Fecha: 9 de noviembre de 2026.
+Fecha: 22 de noviembre de 2026.
 Detalle por tarea: [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md).
 
 Las flechas significan «hace falta antes». Ranked y ampliaciones están **en el grafo** con prioridad baja; no están fuera del producto.
@@ -62,7 +62,7 @@ flowchart TD
 7. F3-03 NetworkPlayer → F3-04/06/07 sync → F3-12 dos clientes gameplay.
 8. F5-02 M01 blockout en paralelo seguro (escena nueva).
 
-## Ensamblados (objetivo tras fix local)
+## Ensamblados (integración local, 22 noviembre)
 
 ```mermaid
 flowchart LR
@@ -72,19 +72,39 @@ flowchart LR
   pickups[Meatgrinder.Pickups]
   players[Meatgrinder.Players]
   presentation[Meatgrinder.Presentation]
+  core[Meatgrinder.Core]
   movement --> players
   combat --> weapons
   combat --> players
   weapons --> players
-  pickups --> combat
+  combat --> pickups
+  weapons --> pickups
   pickups --> players
   combat --> presentation
   weapons --> presentation
   players --> presentation
   pickups --> presentation
+  movement --> core
+  combat --> core
+  weapons --> core
+  pickups --> core
+  players --> core
+  core --> presentation
 ```
 
 `Combat` no debe referenciar `Pickups`. Los modificadores de daño se inyectan vía `IDamageModifiers`.
+
+`GameBootstrap` crea una sola sesión persistente `LocalGameSession`: Boot → carga asíncrona → mapa → pausa/resultados → Boot. `MapDefinition` contiene la identidad de escena, no su estado. `MapRouteState` conserva las llaves compartidas durante el mapa y `KeyGate` solicita la transición. `Presentation` escucha estos estados; los menús solicitan operaciones a la sesión, sin escribir salud, daño ni inventario. No existe dependencia inversa Core → Presentation.
+
+`LifeTuning`, `MeleeTuning`, `WeaponDefinition`, `PickupDefinition` y `PresentationTheme` están serializados en prefabs/escenas. `PlayerLife` coordina un único ciclo de muerte; `PlayerVoidFall` resuelve el daño ambiental mediante `DamageResolver`. Las animaciones, audio, HUD y efectos no aplican daño. La sesión actual es local: falta conectar estas operaciones a autoridad Fusion antes de uso competitivo.
+
+## Integración local verificada — 22 de noviembre de 2026
+
+La rama local ya conecta `PlayerCombat` → `DamageResolver` → `HealthComponent` para escopeta,
+cohete, melee y daño de vacío. `PowerUpManager` inyecta los modificadores en el mismo resolver;
+`PlayerLife` coordina muerte, inventario, `DeathLoot`, respawn seguro y protección inicial;
+`PlayerMovement` recibe sprint/agacharse e impulsos de rocket jump. Estas conexiones son locales y
+autoritativas en una sola máquina: no representan todavía sincronización Fusion ni dos clientes reales.
 
 ## Paralelo seguro vs coordinación
 

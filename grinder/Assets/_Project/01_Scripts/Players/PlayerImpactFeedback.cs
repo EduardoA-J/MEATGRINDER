@@ -18,6 +18,7 @@ namespace Meatgrinder.Players
         public int WorldMarks { get; private set; }
         public event System.Action<bool> Presented;
         public event System.Action<float> Recoiled;
+        public event System.Action<Vector3, bool> PresentedAt;
 
         public void Present(Vector3 point, bool damagedTarget)
         {
@@ -31,6 +32,7 @@ namespace Meatgrinder.Players
             }
 
             Presented?.Invoke(damagedTarget);
+            PresentedAt?.Invoke(point, damagedTarget);
             EnsurePool();
             ShowMark(
                 poolCursor,
@@ -75,7 +77,6 @@ namespace Meatgrinder.Players
             {
                 GameObject mark = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 mark.name = "ImpactMark";
-                mark.transform.SetParent(transform, false);
                 mark.transform.localScale = Vector3.one * 0.14f;
                 Collider body = mark.GetComponent<Collider>();
                 if (body != null)
@@ -107,6 +108,11 @@ namespace Meatgrinder.Players
         internal void SetLook(PlayerLook value)
         {
             look = value;
+        }
+
+        void OnDestroy()
+        {
+            foreach (GameObject mark in pool) if (mark != null) Destroy(mark);
         }
     }
 }

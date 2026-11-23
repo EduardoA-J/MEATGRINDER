@@ -16,13 +16,16 @@ MonoBehaviour:
   displayName: Berserk
   type: 3
   amount: 0
-  respawnTime: 30
+  respawnTime: 60
   canPickupWhenFull: 1
-  visualPrefab: {fileID: 0}
-  pickupSound: {fileID: 0}
+  visualPrefab: {fileID: 1509525990008043689, guid: b30ec27329013bd4393ac083f574074d, type: 3}
+  pickupSound: {fileID: 8300000, guid: 105ad0772a5f6874990e9865543d8aad, type: 3}
   pickupVfx: {fileID: 0}
   powerUpType: 4
-  duration: 30
+  duration: 20
   effectValue: 2
   weapon: {fileID: 0}
   ammoAmount: 0
+  overhealthCap: 200
+  overhealthDelay: 5
+  overhealthDecay: 5

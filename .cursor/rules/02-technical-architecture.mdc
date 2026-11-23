@@ -18,7 +18,7 @@ El GDD, sección 14, fija esta raíz cuando empiece el código de juego:
 - `05_ArtModels/` Characters, Environment, Materials, Textures
 - `Tests/` EditMode, PlayMode
 
-Hoy esa raíz no existe. No muevas `SampleScene` ni los Settings de URP hasta la tarea que lo pida.
+La raíz existe. `Core` conecta Boot, sesión local, definiciones de mapa y puertas; `Presentation` contiene uGUI, vistas, audio y efectos. No muevas `SampleScene` ni los Settings de URP sin tarea. Consulta el grafo de ensamblados real en `Documentation/DEPENDENCY_GRAPH.md` antes de añadir referencias.
 
 ## Componentes previstos
 

@@ -42,6 +42,12 @@ namespace Meatgrinder.Movement
         [Header("Sin usar")]
         [SerializeField] private float dashCooldown; // PENDIENTE. D-06. El controlador no lo lee.
 
+        [SerializeField, Min(0f)] private float sprintSpeed = 12f;
+        [SerializeField, Min(0f)] private float crouchSpeed = 4f;
+        [SerializeField, Min(0.8f)] private float crouchHeight = 0.9f;
+        public float SprintSpeed => sprintSpeed;
+        public float CrouchSpeed => crouchSpeed;
+        public float CrouchHeight => Mathf.Clamp(crouchHeight, radius * 2f, height);
         public float GroundSpeed => groundSpeed;
         public float GroundAcceleration => groundAcceleration;
         public float Friction => friction;

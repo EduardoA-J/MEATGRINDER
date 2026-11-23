@@ -29,11 +29,11 @@ Menú → partida rápida, sala privada o ranked → sesión y equipos → mapa 
 
 ## Mapas (todos REQUIRED)
 
-Arenas legibles, pasillos, al menos dos rutas y verticalidad si la geometría lo permite. Puertas avanzan el recorrido. Sin llaves ni puzzles. Spawn sin disparo directo. Orden de construcción: M01 The Slaughterhouse → M02 Iron Cathedral → M03 The Pit → M04 Blood Foundry.
+Arenas legibles con zonas de combate y exploración, al menos dos rutas y verticalidad. Resolución de David (22 nov 2026): llaves abren avance y zonas opcionales de power-ups; las puertas quedan abiertas para todos. Sin puzzles obligatorios. Spawn sin disparo directo. Escenas actuales: M01 The Slaughterhouse → M02 Castle of the Damned → M03 Ruins of the Forgotten → M04 The Longest Void. Nombres históricos del GDD conservados en DECISIONS T-27.
 
 ## Ítems (todos REQUIRED)
 
-Salud, armadura, Quad Damage, invulnerabilidad, berserk, regeneración y el resto documentado. Quad Damage y acumulación: D-10 y D-11 pendientes de cifras; no inventar silenciosamente. La recogida la confirma la autoridad.
+Salud, armadura y seis poderes: Quad Damage, invulnerabilidad, berserk, regeneración, haste y megahealth. D-10/D-11 resueltas: Quad ×4; repetir efecto reinicia duración; efectos diferentes coexisten; Quad y Berserk multiplican el melee. Cifras iniciales aprobadas en DECISIONS, configurables y provisionales. La recogida la confirma la autoridad.
 
 ## Monstruos
 
@@ -41,4 +41,4 @@ Diferencias: modelo, hitbox, animación, velocidad, salud y ataque básico. Demo
 
 ## Decisiones abiertas del GDD
 
-Trátalas como pendientes hasta `Documentation/DECISIONS.md`: D-04 modo, D-05 2v2/4v4 (ambos en alcance; orden por dependencias), D-07 armadura, D-08 respawn, D-10 Quad, D-11 acumulación, D-13 armas de monstruo.
+Consultar `Documentation/DECISIONS.md`: siguen abiertas D-04 modo, D-05 orden 2v2/4v4, D-12 estadísticas de monstruos, D-13 armas de monstruo y D-14 victoria. D-07/D-08/D-10/D-11 están resueltas; no volver a pedirlas. Vacío: máximo 5 s con daño progresivo, vibración y oscurecimiento.

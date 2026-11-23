@@ -33,6 +33,11 @@ namespace Meatgrinder.Weapons
         [SerializeField] private AudioClip shotSound;
         [SerializeField] private GameObject impactVfx;
 
+        [SerializeField, Range(0f, 1f)] private float selfDamageScale = 0.25f;
+        [SerializeField, Min(0f)] private float blastImpulse = 10f;
+        public float SelfDamageScale => Mathf.Clamp01(selfDamageScale);
+        public float BlastImpulse => Mathf.Max(0f, blastImpulse);
+
         public string WeaponId => weaponId;
         public string DisplayName => displayName;
         public WeaponDelivery Delivery => delivery;

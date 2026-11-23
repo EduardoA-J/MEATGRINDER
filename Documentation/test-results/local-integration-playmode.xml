@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="12" result="Failed(Child)" total="12" passed="9" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:33Z" duration="21,9018275">
+  <test-suite type="TestSuite" id="1023" name="grinder" fullname="grinder" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:33Z" duration="21.901828" total="12" passed="9" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1017" name="Meatgrinder.Tests.PlayMode.dll" fullname="F:/MAPAUNI/MEATGRINDER/grinder/Library/ScriptAssemblies/Meatgrinder.Tests.PlayMode.dll" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:33Z" duration="21.891369" total="12" passed="9" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="23292" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1018" name="Meatgrinder" fullname="Meatgrinder" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:33Z" duration="21.890396" total="12" passed="9" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1019" name="Tests" fullname="Meatgrinder.Tests" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:33Z" duration="21.889935" total="12" passed="9" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1001" name="CombatPlayModeTests" fullname="Meatgrinder.Tests.CombatPlayModeTests" classname="Meatgrinder.Tests.CombatPlayModeTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:12Z" duration="0.595868" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1003" name="RocketMovesAndSparesTheCoveredTarget" fullname="Meatgrinder.Tests.CombatPlayModeTests.RocketMovesAndSparesTheCoveredTarget" methodname="RocketMovesAndSparesTheCoveredTarget" classname="Meatgrinder.Tests.CombatPlayModeTests" runstate="Runnable" seed="200321020" result="Failed" start-time="2026-11-22 16:01:11Z" end-time="2026-11-22 16:01:12Z" duration="0.545971" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: 90.0d +/- 0.0010000000474974513d
+  But was:  83.001518249511719d
+]]></message>
+                <stack-trace><![CDATA[at Meatgrinder.Tests.CombatPlayModeTests+<RocketMovesAndSparesTheCoveredTarget>d__3.MoveNext () [0x001fc] in F:\MAPAUNI\MEATGRINDER\grinder\Assets\_Project\Tests\PlayMode\CombatPlayModeTests.cs:102
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@1405238725ab\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[Combat] Shot weapon loaded 0
+]]></output>
+            </test-case>
+            <test-case id="1002" name="ShotgunDamagesTheOpenTargetAndNotTheHiddenOne" fullname="Meatgrinder.Tests.CombatPlayModeTests.ShotgunDamagesTheOpenTargetAndNotTheHiddenOne" methodname="ShotgunDamagesTheOpenTargetAndNotTheHiddenOne" classname="Meatgrinder.Tests.CombatPlayModeTests" runstate="Runnable" seed="1669656058" result="Failed" start-time="2026-11-22 16:01:12Z" end-time="2026-11-22 16:01:12Z" duration="0.029568" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: less than 50.0f
+  But was:  50.0f
+]]></message>
+                <stack-trace><![CDATA[at Meatgrinder.Tests.CombatPlayModeTests+<ShotgunDamagesTheOpenTargetAndNotTheHiddenOne>d__2.MoveNext () [0x001e1] in F:\MAPAUNI\MEATGRINDER\grinder\Assets\_Project\Tests\PlayMode\CombatPlayModeTests.cs:60
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@1405238725ab\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1004" name="M01ShellPlayModeTests" fullname="Meatgrinder.Tests.M01ShellPlayModeTests" classname="Meatgrinder.Tests.M01ShellPlayModeTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-11-22 16:01:12Z" end-time="2026-11-22 16:01:13Z" duration="0.605755" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1005" name="PlayerMovesJumpsAndClimbsProBuilderGeometry" fullname="Meatgrinder.Tests.M01ShellPlayModeTests.PlayerMovesJumpsAndClimbsProBuilderGeometry" methodname="PlayerMovesJumpsAndClimbsProBuilderGeometry" classname="Meatgrinder.Tests.M01ShellPlayModeTests" runstate="Runnable" seed="1204551350" result="Failed" start-time="2026-11-22 16:01:12Z" end-time="2026-11-22 16:01:13Z" duration="0.604729" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: greater than 0
+  But was:  0
+]]></message>
+                <stack-trace><![CDATA[at Meatgrinder.Tests.M01ShellPlayModeTests+<PlayerMovesJumpsAndClimbsProBuilderGeometry>d__0.MoveNext () [0x000e6] in F:\MAPAUNI\MEATGRINDER\grinder\Assets\_Project\Tests\PlayMode\M01ShellPlayModeTests.cs:34
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@1405238725ab\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1006" name="MapLayoutPlayModeTests" fullname="Meatgrinder.Tests.MapLayoutPlayModeTests" classname="Meatgrinder.Tests.MapLayoutPlayModeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-22 16:01:13Z" end-time="2026-11-22 16:01:19Z" duration="6.170418" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1008" name="CastleFloorHoldsThePlayer" fullname="Meatgrinder.Tests.MapLayoutPlayModeTests.CastleFloorHoldsThePlayer" methodname="CastleFloorHoldsThePlayer" classname="Meatgrinder.Tests.MapLayoutPlayModeTests" runstate="Runnable" seed="1887228524" result="Passed" start-time="2026-11-22 16:01:14Z" end-time="2026-11-22 16:01:15Z" duration="1.557666" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1009" name="RuinsFloorHoldsThePlayer" fullname="Meatgrinder.Tests.MapLayoutPlayModeTests.RuinsFloorHoldsThePlayer" methodname="RuinsFloorHoldsThePlayer" classname="Meatgrinder.Tests.MapLayoutPlayModeTests" runstate="Runnable" seed="1742592586" result="Passed" start-time="2026-11-22 16:01:15Z" end-time="2026-11-22 16:01:17Z" duration="1.151330" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="SlaughterhouseKeepsTheRampAndTheFloor" fullname="Meatgrinder.Tests.MapLayoutPlayModeTests.SlaughterhouseKeepsTheRampAndTheFloor" methodname="SlaughterhouseKeepsTheRampAndTheFloor" classname="Meatgrinder.Tests.MapLayoutPlayModeTests" runstate="Runnable" seed="116974837" result="Passed" start-time="2026-11-22 16:01:17Z" end-time="2026-11-22 16:01:18Z" duration="1.157871" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="VoidHasNoGroundPlaneAndHoldsTheCore" fullname="Meatgrinder.Tests.MapLayoutPlayModeTests.VoidHasNoGroundPlaneAndHoldsTheCore" methodname="VoidHasNoGroundPlaneAndHoldsTheCore" classname="Meatgrinder.Tests.MapLayoutPlayModeTests" runstate="Runnable" seed="1344173838" result="Passed" start-time="2026-11-22 16:01:18Z" end-time="2026-11-22 16:01:19Z" duration="1.140109" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1011" name="MovementPlayModeTests" fullname="Meatgrinder.Tests.MovementPlayModeTests" classname="Meatgrinder.Tests.MovementPlayModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-22 16:01:19Z" end-time="2026-11-22 16:01:33Z" duration="14.515866" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1014" name="BodyDoesNotPassThroughAWall" fullname="Meatgrinder.Tests.MovementPlayModeTests.BodyDoesNotPassThroughAWall" methodname="BodyDoesNotPassThroughAWall" classname="Meatgrinder.Tests.MovementPlayModeTests" runstate="Runnable" seed="1646566565" result="Passed" start-time="2026-11-22 16:01:19Z" end-time="2026-11-22 16:01:22Z" duration="3.596950" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1013" name="CapsuleStaysOnTheFloorForTenPasses" fullname="Meatgrinder.Tests.MovementPlayModeTests.CapsuleStaysOnTheFloorForTenPasses" methodname="CapsuleStaysOnTheFloorForTenPasses" classname="Meatgrinder.Tests.MovementPlayModeTests" runstate="Runnable" seed="1562235766" result="Passed" start-time="2026-11-22 16:01:22Z" end-time="2026-11-22 16:01:26Z" duration="3.999582" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="LowStepIsClimbedAndTheCameraStaysInsideTheBody" fullname="Meatgrinder.Tests.MovementPlayModeTests.LowStepIsClimbedAndTheCameraStaysInsideTheBody" methodname="LowStepIsClimbedAndTheCameraStaysInsideTheBody" classname="Meatgrinder.Tests.MovementPlayModeTests" runstate="Runnable" seed="361115980" result="Passed" start-time="2026-11-22 16:01:26Z" end-time="2026-11-22 16:01:30Z" duration="3.200708" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="RampRaisesTheBody" fullname="Meatgrinder.Tests.MovementPlayModeTests.RampRaisesTheBody" methodname="RampRaisesTheBody" classname="Meatgrinder.Tests.MovementPlayModeTests" runstate="Runnable" seed="624212604" result="Passed" start-time="2026-11-22 16:01:30Z" end-time="2026-11-22 16:01:33Z" duration="3.598985" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="WasdSpaceAndMouseReachTheReader" fullname="Meatgrinder.Tests.MovementPlayModeTests.WasdSpaceAndMouseReachTheReader" methodname="WasdSpaceAndMouseReachTheReader" classname="Meatgrinder.Tests.MovementPlayModeTests" runstate="Runnable" seed="1778579121" result="Passed" start-time="2026-11-22 16:01:33Z" end-time="2026-11-22 16:01:33Z" duration="0.117751" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Movement] move=(0.00, 0.00) jump=False look=(0.00, 0.00) w=True controls=/Keyboard/w:True;/Keyboard/s:False;/Keyboard/a:False;/Keyboard/d:False;
+Saving results to: C:/Users/pc/AppData/LocalLow/DefaultCompany/grinder\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

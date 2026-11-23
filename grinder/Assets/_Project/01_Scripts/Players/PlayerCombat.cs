@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Meatgrinder.Combat;
 using Meatgrinder.Weapons;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Meatgrinder.Players
 {
@@ -17,6 +18,7 @@ namespace Meatgrinder.Players
         [SerializeField] private LocalCombatAuthority authority;
         [SerializeField] private PlayerImpactFeedback feedback;
         [SerializeField] private LocalProjectileSpawner projectiles;
+        [SerializeField] private Transform projectileMuzzle;
         [SerializeField] private HealthComponent health;
         [SerializeField] private float muzzleClearance = 0.6f; // PENDIENTE
 
@@ -48,6 +50,16 @@ namespace Meatgrinder.Players
             {
                 gameObject.AddComponent<Meatgrinder.Pickups.PowerUpManager>();
             }
+
+            if (GetComponent<PlayerImpulseReceiver>() == null)
+            {
+                gameObject.AddComponent<PlayerImpulseReceiver>();
+            }
+
+            if (GetComponent<PlayerVoidFall>() == null && SceneManager.GetActiveScene().name.StartsWith("M0"))
+            {
+                gameObject.AddComponent<PlayerVoidFall>();
+            }
         }
 
         void FixedUpdate()
@@ -66,7 +78,7 @@ namespace Meatgrinder.Players
             int slot = input.ConsumeWeaponSlot();
             if (slot > 0)
             {
-                weapons.Select(slot - 1);
+                weapons.SelectWeapon(slot == 1 ? "shotgun" : "rocket_launcher");
             }
 
             if (input.ConsumeReload())
@@ -90,6 +102,14 @@ namespace Meatgrinder.Players
                 return;
             }
 
+            if (authority != null && !authority.IsAuthoritative) return;
+            if (GetComponent<PlayerMelee>()?.IsSwinging == true) return;
+            if (weapons.ActiveDefinition == null)
+            {
+                GetComponent<PlayerMelee>()?.TrySwing();
+                return;
+            }
+            health?.BeginSpawnProtection(0f);
             damage.Resolver.AttackerPowerUps = GetComponent<IDamageModifiers>();
 
             ShotTicket ticket = weapons.TryBeginShot();
@@ -99,7 +119,7 @@ namespace Meatgrinder.Players
             }
 
             Vector3 aim = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector3.forward;
-            Vector3 muzzle = origin + (aim * muzzleClearance);
+            Vector3 muzzle = origin;
             bool authoritative = authority == null || authority.IsAuthoritative;
             int attackerId = health != null ? health.StableId : 0;
             int team = health != null ? health.TeamId : 0;
@@ -110,6 +130,7 @@ namespace Meatgrinder.Players
 
             if (ticket.Weapon.Delivery == WeaponDelivery.Projectile)
             {
+                ResolveProjectileOrigin(ticket.Weapon, ref muzzle, ref aim);
                 LaunchRocket(ticket, muzzle, aim, attackerId, team, authoritative);
                 return;
             }
@@ -177,6 +198,32 @@ namespace Meatgrinder.Players
             }
         }
 
+        void ResolveProjectileOrigin(WeaponDefinition weapon, ref Vector3 origin, ref Vector3 direction)
+        {
+            if (projectileMuzzle == null) return;
+            float distance = Mathf.Max(1f, weapon.MaxRange);
+            Vector3 target = origin + direction * distance;
+            foreach (var hit in Physics.RaycastAll(origin, direction, distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            {
+                if (hit.collider.transform.IsChildOf(transform) || hit.distance >= distance) continue;
+                distance = hit.distance; target = hit.point;
+            }
+            Vector3 offset = projectileMuzzle.position - origin;
+            float safeDistance = offset.magnitude;
+            if (safeDistance < .001f) return;
+            Vector3 travel = offset / safeDistance;
+            // Keep a muzzle poking into a wall from spawning a rocket on its far side.
+            foreach (var hit in Physics.SphereCastAll(origin, weapon.ProjectileRadius, travel, safeDistance,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            {
+                if (hit.collider.transform.IsChildOf(transform)) continue;
+                safeDistance = Mathf.Min(safeDistance, Mathf.Max(0, hit.distance - .01f));
+            }
+            origin += travel * safeDistance;
+            Vector3 aim = target - origin;
+            if (aim.sqrMagnitude > .0001f) direction = aim.normalized;
+        }
+
         void LaunchRocket(
             ShotTicket ticket,
             Vector3 muzzle,
@@ -201,7 +248,8 @@ namespace Meatgrinder.Players
                 AttackerId = attackerId,
                 AttackerTeam = team,
                 ConfirmationBase = ticket.ConfirmationBase,
-                HasAuthority = authoritative
+                HasAuthority = authoritative,
+                AllowSelfDamage = true
             };
             projectiles.Spawn(shot);
         }

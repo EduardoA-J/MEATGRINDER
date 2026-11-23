@@ -1,7 +1,7 @@
 # Herramientas y referencias — evaluación
 
 Fecha: 9 de noviembre de 2026.
-Alcance: ProBuilder quedó instalado (T-26). Luna sigue sin comprar.
+Actualización 22 nov 2026: ProBuilder se conserva (T-26). David descartó comprar Luna; D-09/D-24 resueltas con menús propios uGUI inspirados en Quake 2. No instalar Luna ni sus dependencias. La evaluación de compra inferior es histórica.
 
 HEAD del juego: `992bb92` en `main`, más cambios locales sin commit. Proyecto Unity: `F:\MAPAUNI\MEATGRINDER\grinder` (`6000.5.6f1`, URP 17.5.0, Fusion 2.1.4 Host Mode). `com.unity.probuilder` **6.1.4** está en `Packages/manifest.json`.
 
@@ -30,7 +30,7 @@ HEAD del juego: `992bb92` en `main`, más cambios locales sin commit. Proyecto U
 
 Uso previsto: geometría editable de M01–M04. Greybox sigue siendo laboratorio.
 
-## Luna UI — bloqueada por compra (D-24)
+## Luna UI — evaluación histórica, compra descartada por David
 
 Producto vigente: **Luna v2 — Complete UI Solution** (CupkekGames). La ficha 1.4.0 (id 299710) está retirada; la documentación actual es la 2.1.5.
 
@@ -44,7 +44,7 @@ Producto vigente: **Luna v2 — Complete UI Solution** (CupkekGames). La ficha 1
 | Precio | de pago, licencia por asiento, EULA estándar de Asset Store. Un agregador mostraba 54,99 USD / 27,49 USD en oferta. **El precio de caja hay que confirmarlo en el checkout; no se ha comprado** |
 | Riesgo | no añadir el registro git de CupkekGames junto al paquete de la tienda (ensamblados duplicados). No importar el sample de inventario/RPG como si fuera el juego |
 
-El HUD de combate actual es uGUI (`CombatHud`). Propuesta, no decisión: menús/pausa/lobby en Luna; HUD de partida sigue en uGUI hasta una migración aparte. D-09 queda abierta hasta el sí de D-24.
+Implementación actual: `SessionMenu` y `CombatHud` en uGUI. Boot, selección de mapa, carga, opciones, pausa y resultados locales integrados. No se copió código de Luna. Lobby competitivo y red siguen pendientes por separado.
 
 ## Licencias de referencias
 
@@ -56,7 +56,7 @@ El HUD de combate actual es uGUI (`CombatHud`). Propuesta, no decisión: menús/
 
 Editor del clon DOOM: `6000.4.8f1`. No abrir ese proyecto con `6000.5.6f1` si no hace falta: Unity reescribiría sus ProjectSettings.
 
-## Matriz (código verificado)
+## Matriz histórica (9 noviembre; estado actual en IMPLEMENTATION_STATUS_AUDIT)
 
 | Sistema | Referencia | MEATGRINDER ahora | Aprovechar | Acción |
 |---|---|---|---|---|

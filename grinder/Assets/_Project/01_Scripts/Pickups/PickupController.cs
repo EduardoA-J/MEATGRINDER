@@ -83,8 +83,11 @@ namespace Meatgrinder.Pickups
                     return definition.CanPickupWhenFull || health.Armor < health.MaxArmor;
 
                 case PickupType.PowerUp:
+                    return health.GetComponent<PowerUpManager>() != null;
                 case PickupType.Weapon:
-                    return true;
+                    return definition.Weapon != null && health.GetComponent<WeaponController>() != null;
+                case PickupType.Ammo:
+                    return health.GetComponent<WeaponController>()?.HasWeapon(definition.Weapon) == true;
 
                 default:
                     return false;
@@ -135,6 +138,9 @@ namespace Meatgrinder.Pickups
 
                     break;
 
+                case PickupType.Ammo:
+                    health.GetComponent<WeaponController>()?.AddAmmo(definition.Weapon, definition.AmmoAmount);
+                    break;
                 case PickupType.Weapon:
                     WeaponController weapons = health.GetComponent<WeaponController>();
                     if (weapons != null && definition.Weapon != null)

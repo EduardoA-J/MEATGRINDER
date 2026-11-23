@@ -3,50 +3,43 @@ using UnityEngine;
 
 namespace Meatgrinder.Pickups
 {
-    // Permite superar temporalmente el límite de salud con degradación
-    // PENDIENTE - valores configurables
     public sealed class MegahealthEffect : PowerUpEffect
     {
-        HealthComponent health;
-        float degradationPerSecond;
-        float normalMax;
+        readonly HealthComponent health;
+        readonly float degradationPerSecond;
+        readonly float cap;
+        readonly float delay;
+        float delayRemaining;
 
-        public MegahealthEffect(HealthComponent health, float duration, float amount, float degradationRate) 
-            : base(PowerUpType.Megahealth, duration, amount)
+        public MegahealthEffect(HealthComponent health, float duration, float amount, float degradationRate,
+            float cap = 200f, float delay = 5f) : base(PowerUpType.Megahealth, duration, amount)
         {
             this.health = health;
-            this.degradationPerSecond = degradationRate;
+            this.degradationPerSecond = Mathf.Max(0.01f, degradationRate);
+            this.cap = cap;
+            this.delay = delay;
         }
 
         protected override void OnActivate()
         {
-            if (health == null)
-            {
-                return;
-            }
-
-            normalMax = health.Max;
-            health.AddHealth(effectValue, true);
-            Debug.Log($"[PowerUp] Megahealth activado: +{effectValue} HP durante {duration}s");
+            delayRemaining = delay;
+            if (health == null) return;
+            health.AddOverhealth(effectValue, cap);
+            duration = timeRemaining = delay + Mathf.Max(0f, health.Current - health.Max) / degradationPerSecond;
         }
 
-        protected override void OnDeactivate()
-        {
-            Debug.Log("[PowerUp] Megahealth expirado");
-        }
+        protected override void OnDeactivate() { }
 
         protected override void OnTick(float deltaTime)
         {
-            if (health == null || health.Current <= normalMax)
+            if (health == null || !health.IsAlive || health.Current <= health.Max)
             {
                 Deactivate();
                 return;
             }
-
-            if (degradationPerSecond > 0f)
-            {
-                health.DecayToward(normalMax, degradationPerSecond * deltaTime);
-            }
+            float waiting = Mathf.Min(deltaTime, delayRemaining);
+            delayRemaining -= waiting;
+            health.DecayToward(health.Max, degradationPerSecond * (deltaTime - waiting));
         }
     }
 }

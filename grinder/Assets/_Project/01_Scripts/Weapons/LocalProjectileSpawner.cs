@@ -7,6 +7,7 @@ namespace Meatgrinder.Weapons
     public sealed class LocalProjectileSpawner : MonoBehaviour, IProjectileSpawner
     {
         [SerializeField] private GameObject fallbackPrefab;
+        public event System.Action<RocketProjectile> Spawned;
 
         public RocketProjectile Spawn(ProjectileLaunch launch)
         {
@@ -31,6 +32,7 @@ namespace Meatgrinder.Weapons
             }
 
             projectile.Launch(launch);
+            Spawned?.Invoke(projectile);
             return projectile;
         }
 

@@ -6,9 +6,9 @@ namespace Meatgrinder.Combat
     public sealed class HealthComponent : MonoBehaviour, IDamageable
     {
         [SerializeField] private HealthProfile profile;
-        [SerializeField] private float maxHealth = 100f; // PENDIENTE
-        [SerializeField] private float maxArmor = 100f; // PENDIENTE - D-07 propuesta: 100
-        [SerializeField] private float armorAbsorption = 0.5f; // PENDIENTE - D-07 propuesta: 50%
+        [SerializeField] private float maxHealth = 100f;
+        [SerializeField] private float maxArmor = 100f; // D-07: máximo 100
+        [SerializeField] private float armorAbsorption = 0.5f; // D-07: absorbe 50 %
         [SerializeField] private int teamId;
         [SerializeField] private int stableId;
 
@@ -18,11 +18,12 @@ namespace Meatgrinder.Combat
         bool isDead;
         float spawnProtectionRemaining;
 
+        public bool RecoverySuppressed { get; set; }
         public float Current { get; private set; }
         public float Armor { get; private set; }
         public float Max => profile != null ? profile.MaxHealth : (maxHealth > 0f ? maxHealth : 1f);
-        public float MaxArmor => maxArmor > 0f ? maxArmor : 0f;
-        public float ArmorAbsorption => Mathf.Clamp01(armorAbsorption);
+        public float MaxArmor => profile != null ? profile.MaxArmor : Mathf.Max(0f, maxArmor);
+        public float ArmorAbsorption => profile != null ? profile.ArmorAbsorption : Mathf.Clamp01(armorAbsorption);
         public int TeamId => teamId;
         public bool IsAlive => isDead == false && Current > 0f;
         public bool IsSpawnProtected => spawnProtectionRemaining > 0f;
@@ -37,6 +38,7 @@ namespace Meatgrinder.Combat
         }
 
         public event Action<float> Damaged;
+        public event Action<float> HealthChanged;
         public event Action<float> ArmorChanged;
         public event Action Died;
 
@@ -47,6 +49,11 @@ namespace Meatgrinder.Combat
 
         public void ReceiveConfirmed(float amount)
         {
+            ReceiveConfirmed(amount, false);
+        }
+
+        internal void ReceiveConfirmed(float amount, bool bypassArmor)
+        {
             if (isDead || amount <= 0f)
             {
                 return;
@@ -54,7 +61,7 @@ namespace Meatgrinder.Combat
 
             // Aplicar absorción de armadura si hay armadura disponible
             float damageToHealth = amount;
-            if (Armor > 0f && ArmorAbsorption > 0f)
+            if (!bypassArmor && Armor > 0f && ArmorAbsorption > 0f)
             {
                 float absorbed = amount * ArmorAbsorption;
                 float armorDamage = Mathf.Min(absorbed, Armor);
@@ -67,8 +74,11 @@ namespace Meatgrinder.Combat
             }
 
             Current = Mathf.Max(0f, Current - damageToHealth);
+            bool diedNow = Current <= 0f;
+            isDead = diedNow;
+            HealthChanged?.Invoke(Current);
             Damaged?.Invoke(amount); // El evento reporta el daño total recibido, no solo el que llegó a salud
-            if (Current > 0f)
+            if (!diedNow)
             {
                 return;
             }
@@ -82,12 +92,16 @@ namespace Meatgrinder.Combat
             isDead = false;
             Current = Max;
             Armor = 0f; // La armadura no se resetea automáticamente con la salud
+            spawnProtectionRemaining = 0f;
+            RecoverySuppressed = false;
             EnsureId();
+            HealthChanged?.Invoke(Current);
+            ArmorChanged?.Invoke(Armor);
         }
 
         public void AddArmor(float amount)
         {
-            if (amount <= 0f)
+            if (amount <= 0f || isDead || RecoverySuppressed)
             {
                 return;
             }
@@ -107,22 +121,31 @@ namespace Meatgrinder.Combat
 
         public void AddHealth(float amount, bool allowAboveMax)
         {
-            if (amount <= 0f || isDead)
+            if (amount <= 0f || isDead || RecoverySuppressed)
             {
                 return;
             }
 
-            Current = allowAboveMax ? Current + amount : Mathf.Min(Max, Current + amount);
+            Current = allowAboveMax ? Current + amount : Mathf.Max(Current, Mathf.Min(Max, Current + amount));
+            HealthChanged?.Invoke(Current);
+        }
+
+        public void AddOverhealth(float amount, float cap)
+        {
+            if (isDead || RecoverySuppressed || amount <= 0f) return;
+            Current = Mathf.Max(Current, Mathf.Min(Mathf.Max(Max, cap), Current + amount));
+            HealthChanged?.Invoke(Current);
         }
 
         public void DecayToward(float floor, float amount)
         {
-            if (isDead || amount <= 0f || Current <= floor)
+            if (isDead || RecoverySuppressed || amount <= 0f || Current <= floor)
             {
                 return;
             }
 
             Current = Mathf.Max(floor, Current - amount);
+            HealthChanged?.Invoke(Current);
         }
 
         public void BeginSpawnProtection(float seconds)
@@ -142,9 +165,7 @@ namespace Meatgrinder.Combat
 
         public void RespawnAtFullHealth()
         {
-            isDead = false;
-            Current = Max;
-            EnsureId();
+            ResetHealth();
         }
 
         internal void SetTeam(int value)

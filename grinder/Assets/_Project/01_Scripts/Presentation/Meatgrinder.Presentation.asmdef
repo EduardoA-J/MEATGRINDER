@@ -2,6 +2,9 @@
     "name": "Meatgrinder.Presentation",
     "rootNamespace": "Meatgrinder.Presentation",
     "references": [
+        "Meatgrinder.Core",
+        "Meatgrinder.Movement",
+        "Unity.InputSystem",
         "Meatgrinder.Combat",
         "Meatgrinder.Weapons",
         "Meatgrinder.Players",

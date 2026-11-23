@@ -299,20 +299,20 @@ namespace Meatgrinder.Tests
         }
 
         [Test]
-        public void GameActionsBindWasdSpaceAndMouseWithoutCrouch()
+        public void GameActionsBindWasdSpaceMouseSprintAndCrouch()
         {
             InputActionAsset asset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(
                 "Assets/_Project/02_ScriptableObjects/Input/MeatgrinderActions.inputactions");
             Assert.NotNull(asset);
             InputActionMap map = asset.FindActionMap("Player", true);
-            Assert.IsNull(map.FindAction("Crouch"));
-            Assert.IsNull(map.FindAction("Sprint"));
+            Assert.IsNotNull(map.FindAction("Crouch"));
+            Assert.IsNotNull(map.FindAction("Sprint"));
             Assert.NotNull(map.FindAction("Attack", true));
             Assert.IsTrue(HasBinding(map.FindAction("Move", true), "<Keyboard>/w"));
             Assert.IsTrue(HasBinding(map.FindAction("Jump", true), "<Keyboard>/space"));
             Assert.IsTrue(HasBinding(map.FindAction("Look", true), "<Pointer>/delta"));
             Assert.IsTrue(HasBinding(map.FindAction("Attack", true), "<Mouse>/leftButton"));
-            Debug.Log("[Movement] Actions Move, Look, Jump and Attack are bound. Crouch and Sprint are absent.");
+            Debug.Log("[Movement] Actions Move, Look, Jump, Attack, Sprint and Crouch are bound.");
         }
 
         static bool HasBinding(InputAction action, string path)

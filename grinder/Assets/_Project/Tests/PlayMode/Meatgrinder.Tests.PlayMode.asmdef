@@ -2,6 +2,10 @@
     "name": "Meatgrinder.Tests.PlayMode",
     "rootNamespace": "Meatgrinder.Tests",
     "references": [
+        "Meatgrinder.Core",
+        "Meatgrinder.Presentation",
+        "Meatgrinder.Pickups",
+        "UnityEngine.UI",
         "Meatgrinder.Movement",
         "Meatgrinder.Combat",
         "Meatgrinder.Weapons",

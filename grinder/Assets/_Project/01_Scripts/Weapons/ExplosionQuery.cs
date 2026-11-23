@@ -21,7 +21,7 @@ namespace Meatgrinder.Weapons
                 QueryTriggerInteraction.Ignore);
             HashSet<int> seen = new HashSet<int>();
             int applied = 0;
-            int slot = 0;
+
             for (int i = 0; i < found.Length; i++)
             {
                 HealthComponent health = found[i].GetComponentInParent<HealthComponent>();
@@ -51,14 +51,20 @@ namespace Meatgrinder.Weapons
                     launch.AttackerId,
                     launch.AttackerTeam,
                     health,
-                    launch.Weapon.BlastAmount(distance),
+                    launch.Weapon.BlastAmount(distance) * (health.StableId == launch.AttackerId ? launch.Weapon.SelfDamageScale : 1f),
                     DamageType.Explosion,
                     launch.Origin,
-                    launch.ConfirmationBase + (ulong)slot,
+                    launch.ConfirmationBase,
                     launch.HasAuthority,
-                    true,
+                    !launch.AllowSelfDamage,
                     launch.Weapon.WeaponId));
-                slot++;
+                if (launch.HasAuthority && launch.AllowSelfDamage && health.StableId == launch.AttackerId && health.IsAlive)
+                {
+                    float impulse = launch.Weapon.BlastImpulse * Mathf.Clamp01(1f - distance / launch.Weapon.BlastRadius);
+                    Vector3 radial = new Vector3(delta.x, 0f, delta.z);
+                    Vector3 direction = (Vector3.up + (radial.sqrMagnitude > 0.0001f ? radial.normalized * 0.35f : Vector3.zero)).normalized;
+                    health.GetComponent<IImpulseReceiver>()?.AddImpulse(direction * impulse);
+                }
                 if (hit)
                 {
                     applied++;

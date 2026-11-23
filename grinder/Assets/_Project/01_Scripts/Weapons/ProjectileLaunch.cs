@@ -15,5 +15,6 @@ namespace Meatgrinder.Weapons
         public int AttackerTeam;
         public ulong ConfirmationBase;
         public bool HasAuthority = true;
+        public bool AllowSelfDamage;
     }
 }

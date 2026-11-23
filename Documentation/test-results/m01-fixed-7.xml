@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4,4652364">
+  <test-suite type="TestSuite" id="1023" name="grinder" fullname="grinder" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4.465236" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1017" name="Meatgrinder.Tests.PlayMode.dll" fullname="F:/MAPAUNI/MEATGRINDER/grinder/Library/ScriptAssemblies/Meatgrinder.Tests.PlayMode.dll" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4.453383" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="23892" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1018" name="Meatgrinder" fullname="Meatgrinder" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4.452467" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1019" name="Tests" fullname="Meatgrinder.Tests" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4.451857" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1004" name="M01ShellPlayModeTests" fullname="Meatgrinder.Tests.M01ShellPlayModeTests" classname="Meatgrinder.Tests.M01ShellPlayModeTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4.449631" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1005" name="PlayerMovesJumpsAndClimbsProBuilderGeometry" fullname="Meatgrinder.Tests.M01ShellPlayModeTests.PlayerMovesJumpsAndClimbsProBuilderGeometry" methodname="PlayerMovesJumpsAndClimbsProBuilderGeometry" classname="Meatgrinder.Tests.M01ShellPlayModeTests" runstate="Runnable" seed="617260555" result="Failed" start-time="2026-11-22 16:44:54Z" end-time="2026-11-22 16:44:59Z" duration="4.431661" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: greater than 0.400000006f
+  But was:  0.0799999833f
+]]></message>
+                <stack-trace><![CDATA[at Meatgrinder.Tests.M01ShellPlayModeTests+<PlayerMovesJumpsAndClimbsProBuilderGeometry>d__0.MoveNext () [0x00557] in F:\MAPAUNI\MEATGRINDER\grinder\Assets\_Project\Tests\PlayMode\M01ShellPlayModeTests.cs:90
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@1405238725ab\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[M01Test] rampPos=(3.50, 1.22, 4.00) col=BoxCollider bounds=Center: (3.50, 1.22, 4.00), Extents: (2.00, 1.43, 3.87)
+[M01Test] rampRay=PB_Ramp normal=(0.00, 0.95, -0.31) point=(3.50, 1.43, 4.00)
+[RampSnap] pos=(3.36, 0.32, 0.28) hit=(3.36, 0.22, 0.28) delta=-0,1005851
+[RampSnap] pos=(3.35, 0.37, 0.44) hit=(3.35, 0.27, 0.44) delta=-0,1005849
+[RampSnap] pos=(3.35, 0.42, 0.60) hit=(3.35, 0.32, 0.60) delta=-0,100585
+[RampSnap] pos=(3.35, 0.48, 0.76) hit=(3.35, 0.38, 0.76) delta=-0,100585
+[RampSnap] pos=(3.34, 0.53, 0.92) hit=(3.34, 0.43, 0.92) delta=-0,100585
+[RampSnap] pos=(3.34, 0.58, 1.08) hit=(3.34, 0.48, 1.08) delta=-0,100585
+[RampSnap] pos=(3.34, 0.63, 1.24) hit=(3.34, 0.53, 1.24) delta=-0,1005849
+[RampSnap] pos=(3.34, 0.68, 1.40) hit=(3.34, 0.58, 1.40) delta=-0,100585
+[RampSnap] pos=(3.34, 0.74, 1.56) hit=(3.34, 0.64, 1.56) delta=-0,1005849
+[RampSnap] pos=(3.33, 0.79, 1.72) hit=(3.33, 0.69, 1.72) delta=-0,1005849
+[RampSnap] pos=(3.33, 0.84, 1.88) hit=(3.33, 0.74, 1.88) delta=-0,1005849
+[RampSnap] pos=(3.33, 0.89, 2.04) hit=(3.33, 0.79, 2.04) delta=-0,100585
+[RampSnap] pos=(3.33, 0.94, 2.20) hit=(3.33, 0.84, 2.20) delta=-0,1005849
+[RampSnap] pos=(3.33, 1.00, 2.36) hit=(3.33, 0.90, 2.36) delta=-0,1005849
+[RampSnap] pos=(3.33, 1.05, 2.52) hit=(3.33, 0.95, 2.52) delta=-0,1005849
+[RampSnap] pos=(3.33, 1.10, 2.68) hit=(3.33, 1.00, 2.68) delta=-0,100585
+[RampSnap] pos=(3.33, 1.15, 2.84) hit=(3.33, 1.05, 2.84) delta=-0,100585
+[RampSnap] pos=(3.33, 1.20, 3.00) hit=(3.33, 1.10, 3.00) delta=-0,100585
+[RampSnap] pos=(3.33, 1.26, 3.16) hit=(3.33, 1.16, 3.16) delta=-0,1005849
+[RampSnap] pos=(3.33, 1.31, 3.32) hit=(3.33, 1.21, 3.32) delta=-0,1005849
+[RampSnap] pos=(3.33, 1.36, 3.48) hit=(3.33, 1.26, 3.48) delta=-0,1005846
+[RampSnap] pos=(3.33, 1.41, 3.64) hit=(3.33, 1.31, 3.64) delta=-0,1005847
+[RampSnap] pos=(3.33, 1.46, 3.80) hit=(3.33, 1.36, 3.80) delta=-0,1005849
+[RampSnap] pos=(3.33, 1.52, 3.96) hit=(3.33, 1.42, 3.96) delta=-0,1005849
+[RampSnap] pos=(3.32, 1.57, 4.12) hit=(3.32, 1.47, 4.12) delta=-0,1005849
+[RampSnap] pos=(3.32, 1.62, 4.28) hit=(3.32, 1.52, 4.28) delta=-0,1005846
+[RampSnap] pos=(3.32, 1.67, 4.44) hit=(3.32, 1.57, 4.44) delta=-0,1005847
+[RampSnap] pos=(3.32, 1.72, 4.60) hit=(3.32, 1.62, 4.60) delta=-0,1005849
+[RampSnap] pos=(3.32, 1.78, 4.76) hit=(3.32, 1.68, 4.76) delta=-0,1005849
+[RampSnap] pos=(3.32, 1.83, 4.92) hit=(3.32, 1.73, 4.92) delta=-0,1005846
+[RampSnap] pos=(3.32, 1.88, 5.08) hit=(3.32, 1.78, 5.08) delta=-0,1005851
+[RampSnap] pos=(3.32, 1.93, 5.24) hit=(3.32, 1.83, 5.24) delta=-0,1005849
+[RampSnap] pos=(3.32, 1.98, 5.40) hit=(3.32, 1.88, 5.40) delta=-0,1005846
+[RampSnap] pos=(3.32, 2.04, 5.56) hit=(3.32, 1.94, 5.56) delta=-0,1005846
+[RampSnap] pos=(3.32, 2.09, 5.72) hit=(3.32, 1.99, 5.72) delta=-0,1005847
+[RampSnap] pos=(3.32, 2.14, 5.88) hit=(3.32, 2.04, 5.88) delta=-0,1005845
+[RampSnap] pos=(3.32, 2.19, 6.04) hit=(3.32, 2.09, 6.04) delta=-0,1005847
+[RampSnap] pos=(3.32, 2.24, 6.20) hit=(3.32, 2.14, 6.20) delta=-0,1005847
+[RampSnap] pos=(3.32, 2.30, 6.36) hit=(3.32, 2.20, 6.36) delta=-0,100585
+[RampSnap] pos=(3.32, 2.35, 6.52) hit=(3.32, 2.25, 6.52) delta=-0,1005845
+[RampSnap] pos=(3.32, 2.40, 6.68) hit=(3.32, 2.30, 6.68) delta=-0,1005845
+[RampSnap] pos=(3.32, 2.45, 6.84) hit=(3.32, 2.35, 6.84) delta=-0,1005845
+[RampSnap] pos=(3.32, 2.50, 7.00) hit=(3.32, 2.40, 7.00) delta=-0,1005843
+[RampSnap] pos=(3.32, 2.56, 7.16) hit=(3.32, 2.45, 7.16) delta=-0,1005845
+[RampSnap] pos=(3.32, 2.61, 7.32) hit=(3.32, 2.51, 7.32) delta=-0,1005845
+[RampSnap] pos=(3.32, 2.66, 7.48) hit=(3.32, 2.56, 7.48) delta=-0,1005847
+[RampSnap] pos=(3.32, 2.71, 7.64) hit=(3.32, 2.61, 7.64) delta=-0,09996009
+[RampSnap] pos=(3.32, 2.72, 7.80) hit=(3.32, 2.47, 7.80) delta=-0,2522342
+[M01Test] rampDelta y0=0,05 y1=0,07999998 pos=(3.32, 0.08, 17.32)
+Saving results to: C:/Users/pc/AppData/LocalLow/DefaultCompany/grinder\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

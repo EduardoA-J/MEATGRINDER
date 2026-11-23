@@ -5,6 +5,16 @@ Actualización de alcance: 9 de noviembre de 2026 — [GDD_SCOPE_ADDENDUM.md](GD
 Trazabilidad: cada requisito apunta a tareas de [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md). Un requisito con decisión abierta no autoriza a inventar el dato que falta.
 **Todos los requisitos de este documento son REQUIRED para el juego completo.** Las menciones a «demo / semana N» indican prioridad histórica, no exclusión.
 
+## Resoluciones de diseño incorporadas el 22 de noviembre de 2026
+
+Las cifras y reglas que antes estaban abiertas en D-06–D-18 quedan fijadas por la decisión de David
+registrada en [DECISIONS.md](DECISIONS.md): armadura 100/50 %, respawn de 4 s con 1 s de protección,
+aparición inicial y respawn solo con melee, loot de armas/munición, daño progresivo al vacío,
+autodaño y rocket jump, Quad ×4, acumulación de Quad+Berserk, invulnerabilidad/haste/berserk/
+regeneración/megahealth, sprint y agacharse, llaves que abren rutas y zonas opcionales, y menú propio
+con flujo inspirado en Quake 2. El hardware i5-10400/UHD 630/16 GB/1366×768 queda como línea base
+mínima; el objetivo final de rendimiento se validará con máquinas superiores.
+
 ## Funcionales
 
 | ID | Requisito | Tareas |

@@ -23,6 +23,9 @@ namespace Meatgrinder.Editor
             Block.Slab(yard, "PB_WestApron", -31f, 2f, 0f, 34f, 36f, 0.4f, material, concrete);
             Block.Slab(yard, "PB_SouthLip", 0f, -18f, 0f, 24f, 10f, 0.4f, material, concrete);
             Block.Slab(yard, "PB_SouthDock", 0f, -36f, 0f, 64f, 28f, 0.4f, material, concrete);
+            // Landing deck continues the authored ramp so a traversal test and
+            // the intended route do not immediately drop the player after the crest.
+            Block.Slab(yard, "PB_RampLanding", 3.5f, 14f, 2.7f, 4f, 12f, 0.3f, material, metal);
             Block.Slab(yard, "PB_EastCold", 59f, 14f, 0f, 28f, 48f, 0.4f, material, cold);
             Block.Slab(yard, "PB_WestHall", -52f, 8f, 0f, 22f, 56f, 0.4f, material, concrete);
             Block.Slab(yard, "PB_WestPit", -71f, 14f, -1.2f, 20f, 18f, 0.4f, material, blood);
@@ -104,6 +107,10 @@ namespace Meatgrinder.Editor
             Block.Pickup(items, "Pickup_Quad_Arena", new Vector3(2f, 0.45f, 64f), kit.Quad, material, QuadTint);
             Block.Pickup(items, "Pickup_Berserk_West", new Vector3(-74f, -0.75f, 14f), kit.Berserk, material, BerserkTint);
             Block.Pickup(items, "Pickup_Rockets_East", new Vector3(62f, 0.45f, 8f), kit.Rockets, material, RocketTint);
+            Block.Pickup(items, "Pickup_Invulnerability_Cold", new Vector3(58f, 0.45f, 28f), kit.Invulnerability, material, new Color(0.45f, 0.85f, 1f));
+            Block.Pickup(items, "Pickup_Haste_Dock", new Vector3(0f, 0.45f, -28f), kit.Haste, material, new Color(0.3f, 1f, 0.65f));
+            Block.Pickup(items, "Pickup_Regeneration_Hall", new Vector3(-52f, 0.45f, 28f), kit.Regeneration, material, new Color(0.35f, 1f, 0.35f));
+            Block.Pickup(items, "Pickup_Megahealth_Kill", new Vector3(-20f, 0.45f, 60f), kit.Megahealth, material, new Color(1f, 0.25f, 0.55f));
         }
 
         public static void Castle(Transform yard, Material material, MapAuthor.PickupKit kit)
@@ -276,6 +283,10 @@ namespace Meatgrinder.Editor
             Block.Pickup(items, "Pickup_Quad_Court", new Vector3(10f, 0.45f, -6f), kit.Quad, material, QuadTint);
             Block.Pickup(items, "Pickup_Berserk_Hall", new Vector3(0f, 0.45f, 92f), kit.Berserk, material, BerserkTint);
             Block.Pickup(items, "Pickup_Rockets_Yard", new Vector3(46f, 1.05f, 10f), kit.Rockets, material, RocketTint);
+            Block.Pickup(items, "Pickup_Invulnerability_Chapel", new Vector3(46f, 1.25f, 8f), kit.Invulnerability, material, new Color(0.45f, 0.85f, 1f));
+            Block.Pickup(items, "Pickup_Haste_Barbican", new Vector3(2f, 0.45f, -190f), kit.Haste, material, new Color(0.3f, 1f, 0.65f));
+            Block.Pickup(items, "Pickup_Regeneration_Crypt", new Vector3(2f, -1.85f, -108f), kit.Regeneration, material, new Color(0.35f, 1f, 0.35f));
+            Block.Pickup(items, "Pickup_Megahealth_Hall", new Vector3(0f, 1.05f, 78f), kit.Megahealth, material, new Color(1f, 0.25f, 0.55f));
         }
 
         public static void Ruins(Transform yard, Material material, MapAuthor.PickupKit kit)
@@ -349,6 +360,10 @@ namespace Meatgrinder.Editor
             Block.Pickup(items, "Pickup_Quad_Bridge", new Vector3(0f, 7.65f, 70f), kit.Quad, material, QuadTint);
             Block.Pickup(items, "Pickup_Berserk_West", new Vector3(-36f, 2.85f, 8f), kit.Berserk, material, BerserkTint);
             Block.Pickup(items, "Pickup_Rockets_East", new Vector3(40f, 3.75f, 0f), kit.Rockets, material, RocketTint);
+            Block.Pickup(items, "Pickup_Invulnerability_Terrace", new Vector3(32f, 2.85f, 28f), kit.Invulnerability, material, new Color(0.45f, 0.85f, 1f));
+            Block.Pickup(items, "Pickup_Haste_Bridge", new Vector3(0f, 7.65f, 54f), kit.Haste, material, new Color(0.3f, 1f, 0.65f));
+            Block.Pickup(items, "Pickup_Regeneration_Bowl", new Vector3(-18f, -1.35f, 12f), kit.Regeneration, material, new Color(0.35f, 1f, 0.35f));
+            Block.Pickup(items, "Pickup_Megahealth_Temple", new Vector3(0f, 4.05f, 62f), kit.Megahealth, material, new Color(1f, 0.25f, 0.55f));
         }
 
         public static void Void(Transform yard, Material material, MapAuthor.PickupKit kit)
@@ -418,6 +433,10 @@ namespace Meatgrinder.Editor
             Block.Pickup(items, "Pickup_Quad_East", new Vector3(44f, 10.7f, 2f), kit.Quad, material, QuadTint);
             Block.Pickup(items, "Pickup_Berserk_West", new Vector3(-40f, 3.5f, -2f), kit.Berserk, material, BerserkTint);
             Block.Pickup(items, "Pickup_Rockets_South", new Vector3(6f, 6.5f, -38f), kit.Rockets, material, RocketTint);
+            Block.Pickup(items, "Pickup_Invulnerability_Core", new Vector3(0f, 10.9f, 2f), kit.Invulnerability, material, new Color(0.45f, 0.85f, 1f));
+            Block.Pickup(items, "Pickup_Haste_East", new Vector3(38f, 10.7f, 2f), kit.Haste, material, new Color(0.3f, 1f, 0.65f));
+            Block.Pickup(items, "Pickup_Regeneration_West", new Vector3(-38f, 3.5f, -2f), kit.Regeneration, material, new Color(0.35f, 1f, 0.35f));
+            Block.Pickup(items, "Pickup_Megahealth_High", new Vector3(0f, 13f, 42f), kit.Megahealth, material, new Color(1f, 0.25f, 0.55f));
         }
 
         static void GiantTower(Transform parent, string name, Vector3 origin, bool doorFacesSouth, bool openEast, bool openWest, Material material, Color stone, Color dark)

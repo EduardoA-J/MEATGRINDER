@@ -51,7 +51,7 @@ namespace Meatgrinder.Tests
         [Test]
         public void DamageTypesCoverTheFourChannels()
         {
-            Assert.AreEqual(4, System.Enum.GetValues(typeof(DamageType)).Length);
+            Assert.AreEqual(5, System.Enum.GetValues(typeof(DamageType)).Length);
             Assert.AreNotEqual(DamageType.Hitscan, DamageType.Projectile);
             Assert.AreNotEqual(DamageType.Melee, DamageType.Explosion);
         }

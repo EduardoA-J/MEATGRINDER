@@ -8,6 +8,8 @@ namespace Meatgrinder.Pickups
     {
         readonly Dictionary<PowerUpType, PowerUpEffect> activeEffects = new Dictionary<PowerUpType, PowerUpEffect>();
 
+        readonly List<PowerUpType> expired = new();
+
         public event System.Action<PowerUpType, float> PowerUpActivated;
         public event System.Action<PowerUpType> PowerUpExpired;
 
@@ -28,7 +30,7 @@ namespace Meatgrinder.Pickups
 
         void FixedUpdate()
         {
-            List<PowerUpType> expired = new List<PowerUpType>();
+            expired.Clear();
             foreach (var kvp in activeEffects)
             {
                 kvp.Value.Tick(Time.fixedDeltaTime);
@@ -54,8 +56,8 @@ namespace Meatgrinder.Pickups
 
             PowerUpType type = effect.Type;
             
-            // D-11 pendiente. Regla provisional: el mismo tipo reinicia con la definición nueva.
-            // No suma duraciones.
+            // D-11: el mismo tipo reinicia la duración sin acumular potencia;
+            // los tipos distintos conviven.
             if (activeEffects.ContainsKey(type))
             {
                 activeEffects[type].Deactivate();
@@ -148,7 +150,7 @@ namespace Meatgrinder.Pickups
                 case PowerUpType.Regeneration:
                     return new RegenerationEffect(health, duration, value);
                 case PowerUpType.Megahealth:
-                    return new MegahealthEffect(health, duration, value, duration > 0f ? value / duration : 0f);
+                    return new MegahealthEffect(health, duration, value, definition.OverhealthDecay, definition.OverhealthCap, definition.OverhealthDelay);
                 default:
                     return null;
             }

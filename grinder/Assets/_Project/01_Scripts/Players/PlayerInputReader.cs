@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace Meatgrinder.Players
 {
     [DefaultExecutionOrder(-50)]
-    public sealed class PlayerInputReader : MonoBehaviour, IPlanarInput
+    public sealed class PlayerInputReader : MonoBehaviour, IPlanarInput, IStanceInput
     {
         [SerializeField] private InputActionAsset actions;
 
@@ -18,6 +18,8 @@ namespace Meatgrinder.Players
         InputAction slot1Action;
         InputAction slot2Action;
         InputAction meleeAction;
+        InputAction sprintAction;
+        InputAction crouchAction;
         Vector2 lookDelta;
         bool loggedSample;
         bool attackLatched;
@@ -28,6 +30,8 @@ namespace Meatgrinder.Players
         public Vector2 Move => moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
         public bool JumpHeld => jumpAction != null && jumpAction.IsPressed();
         public Vector2 LookDelta => lookDelta;
+        public bool SprintHeld => sprintAction != null && sprintAction.IsPressed();
+        public bool CrouchHeld => crouchAction != null && crouchAction.IsPressed();
 
         public bool ConsumeAttack()
         {
@@ -66,6 +70,9 @@ namespace Meatgrinder.Players
         void OnDisable()
         {
             playerMap?.Disable();
+            attackLatched = reloadLatched = meleeLatched = false;
+            slotLatched = 0;
+            lookDelta = Vector2.zero;
         }
 
         void Update()
@@ -137,6 +144,8 @@ namespace Meatgrinder.Players
             slot1Action = playerMap.FindAction("WeaponSlot1");
             slot2Action = playerMap.FindAction("WeaponSlot2");
             meleeAction = playerMap.FindAction("Melee", false);
+            sprintAction = playerMap.FindAction("Sprint", false);
+            crouchAction = playerMap.FindAction("Crouch", false);
         }
     }
 }

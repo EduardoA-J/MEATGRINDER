@@ -5,6 +5,7 @@ namespace Meatgrinder.Combat
         Hitscan = 0,
         Projectile = 1,
         Melee = 2,
-        Explosion = 3
+        Explosion = 3,
+        Void = 4
     }
 }

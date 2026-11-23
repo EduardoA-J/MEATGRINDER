@@ -25,6 +25,13 @@ namespace Meatgrinder.Pickups
         [SerializeField] private WeaponDefinition weapon;
         [SerializeField] private int ammoAmount = 0; // Si es 0, da munición estándar del arma
 
+        [SerializeField, Min(0f)] private float overhealthCap = 200f;
+        [SerializeField, Min(0f)] private float overhealthDelay = 5f;
+        [SerializeField, Min(0f)] private float overhealthDecay = 5f;
+        public float OverhealthCap => overhealthCap;
+        public float OverhealthDelay => overhealthDelay;
+        public float OverhealthDecay => overhealthDecay;
+
         public string PickupId => pickupId;
         public string DisplayName => displayName;
         public PickupType Type => type;

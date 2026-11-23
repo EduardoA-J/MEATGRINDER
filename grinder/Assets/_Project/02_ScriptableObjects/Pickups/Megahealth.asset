@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7, type: 3}
+  m_Name: Megahealth
+  m_EditorClassIdentifier: Meatgrinder.Pickups::Meatgrinder.Pickups.PickupDefinition
+  pickupId: megahealth
+  displayName: Megahealth
+  type: 3
+  amount: 100
+  respawnTime: 60
+  canPickupWhenFull: 1
+  visualPrefab: {fileID: 3154010793371327343, guid: 871700cf3f5219341bf9e97d90ebf0bc, type: 3}
+  pickupSound: {fileID: 8300000, guid: 105ad0772a5f6874990e9865543d8aad, type: 3}
+  pickupVfx: {fileID: 0}
+  powerUpType: 1
+  duration: 25
+  effectValue: 100
+  weapon: {fileID: 0}
+  ammoAmount: 0
+  overhealthCap: 200
+  overhealthDelay: 5
+  overhealthDecay: 5

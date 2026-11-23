@@ -116,6 +116,24 @@ namespace Meatgrinder.Editor
                 return;
             }
 
+            // The hand-authored ramp is part of the M01 contract. Normalize its
+            // saved rotation so the BoxCollider follows the visible 18 degree
+            // incline after scene regeneration.
+            ramp.transform.rotation = Quaternion.Euler(-18f, 0f, 0f);
+            BoxCollider rampCollider = ramp.GetComponent<BoxCollider>();
+            if (rampCollider != null)
+            {
+                Vector3 size = rampCollider.size;
+                size.y = 0.4f;
+                rampCollider.size = size;
+            }
+
+            // Remove an obsolete empty ProBuilder placeholder left by the original shell.
+            foreach (ProBuilderMesh empty in Object.FindObjectsByType<ProBuilderMesh>(FindObjectsSortMode.None))
+            {
+                if (empty.vertexCount == 0) Object.DestroyImmediate(empty.gameObject);
+            }
+
             Vector3 rampPosition = ramp.transform.position;
             LightMood(new Color(1f, 0.72f, 0.48f), new Color(0.16f, 0.13f, 0.12f), 1.15f, new Color(0.22f, 0.14f, 0.1f), 0.012f, new Vector3(42f, -35f, 0f));
             ReplaceRoot("M01_Expansion");
@@ -272,6 +290,10 @@ namespace Meatgrinder.Editor
             public PickupDefinition Quad;
             public PickupDefinition Berserk;
             public PickupDefinition Rockets;
+            public PickupDefinition Invulnerability;
+            public PickupDefinition Haste;
+            public PickupDefinition Regeneration;
+            public PickupDefinition Megahealth;
 
             public static PickupKit LoadOrCreate()
             {
@@ -280,9 +302,13 @@ namespace Meatgrinder.Editor
                 {
                     Health = Define("Health_Small", "health_small", "Salud", PickupType.Health, 25f, PowerUpType.QuadDamage, 0f, 0f, null, 0),
                     Armor = Define("Armor_Small", "armor_small", "Armadura", PickupType.Armor, 25f, PowerUpType.QuadDamage, 0f, 0f, null, 0),
-                    Quad = Define("Quad", "quad", "Quad Damage", PickupType.PowerUp, 0f, PowerUpType.QuadDamage, 30f, 2f, null, 0),
-                    Berserk = Define("Berserk", "berserk", "Berserk", PickupType.PowerUp, 0f, PowerUpType.Berserk, 30f, 2f, null, 0),
+                    Quad = Define("Quad", "quad", "Quad Damage", PickupType.PowerUp, 0f, PowerUpType.QuadDamage, 30f, 4f, null, 0),
+                    Berserk = Define("Berserk", "berserk", "Berserk", PickupType.PowerUp, 0f, PowerUpType.Berserk, 20f, 2f, null, 0),
                     Rockets = Define("Rocket_Ammo", "rocket_ammo", "Cohetes", PickupType.Weapon, 0f, PowerUpType.QuadDamage, 0f, 0f, rocket, 4)
+                    , Invulnerability = Define("Invulnerability", "invulnerability", "Invulnerabilidad", PickupType.PowerUp, 0f, PowerUpType.Invulnerability, 10f, 1f, null, 0)
+                    , Haste = Define("Haste", "haste", "Haste", PickupType.PowerUp, 0f, PowerUpType.Haste, 20f, 1.3f, null, 0)
+                    , Regeneration = Define("Regeneration", "regeneration", "Regeneración", PickupType.PowerUp, 0f, PowerUpType.Regeneration, 10f, 10f, null, 0)
+                    , Megahealth = Define("Megahealth", "megahealth", "Megahealth", PickupType.PowerUp, 100f, PowerUpType.Megahealth, 25f, 100f, null, 0)
                 };
             }
 
@@ -311,7 +337,7 @@ namespace Meatgrinder.Editor
                 data.FindProperty("displayName").stringValue = label;
                 data.FindProperty("type").enumValueIndex = (int)type;
                 data.FindProperty("amount").floatValue = amount;
-                data.FindProperty("respawnTime").floatValue = 30f;
+                data.FindProperty("respawnTime").floatValue = type == PickupType.PowerUp ? 60f : 20f;
                 data.FindProperty("canPickupWhenFull").boolValue = type == PickupType.Weapon || type == PickupType.PowerUp;
                 data.FindProperty("powerUpType").enumValueIndex = (int)power;
                 data.FindProperty("duration").floatValue = duration;

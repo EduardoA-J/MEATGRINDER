@@ -51,16 +51,18 @@ namespace Meatgrinder.Presentation
             kick = Vector3.Lerp(kick, Vector3.zero, blend);
             kickAngle = Mathf.Lerp(kickAngle, 0f, blend);
             bool reloading = weapons != null && weapons.IsReloading;
+            float reload = reloading && weapons.ActiveDefinition != null
+                ? Mathf.Sin(Mathf.Clamp01(1f - weapons.ReloadRemaining / Mathf.Max(.01f, weapons.ActiveDefinition.ReloadDuration)) * Mathf.PI) : 0f;
             float draw = DrawBlend();
             if (model != null)
             {
                 Vector3 lowered = new Vector3(0.08f, -0.3f, -0.15f) * draw;
-                model.localPosition = restPosition + kick + lowered + (reloading ? reloadOffset : Vector3.zero);
+                model.localPosition = restPosition + kick + lowered + reloadOffset * reload;
                 Vector3 euler = restEuler + new Vector3(-kickAngle, 0f, 0f);
                 euler += new Vector3(45f, 18f, -10f) * draw;
                 if (reloading)
                 {
-                    euler += reloadEuler;
+                    euler += reloadEuler * reload;
                 }
 
                 model.localRotation = Quaternion.Euler(euler);

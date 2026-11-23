@@ -25,7 +25,7 @@ Greybox es herramienta de prueba, no el producto.
 - Proyecto Unity: `grinder/`. Versión de editor: `6000.5.6f1`.
 - URP 17.5.0, color lineal, calidad PC.
 - Photon Fusion 2.1.4 Stable, Host Mode (T-21). App ID fuera de git.
-- Hay scripts de juego locales (movimiento, escopeta, combate). El multijugador de partida aún no está. Ver `IMPLEMENTATION_STATUS_AUDIT.md`.
+- Estado actualizado 22 nov: Boot/menús y sesión local conectan M01–M04, escopeta/cohete/melee, poderes, HUD, llaves/puertas y muerte/respawn. Primera pasada de arte/audio y modelos estáticos como blancos. El multijugador de partida aún no está. Evidencia y límites en `PROGRESS.md` e `IMPLEMENTATION_STATUS_AUDIT.md`; no confundir pruebas locales con gameplay Fusion.
 
 ## Regla de cambio
 

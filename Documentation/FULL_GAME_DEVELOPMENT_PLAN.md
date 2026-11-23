@@ -45,6 +45,8 @@ IDamageModifiers / asmdefs limpios
 
 ## 5. Plan inmediato
 
+Actualización 22 nov: A1 y el ciclo local B1–B6 ya tienen integración y pruebas; Boot/menús, poderes, puertas y presentación local se añadieron sin tocar Fusion. Consultar `PROGRESS.md` para evidencia, sin volver a crear estos sistemas desde cero. La autorización de esta pasada excluye red: el siguiente ciclo de producto deberá concretar modo/victoria/monstruos/capacidad y después conectar autoridad Host Mode y validar dos clientes. El acabado de mapas, rigs/LOD, audio final y perfiles de rendimiento siguen pendientes. Las tablas inferiores conservan la secuencia histórica, no su estado actual.
+
 ### A. Bloqueantes inmediatos (P0)
 
 | # | Tarea | Criterio | Prueba |

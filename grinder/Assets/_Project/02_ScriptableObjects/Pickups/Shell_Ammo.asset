@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7, type: 3}
+  m_Name: Shell_Ammo
+  m_EditorClassIdentifier: Meatgrinder.Pickups::Meatgrinder.Pickups.PickupDefinition
+  pickupId: shell_ammo
+  displayName: Cartuchos
+  type: 4
+  amount: 25
+  respawnTime: 20
+  canPickupWhenFull: 0
+  visualPrefab: {fileID: 3022453563035661665, guid: 4ae63f958c6982e488f14888160baeef, type: 3}
+  pickupSound: {fileID: 8300000, guid: 105ad0772a5f6874990e9865543d8aad, type: 3}
+  pickupVfx: {fileID: 0}
+  powerUpType: 0
+  duration: 30
+  effectValue: 2
+  weapon: {fileID: 11400000, guid: 8ae29fe704be533408ef8468e12fb093, type: 2}
+  ammoAmount: 6
+  overhealthCap: 200
+  overhealthDelay: 5
+  overhealthDecay: 5

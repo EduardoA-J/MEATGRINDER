@@ -10,7 +10,7 @@ alwaysApply: false
 
 Primera persona, teclado y ratón. Caminar, acelerar, frenar, saltar, gravedad, control aéreo, strafe jumping y bunny hopping que conserve parte de la velocidad si los saltos van sincronizados. Colisión estable con rampas, escalones, plataformas y puertas. La postura remota se sincroniza; la tolerancia numérica de error visual no está definida.
 
-El dash es opcional y no es un poder de personaje. No lo implementes hasta la decisión D-06.
+David aprobó sprint y agacharse; dash queda fuera de esta fase (D-06/D-17, 22 nov 2026).
 
 Criterios comprobables, sin cifras inventadas:
 
@@ -26,7 +26,7 @@ Criterios comprobables, sin cifras inventadas:
 
 ## Arsenal (REQUIRED)
 
-Escopeta: hitscan o dispersión de rayos, fuerte de cerca, cae con la distancia. Lanzacohetes: proyectil con velocidad y radio. Ametralladora, superescopeta y rayo: REQUIRED (P-05); priorizar tras el núcleo. Munición limitada. El humano empieza con un arma básica; el resto se recoge. Cambiar de arma no cancela estados críticos de forma abusiva.
+Escopeta: hitscan o dispersión de rayos, fuerte de cerca, cae con la distancia. Lanzacohetes: proyectil con velocidad y radio, autodaño reducido y rocket jump. Ametralladora, superescopeta y rayo: REQUIRED (P-05); priorizar tras el núcleo. Munición limitada e independiente por arma. Primera aparición y respawn solo con melee; armas de fuego se recogen. Cambiar de arma no cancela estados críticos de forma abusiva.
 
 ## Melee (REQUIRED)
 
@@ -36,9 +36,9 @@ Ataque cuerpo a cuerpo como sistema real de combate (humano y/o monstruo según 
 
 Un ataque, una confirmación, una aplicación. Una muerte, un registro. Fuego amigo desactivado por defecto y configurable por modo. Asistencias: REQUIRED (P-06).
 
-La armadura «absorbe parte del daño». Fórmula D-07: si hay código provisional, márcalo `PENDIENTE` y no lo cierres como VALIDATED hasta la decisión.
+Armadura D-07 aprobada: máximo 100, absorción del 50 %, un punto consumido por punto absorbido; el resto pasa a salud.
 
-Respawn con temporizador corto y zona protegida. Duraciones: D-08.
+Respawn D-08 aprobado: 4 s, salud 100, sin armadura/poderes, melee-only, otro punto seguro; protección 1 s cancelada al atacar. Loot solo de armas y munición exacta, caduca a 90 s, se pierde en el vacío. Caída al vacío de máximo 5 s con daño progresivo y feedback de cámara; daño ambiental no bloqueado por poderes.
 
 ## Feedback
 
