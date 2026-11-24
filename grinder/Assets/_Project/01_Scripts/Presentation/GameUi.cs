@@ -1,13 +1,36 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Meatgrinder.Presentation
 {
+    public enum UiFontRole { Body, System, Industrial, Display }
+
     public static class GameUi
     {
         public static readonly Color Ink = new Color(.035f, .041f, .047f, .96f);
         public static readonly Color Paper = new Color(.9f, .88f, .8f);
         public static readonly Color Accent = new Color(1f, .39f, .12f);
+        static readonly Font[] fonts = new Font[4];
+
+        public static Font FontFor(UiFontRole role)
+        {
+            int index = (int)role;
+            if (fonts[index] == null)
+            {
+                string file = role switch
+                {
+                    UiFontRole.System => "IBMPlexMono-Medium",
+                    UiFontRole.Industrial => "BarlowSemiCondensed-SemiBold",
+                    UiFontRole.Display => "MetalMania-Regular",
+                    _ => "BarlowSemiCondensed-Regular"
+                };
+                fonts[index] = Resources.Load<Font>("MeatgrinderFonts/" + file);
+                if (fonts[index] == null) fonts[index] = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            }
+            return fonts[index];
+        }
+
         public static RectTransform Rect(Transform parent, string name, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
         {
             var go = new GameObject(name, typeof(RectTransform));
@@ -29,23 +52,30 @@ namespace Meatgrinder.Presentation
             image.color = color; image.raycastTarget = false;
             return image;
         }
-        public static UnityEngine.UI.Text Text(Transform parent, string name, string value, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size, int fontSize, Color color, TextAnchor alignment = TextAnchor.MiddleLeft)
+        public static UnityEngine.UI.Text Text(Transform parent, string name, string value, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size, int fontSize, Color color, TextAnchor alignment = TextAnchor.MiddleLeft, UiFontRole role = UiFontRole.Body)
         {
             var rect = Rect(parent, name, anchor, pivot, position, size);
             var text = rect.gameObject.AddComponent<UnityEngine.UI.Text>();
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.font = FontFor(role);
             text.text = value; text.fontSize = fontSize; text.color = color; text.alignment = alignment;
             text.raycastTarget = false; text.supportRichText = true;
             return text;
         }
-        public static UnityEngine.UI.Button Button(Transform parent, string name, string caption, Vector2 position, Vector2 size, UnityAction action)
+        public static UnityEngine.UI.Button Button(Transform parent, string name, string caption, Vector2 position, Vector2 size, UnityAction action,
+            Func<bool> reduceMotion = null, Action onFocus = null)
         {
             var rect = Rect(parent, name, new Vector2(0, 1), new Vector2(0, 1), position, size);
-            var image = Image(rect, new Color(.12f, .13f, .14f, .95f)); image.raycastTarget = true;
-            var button = rect.gameObject.AddComponent<UnityEngine.UI.Button>(); button.targetGraphic = image;
-            var colors = button.colors; colors.normalColor = Color.white; colors.highlightedColor = new Color(1f, .64f, .38f);
-            colors.selectedColor = colors.highlightedColor; colors.pressedColor = Accent; colors.disabledColor = new Color(.35f, .35f, .35f); button.colors = colors;
-            Text(rect, "Caption", caption, Vector2.zero, Vector2.zero, new Vector2(20, 0), size - new Vector2(30, 0), 23, Paper);
+            var hitArea = Image(rect, Color.clear);
+            hitArea.raycastTarget = true;
+            hitArea.canvasRenderer.cullTransparentMesh = false;
+            var face = Image(Fill(rect, "Face"), Ink);
+            var rail = Image(Rect(face.transform, "FocusRail", Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(4, size.y)), Accent);
+            var label = Text(face.transform, "Caption", caption, Vector2.zero, Vector2.zero, new Vector2(22, 0),
+                size - new Vector2(36, 0), 25, Paper, role: UiFontRole.Industrial);
+            var button = rect.gameObject.AddComponent<MenuButton>();
+            button.targetGraphic = hitArea;
+            button.transition = UnityEngine.UI.Selectable.Transition.None;
+            button.Configure(face, rail, label, reduceMotion, onFocus);
             button.onClick.AddListener(action);
             return button;
         }

@@ -191,7 +191,7 @@ namespace Meatgrinder.Presentation
             textRect.offsetMin = new Vector2(8f, 6f);
             textRect.offsetMax = new Vector2(-8f, -6f);
             readout = textObject.AddComponent<Text>();
-            readout.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            readout.font = GameUi.FontFor(UiFontRole.Industrial);
             readout.fontSize = 28;
             readout.alignment = TextAnchor.MiddleCenter;
             readout.color = Color.white;

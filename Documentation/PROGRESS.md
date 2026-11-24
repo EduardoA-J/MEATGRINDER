@@ -1,11 +1,34 @@
 # Progreso
 
-Actualización vigente: 22 de noviembre de 2026. Se conserva el historial inferior.
+Actualización vigente: 24 de noviembre de 2026.
 Alcance: juego completo (`GDD_SCOPE_ADDENDUM.md`). Estados: `MASTER_CHECKLIST.md`.
 
-## Integración de producto local y presentación — 22 noviembre
+## Auditoría, interfaz y carga local — 24 de noviembre
 
-Estado vigente: Boot → menú uGUI → selección/carga de M01–M04 → combate local → pausa/muerte/respawn → salida con llave o fin de sesión → resultados → Boot. Escopeta, cohete y melee tienen presentación propia y recursos separados; seis power-ups tienen efectos, prefabs, símbolos y timers. Hay opciones de volumen, sensibilidad/FOV, pantalla y reducción de efectos. Los mapas reciben materiales texturados y una primera pasada de entorno; tres FBX aportados funcionan como blancos estáticos destructibles.
+**Base comprobada en Unity 6000.5.6f1.** La revisión 89dedc8 pasó 44/44 en EditMode y 19/19 en PlayMode desde una copia aislada. Los resultados de esta pasada se comparan con esa línea base. El [estado vigente](IMPLEMENTATION_STATUS_AUDIT.md) incluye el vínculo de escenas, prefabs y modelos con el GDD/TDD y la matriz funcional de la sección 21.1.
+
+- **Tipografía**. Metal Mania en la marca, Barlow Semi Condensed en botones, encabezados y texto de lectura, IBM Plex Mono en cifras y texto de sistema. El HUD conserva su jerarquía para vida, armadura, reservas y potenciadores. Barlow industrial también se aplica a 18 rótulos de los cuatro mapas y a tres etiquetas de los prefabs de blancos, emparejando fuente y material. [Fuentes y avisos SIL OFL 1.1](../grinder/Assets/_Project/05_ArtModels/Resources/MeatgrinderFonts)
+- **Interfaz**. Los botones uGUI tienen estados de foco, hover, pulsación y selección, con realce, desplazamiento corto y audio. Las páginas funden y desplazan su contenido en 0,19 s con tiempo independiente de la pausa. La página saliente deja de recibir entrada. El ajuste de movimiento reducido evita desplazamientos y transiciones. Las acciones de navegación siguen en el menú y los cambios de gameplay siguen a cargo de la sesión.
+- **Carga**. Startup es el primer punto de entrada de la compilación y carga Boot de forma asíncrona. La misma pantalla acompaña la entrada a arena, el cambio por puerta, el reinicio y el retorno al menú. El fondo usa las texturas de metal del proyecto. La barra horizontal y el número reflejan la operación de escena de Unity. El 100 % aparece durante un cuadro tras completarse la operación. La sesión mantiene el input de juego bloqueado durante la carga.
+- **Uso**. Abrir Startup.unity desde Unity para probar el arranque completo. Boot.unity sigue disponible para acceder al menú directamente desde el Editor. El build de Windows se genera con ProductSceneInstaller.BuildWindows.
+
+La auditoría, la carga y la presentación se trabajaron con agentes de Codex mediante los handoffs de game-team-orchestrator. Se aplicaron AGENTS.md, las reglas de arquitectura, UI y QA, y la guía local ui/ui-ugui para conservar el flujo uGUI.
+
+**Pruebas de Unity 6000.5.6f1.** EditMode **44/44** y PlayMode **23/23**. Los cuatro casos añadidos comprueban carga al iniciar, progreso ordenado hasta el 100 %, rechazo de un mapa inexistente y reinicio, navegación y raycast en pausa con movimiento reducido, y resolución de fuentes con caracteres del español. Las ampliaciones de los casos de producto cubren la barra al entrar por el menú, al cruzar la puerta M01→M02 y al volver a Boot. La revisión de una captura de 1366×768 encontró la marca cortada. Se ajustó su caja y se añadió una aserción de encaje con la resolución activa de PlayMode. También pasaron las pruebas previas de movimiento, combate, recursos y los cuatro mapas.
+
+XML y logs de esta pasada en la copia local de QA `D:/MEATGRINDER_REFERENCE/MEATGRINDER-QA-20261124`, archivos `verified-editmode.xml` y `verified-playmode.xml`. La revisión visual de capturas de 1366×768 cubrió menú, carga de arranque, carga de arena, HUD de poderes y creación local. La inspección de FBX escribió `D:/MEATGRINDER_REFERENCE/Documentation/test-results/product/models.txt`.
+
+**Windows Standalone x64 Development.** Build en 6000.5.6f1, salida 0, 0 errores y 193.727.340 bytes reportados. El ejecutable con `--meatgrinder-smoke` devolvió 0 y registró PASS en Startup → Boot → M01 con melee → pausa → resultados → Boot. La misma secuencia pasó también en el ejecutable con gráficos D3D12 en una Radeon RX 550X, en modo ventana con resolución solicitada de 1366×768, y devolvió 0. Las capturas inspeccionadas se tomaron en PlayMode. Se conserva F10-06 parcial hasta probar otra máquina sin Editor y crear/unir sesión de producto. Evidencia en `windows-build.log`, `windows-smoke.log` y `windows-smoke-graphics.log`, en la copia de QA.
+
+**Checklist actualizado.** 28 VALIDATED, 31 INTEGRATED, 18 PARTIALLY_IMPLEMENTED, 4 BLOCKED y 49 NOT_STARTED. De 130 tareas, el **21,54 %** está validado y el **45,38 %** está integrado o validado. Las comprobaciones de práctica local no cuentan como validación en red. [Método y recuento por épica](IMPLEMENTATION_STATUS_AUDIT.md)
+
+Siguen pendientes Host Mode en el flujo de juego, dos clientes, Versus, monstruos jugables, Ranked, recorridos completos, balance, rendimiento, rigs/LOD y producción de audio. Los ajustes de accesibilidad del GDD pendientes están en F7-09.
+
+## Historial de integración local
+
+### Integración de producto local y presentación — 22 de noviembre
+
+Estado de esa pasada: Boot → menú uGUI → selección/carga de M01–M04 → combate local → pausa/muerte/respawn → salida con llave o fin de sesión → resultados → Boot. Escopeta, cohete y melee tienen presentación propia y recursos separados; seis power-ups tienen efectos, prefabs, símbolos y timers. Hay opciones de volumen, sensibilidad/FOV, pantalla y reducción de efectos. Los mapas reciben materiales texturados y una primera pasada de entorno; tres FBX aportados funcionan como blancos estáticos destructibles.
 
 Uso: abrir `grinder/Assets/_Project/00_Scenes/Boot.unity` y entrar en Play, o ejecutar `grinder/Builds/LocalProduct/MEATGRINDER.exe` conservando sus carpetas adyacentes. «Jugar» abre el mapa elegido; «Crear partida local» permite revisar mapa/modo disponible, abrir ajustes y confirmar antes de cargar. Solo está disponible práctica local; no se simulan modos competitivos. Controles: WASD, ratón, Espacio, Shift sprint, Ctrl agacharse, V melee (también clic sin arma), R recarga, 1/2 selección de arma recogida, Escape pausa. Empiezas solo con melee: las armas y munición se recogen en el escenario.
 

@@ -15,12 +15,14 @@ namespace Meatgrinder.Core
     // Local session lifecycle. Competitive rules and Fusion authority remain separate consumers.
     public sealed class LocalGameSession : MonoBehaviour
     {
+        const string MenuScene = "Boot";
         [SerializeField] private MapDefinition[] maps;
         public MapDefinition[] Maps => maps;
         public LocalSessionPhase Phase { get; private set; } = LocalSessionPhase.Menu;
         public GameObject Player { get; private set; }
         public MapDefinition CurrentMap { get; private set; }
         public float LoadingProgress { get; private set; }
+        public string LoadingDestination { get; private set; }
         public string LoadError { get; private set; }
         public float Elapsed { get; private set; }
         public int Shots { get; private set; }
@@ -28,6 +30,7 @@ namespace Meatgrinder.Core
         public int Pickups { get; private set; }
         public int TargetsDestroyed { get; private set; }
         public event Action Changed;
+        public event Action<float> LoadingProgressChanged;
         HealthComponent health;
         PlayerImpactFeedback feedback;
         PlayerLife life;
@@ -51,7 +54,7 @@ namespace Meatgrinder.Core
         void OnEnable() => SceneManager.sceneLoaded += SceneLoaded;
         void Start()
         {
-            if (Player == null) BindScene(SceneManager.GetActiveScene());
+            if (!changingScene && Player == null) BindScene(SceneManager.GetActiveScene());
         }
         void OnDisable()
         {
@@ -59,7 +62,10 @@ namespace Meatgrinder.Core
             UnbindPlayer();
             Time.timeScale = 1f;
         }
-        void SceneLoaded(Scene scene, LoadSceneMode mode) => BindScene(scene);
+        void SceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (!changingScene || mode == LoadSceneMode.Single) BindScene(scene);
+        }
         void BindScene(Scene scene)
         {
             UnbindPlayer();
@@ -77,10 +83,11 @@ namespace Meatgrinder.Core
                 foreach (var pickup in FindObjectsByType<PickupController>(FindObjectsSortMode.None)) pickup.PickedUp += OnPickup;
                 foreach (var target in FindObjectsByType<HealthComponent>(FindObjectsSortMode.None))
                     if (target != health) target.Died += OnTargetDeath;
-                SetPhase(LocalSessionPhase.Playing);
                 ApplyOptions();
             }
-            else SetPhase(LocalSessionPhase.Menu);
+            // The destination scene may activate before the async operation reports completion.
+            if (changingScene) GatePlayer();
+            else SetPhase(Player != null ? LocalSessionPhase.Playing : LocalSessionPhase.Menu);
         }
         void UnbindPlayer()
         {
@@ -100,37 +107,76 @@ namespace Meatgrinder.Core
                 else if (Phase == LocalSessionPhase.Paused) Resume();
             }
         }
-        public bool StartMap(MapDefinition map)
+        public bool StartMap(MapDefinition map) => map != null && TryLoad(map.SceneName, map.DisplayName, resetStats: true);
+
+        bool TryLoad(string sceneName, string destination, bool resetStats)
         {
-            if (changingScene || map == null) return false;
-            if (!Application.CanStreamedLevelBeLoaded(map.SceneName))
+            if (changingScene) return false;
+            if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName))
             {
-                LoadError = "El mapa no está disponible en esta compilación.";
+                LoadError = "El destino no está disponible en esta compilación.";
                 Changed?.Invoke();
                 return false;
             }
-            Elapsed = 0; Shots = Deaths = Pickups = TargetsDestroyed = 0;
-            StartCoroutine(Load(map.SceneName));
+            StartCoroutine(Load(sceneName, destination, resetStats));
             return true;
         }
-        IEnumerator Load(string sceneName)
+
+        IEnumerator Load(string sceneName, string destination, bool resetStats)
         {
+            var previousPhase = Phase;
             changingScene = true;
+            LoadingDestination = destination;
             LoadError = null;
-            SetPhase(LocalSessionPhase.Loading);
-            Time.timeScale = 1f;
             LoadingProgress = 0;
+            SetPhase(LocalSessionPhase.Loading);
             yield return null;
-            var operation = SceneManager.LoadSceneAsync(sceneName);
-            while (!operation.isDone) { LoadingProgress = Mathf.Clamp01(operation.progress / .9f); yield return null; }
-            LoadingProgress = 1;
+
+            AsyncOperation operation = null;
+            try
+            {
+                operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning($"[LocalGameSession] No se pudo iniciar la carga de {sceneName}: {exception.Message}");
+            }
+            if (operation == null)
+            {
+                changingScene = false;
+                LoadError = "No se pudo iniciar la carga. Vuelve a intentarlo.";
+                SetPhase(previousPhase);
+                yield break;
+            }
+
+            while (!operation.isDone)
+            {
+                SetLoadingProgress(Mathf.Clamp01(operation.progress));
+                yield return null;
+            }
+            SetLoadingProgress(1);
+            yield return null;
+
+            if (resetStats)
+            {
+                Elapsed = 0;
+                Shots = Deaths = Pickups = TargetsDestroyed = 0;
+            }
             changingScene = false;
+            SetPhase(Player != null ? LocalSessionPhase.Playing : LocalSessionPhase.Menu);
+        }
+
+        void SetLoadingProgress(float progress)
+        {
+            if (LoadingProgress == progress) return;
+            LoadingProgress = progress;
+            LoadingProgressChanged?.Invoke(progress);
         }
         public void Pause() { if (Phase == LocalSessionPhase.Playing) SetPhase(LocalSessionPhase.Paused); }
         public void Resume() { if (Phase == LocalSessionPhase.Paused) SetPhase(LocalSessionPhase.Playing); }
         public void Restart() { if (CurrentMap != null) StartMap(CurrentMap); }
         public void Finish() { if (Player != null && !changingScene) SetPhase(LocalSessionPhase.Results); }
-        public void ReturnToMenu() { if (!changingScene) StartCoroutine(Load("Boot")); }
+        public void ReturnToMenu() => TryLoad(MenuScene, "MENÚ PRINCIPAL", resetStats: false);
         public void Quit() { PlayerPrefs.Save(); Application.Quit(); }
         void SetPhase(LocalSessionPhase phase)
         {

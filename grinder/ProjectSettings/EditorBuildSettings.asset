@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/00_Scenes/Boot.unity
-    guid: d969943ea83b1cb4bbca31aab1bb9de8
+    path: Assets/_Project/00_Scenes/Startup.unity
+    guid: 1c8e15818a51472aa8715993d1b43d15
   - enabled: 1
     path: Assets/_Project/00_Scenes/NetworkTest.unity
     guid: e2f25466c4e07af47b115f733fd85734
@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/00_Scenes/Maps/M04/M04_TheLongestVoid.unity
     guid: b4b0eeffb36dd4f4a878bdec2020a510
+  - enabled: 1
+    path: Assets/_Project/00_Scenes/Boot.unity
+    guid: d969943ea83b1cb4bbca31aab1bb9de8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

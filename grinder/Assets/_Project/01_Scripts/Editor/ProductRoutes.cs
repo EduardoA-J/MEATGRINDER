@@ -47,6 +47,7 @@ namespace Meatgrinder.Editor
             var gate = root.AddComponent<KeyGate>(); Set(gate, "state", state); Set(gate, "requiredKey", definition); Set(gate, "door", door.transform);
             var sign = new GameObject("GateLabel"); sign.transform.SetParent(root.transform, false); sign.transform.localPosition = new Vector3(0, 4.8f, -.6f);
             var text = sign.AddComponent<TextMesh>(); text.text = name == "AdvanceGate" ? "SALIDA / LLAVE" : "QUAD / LLAVE"; text.fontSize = 48; text.characterSize = .045f; text.anchor = TextAnchor.MiddleCenter; text.color = new Color(1, .65f, .2f);
+            ApplySignFont(text);
             return root;
         }
     }

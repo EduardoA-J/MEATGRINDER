@@ -1,6 +1,6 @@
 # Contexto del proyecto MEATGRINDER
 
-Fecha de este contexto: 9 de noviembre de 2026.
+Contexto actualizado el 24 de noviembre de 2026.
 Fuente de diseño: [`MEATGRINDER_GDD_TDD.docx`](../MEATGRINDER_GDD_TDD.docx) (v1.0, 27 de octubre de 2026).
 Adenda de alcance: [`GDD_SCOPE_ADDENDUM.md`](GDD_SCOPE_ADDENDUM.md).
 Plan: [`FULL_GAME_DEVELOPMENT_PLAN.md`](FULL_GAME_DEVELOPMENT_PLAN.md).
@@ -8,7 +8,7 @@ Estado de código: [`IMPLEMENTATION_STATUS_AUDIT.md`](IMPLEMENTATION_STATUS_AUDI
 
 ## Qué estamos haciendo
 
-Estado operativo actualizado (22 nov 2026): Boot/menús uGUI y flujo de sesión local están integrados con M01–M04, armas/melee/poderes, llaves/puertas, HUD y muerte/respawn. Arte y audio siguen siendo una primera pasada. Evidencia y límites actuales en `PROGRESS.md` y `IMPLEMENTATION_STATUS_AUDIT.md`; no usar los estados históricos del 9 nov como diagnóstico actual. Encargo vigente: conservar Fusion sin integrar gameplay de red, sin paquetes/versiones nuevos y sin commits/push. David fijó vacío de máximo 5 s con cámara/oscurecimiento; decisiones anteriores permanecen registradas en `DECISIONS.md`.
+La pasada del 24 de noviembre auditó el código, las escenas, los prefabs y los recursos de la base `89dedc8` junto al GDD/TDD. El estado vigente y las comprobaciones están en [IMPLEMENTATION_STATUS_AUDIT.md](IMPLEMENTATION_STATUS_AUDIT.md) y [PROGRESS.md](PROGRESS.md). Las decisiones de diseño permanecen en [DECISIONS.md](DECISIONS.md).
 
 MEATGRINDER es un arena FPS multijugador **completo** para Windows. Un equipo de humanos armados juega contra un equipo de monstruos controlados por personas. Los mapas de combate se encadenan con puertas. El conocimiento del escenario, la puntería y el temporizador de los ítems deciden la partida.
 
@@ -47,7 +47,7 @@ No se desarrolla una demo descartable que luego haya que convertir en juego: se 
 
 ## Estado en una frase
 
-HEAD `992bb92`: movimiento local Quake-like, escopeta local, daño/salud, armadura parcial, scaffolding de pickups/power-ups y lanzacohetes, HUD local, sonda Fusion de cubos. Sin monstruos, sin Boot de producto, sin ranked. Hay cambios locales sin commit (combate, pickups y las cuatro escenas de mapa): no descartarlos. M01–M04 existen como blockout ProBuilder y no están validados.
+Startup carga Boot, que lleva a una partida de práctica local en M01–M04 con movimiento Quake-like, escopeta, cohete, melee, seis potenciadores, llaves y puertas, muerte y respawn. Fusion se usa en la sonda `NetworkTest`. El gameplay de red, los monstruos jugables, los modos Versus y Ranked siguen pendientes. Los mapas necesitan recorrido completo, balance y perfiles de rendimiento.
 
 ## Producto objetivo (no MVP excluyente)
 

@@ -32,11 +32,11 @@ No hay extracción, puzzles obligatorios, narrativa compleja, habilidades activa
 - Photon Fusion 2.1.4 Stable, Host Mode. App ID solo en asset local gitignored.
 - No sustituir el stack de red. No cambiar Unity/URP/Fusion sin tarea y aprobación.
 
-## Estado real (9 de noviembre de 2026)
+## Estado real
 
-HEAD tipico: movimiento local Quake-like, escopeta local, daño/salud/armadura parcial, HUD local, sonda Fusion de cubos. Lanzacohetes y pickups/power-ups en scaffolding. Sin melee jugable, sin monstruos, sin Boot de producto, sin M01, sin ranked. Detalle: `IMPLEMENTATION_STATUS_AUDIT.md`.
+La base `89dedc8` integra el flujo de práctica local de Boot a M01–M04, armas, melee, pickups, puertas, HUD, resultados y respawn. Fusion conserva su sonda de cubos. La evidencia vigente y el estado por sistema están en [IMPLEMENTATION_STATUS_AUDIT.md](Documentation/IMPLEMENTATION_STATUS_AUDIT.md).
 
-Pueden existir cambios locales sin commit (p. ej. rotura de ciclo Combat↔Pickups). No los descartes.
+Revisa y conserva los cambios locales preexistentes.
 
 ## Orden de lectura
 
@@ -57,4 +57,4 @@ Pueden existir cambios locales sin commit (p. ej. rotura de ciclo Combat↔Picku
 
 ## Perfiles
 
-`Documentation/AGENT_WORKFLOW.md` describe roles. El agente activo es Cursor en este IDE.
+`Documentation/AGENT_WORKFLOW.md` describe los perfiles para repartir el trabajo en Cursor y Codex.

@@ -1,6 +1,6 @@
 # Checklist maestro — juego completo
 
-Fecha de redefinición: 9 de noviembre de 2026. Actualización de decisiones e integración local: 22 de noviembre de 2026.
+Fecha de redefinición: 9 de noviembre de 2026. Auditoría vigente: 24 de noviembre de 2026.
 Fuente: `MEATGRINDER_GDD_TDD.docx`. Alcance: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md). Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md). Estado código: [IMPLEMENTATION_STATUS_AUDIT.md](IMPLEMENTATION_STATUS_AUDIT.md).
 
 ## Política
@@ -46,7 +46,7 @@ Recuento: 13 epics, **130 tareas** (119 históricas + F1-12, F2-13, F2-14, F2-15
 
 ## Índice
 
-Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Actualización local 22 nov: el índice y `PROGRESS.md` prevalecen sobre las fichas históricas inferiores. `INTEGRATED` local no acredita autoridad Fusion ni dos clientes. Arte, audio y animación procedurales son una primera pasada, no recursos finales.
+El índice fija los estados vigentes. Las fichas inferiores conservan criterios y subtareas históricas. Las integraciones locales se identifican en la evidencia de cada fila. Para el recuento por estado, la matriz por épica y el alcance de las pruebas, ver [IMPLEMENTATION_STATUS_AUDIT.md](IMPLEMENTATION_STATUS_AUDIT.md).
 
 | ID | Tarea | Estado | P | Depende de |
 |---|---|---|---|---|
@@ -57,14 +57,14 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Ac
 | F0-05 | Elegir la versión de Photon Fusion 2 y el modo de sesión | VALIDATED | P0 | David / T-21 |
 | F0-06 | Instalar Photon Fusion 2 | VALIDATED | P0 | F0-02, F0-05 |
 | F0-07 | Crear Assets/_Project y ensamblados | VALIDATED | P0 | F0-03 |
-| F0-08 | Escena Boot de producto | INTEGRATED | P1 | GameBootstrap y sesión persistente; menú → cuatro mapas → resultados → Boot. Fusion pendiente |
-| F0-09 | Mapa de input de juego | PARTIALLY_IMPLEMENTED | P0 | F0-03, D-17 |
+| F0-08 | Escena Boot de producto | VALIDATED | P1 | Startup muestra carga real y abre Boot con una sola sesión local. PlayMode StartupShowsLoadingOverlayAndReachesBootAfterCompletion. |
+| F0-09 | Mapa de input de juego | INTEGRATED | P0 | Asset Input System y PlayerInputReader conectados a LocalPlayer. Lectura de valores con dispositivos físicos pendiente. |
 | F0-10 | Acordar el PC de referencia | PARTIALLY_IMPLEMENTED | P4 | David |
-| F0-11 | Registro de licencias | PARTIALLY_IMPLEMENTED | P3 | Procedencia en REFERENCE_REPOSITORIES_AUDIT; licencia de distribución de FBX aportados pendiente |
+| F0-11 | Registro de licencias | PARTIALLY_IMPLEMENTED | P3 | Fuentes nuevas con avisos SIL OFL 1.1; procedencia de recursos en REFERENCE_REPOSITORIES_AUDIT. Licencia de los cuatro FBX pendiente. |
 | F0-12 | Inventario de paquetes de plantilla no pedidos | VALIDATED | P0 | F0-01 |
 | F1-01 | MovementTuning | VALIDATED | P0 | F0-07 |
 | F1-02 | Cámara FPS | VALIDATED | P0 | F0-09 |
-| F1-03 | Input de Move, Look y Jump | PARTIALLY_IMPLEMENTED | P0 | F0-09 |
+| F1-03 | Input de Move, Look y Jump | INTEGRATED | P0 | F0-09. El lector y el controlador usan Input System. La prueba sintética comprueba dispositivos y enlaces. |
 | F1-04 | Aceleración en suelo y fricción | VALIDATED | P0 | F1-01, F1-03, F5-01 |
 | F1-05 | Salto y gravedad de diseño | VALIDATED | P0 | F1-04 |
 | F1-06 | Control aéreo | VALIDATED | P0 | F1-05 |
@@ -72,7 +72,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Ac
 | F1-08 | Bunny hopping | VALIDATED | P0 | F1-05, F1-07 |
 | F1-09 | Rampas, escalones y plataformas | VALIDATED | P0 | F1-04, F5-01 |
 | F1-10 | Prueba repetible de movimiento | VALIDATED | P0 | F1-04…F1-09 |
-| F1-11 | Decidir el dash | NOT_STARTED | P2 | Se mantiene fuera de esta fase por decisión de David |
+| F1-11 | Decidir el dash | VALIDATED | P2 | D-06 y regla 03 registran la decisión de excluir dash en esta fase. Cierre de decisión. |
 | F1-12 | Sprint y agacharse | INTEGRATED | P0 | F1-03, D-17 |
 | F2-01 | DamageInfo y DamageResolver | VALIDATED | P0 | F0-07 |
 | F2-02 | HealthComponent | VALIDATED | P0 | F2-01 |
@@ -120,7 +120,7 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Ac
 | F5-04 | Spawns separados (M01) | PARTIALLY_IMPLEMENTED | P2 | 4 marcadores en los muelles y la sala. Un rayo en humo. Sin SpawnManager |
 | F5-05 | Layout de ítems y armas (M01) | INTEGRATED | P2 | Armas/munición/poderes y tuning válidos; MapDefinition. Balance espacial pendiente |
 | F5-06 | Puertas de recorrido | INTEGRATED | P2 | Llave compartida, puerta opcional Quad y salida por mapa; autoridad de red pendiente |
-| F5-07 | Carga del siguiente estado | INTEGRATED | P2 | Flujo local M01→M02→M03→M04→resultados; reglas Versus pendientes |
+| F5-07 | Carga del siguiente estado | INTEGRATED | P2 | Barra de Unity en M01→M02 comprobada en PlayMode. Flujo M01→M04 y salida a resultados locales. Puntuación acumulada Versus pendiente. |
 | F5-08 | Pruebas de spawn-kill y de bloqueo | NOT_STARTED | P2 | F5-03, F5-04, F1-09 |
 | F5-09 | M02 Castle of the Damned (GDD: Iron Cathedral) | PARTIALLY_IMPLEMENTED | P3 | Recinto ~540 m, torre gigante por cuadrante, torreón, atalayas y ruinas. T-27. Humo de suelo. No VALIDATED. Sin Host Mode |
 | F5-10 | M03 Ruins of the Forgotten (GDD: The Pit) | PARTIALLY_IMPLEMENTED | P3 | Plaza, templo y terrazas. T-27. Humo de suelo. No VALIDATED |
@@ -137,15 +137,15 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Ac
 | F6-10 | Berserk (definición y pickup) | INTEGRATED | P0 | ×2 melee durante 20 s |
 | F6-11 | Regeneración | INTEGRATED | P2 | 10 HP/s durante 10 s |
 | F6-12 | Megahealth | INTEGRATED | P2 | Cap 200, demora 5 s, decaimiento 5 HP/s |
-| F7-01 | Menú principal | INTEGRATED | P1 | uGUI propio, navegación, selección de mapa, carga; no Luna |
+| F7-01 | Menú principal | PARTIALLY_IMPLEMENTED | P1 | Menú uGUI local con fuentes, feedback, transiciones, créditos y ajuste de movimiento reducido. Sala privada pendiente. |
 | F7-02 | Crear y unirse | PARTIALLY_IMPLEMENTED | P1 | Crear práctica local: mapa, ajustes y confirmación. Crear/unir red pendiente |
 | F7-03 | Selección de equipo y de monstruo | NOT_STARTED | P2 | F4-03, F7-02 |
-| F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | F2-02, F2-09 (red: F3-06) |
+| F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | HUD SYSTEM de vida, armadura y munición en juego local. Red pendiente (F3-06). |
 | F7-05 | Retícula | INTEGRATED | P1 | F1-02 |
 | F7-06 | Indicador de potenciador | INTEGRATED | P1 | Seis símbolos, timers y barras por efecto; pruebas y capturas reales |
 | F7-07 | Marcador y feed | NOT_STARTED | P2 | F3-07, F3-10, F9-03 |
 | F7-08 | Resultados y revancha | PARTIALLY_IMPLEMENTED | P2 | Resultados locales y reinicio; marcador/victoria/roles competitivos pendientes |
-| F7-09 | Ajustes | INTEGRATED | P3 | Volumen, sensibilidad, FOV, reducir movimiento/destellos, pantalla/resolución |
+| F7-09 | Ajustes | PARTIALLY_IMPLEMENTED | P3 | Volumen, sensibilidad, FOV, reducción de movimiento/destellos y pantalla. Inversión, calidad/gore, escala UI y subtítulos pendientes. |
 | F7-10 | Errores de conexión | NOT_STARTED | P1 | F3-02, F3-11, F7-02 |
 | F8-01 | Materiales base y volumen | INTEGRATED | P3 | Materiales/texturas propios URP en cuatro mapas; acabado y rendimiento pendientes |
 | F8-02 | Humano, manos FPS y silueta remota | PARTIALLY_IMPLEMENTED | P3 | Guantes procedurales y tres modelos como blancos; rig/silueta remota pendientes |
@@ -161,19 +161,19 @@ Columnas: Estado real · Prioridad · Dependencias. Alcance siempre REQUIRED. Ac
 | F9-04 | Intercambio de roles | NOT_STARTED | P2 | F9-01, F9-03, F5-07 |
 | F9-05 | Fin de partida y revancha | NOT_STARTED | P2 | F9-03, F3-02 |
 | F9-06 | Validación 4v4 | NOT_STARTED | P4 | F3-13, F4-08, F10-04, D-05 |
-| F10-01 | Matriz funcional | NOT_STARTED | P2 | F1-10, F2-12, F6-07, F5-08, F7-10 |
+| F10-01 | Matriz funcional | PARTIALLY_IMPLEMENTED | P2 | Matriz en la auditoría y pruebas locales. Versus, recogida simultánea y conexión de producto pendientes. |
 | F10-02 | Matriz de red | NOT_STARTED | P2 | F3-12…F3-17 |
 | F10-03 | Balance | NOT_STARTED | P3 | F4-08, F5-08, F6-03 |
 | F10-04 | Rendimiento | NOT_STARTED | P4 | F0-10, F8-06, F3-13 |
-| F10-05 | Build de Windows | NOT_STARTED | P2 | F10-01 |
-| F10-06 | Arranque fuera del Editor | NOT_STARTED | P2 | F10-05, F7-01 |
+| F10-05 | Build de Windows | VALIDATED | P2 | Windows Standalone x64 Development generado con Unity 6000.5.6f1. 0 errores. Log de compilación en PROGRESS. |
+| F10-06 | Arranque fuera del Editor | PARTIALLY_IMPLEMENTED | P2 | Ejecutable actual: smoke local PASS desde Startup hasta volver a Boot. Faltan una máquina sin Editor y sesiones de red. |
 | F10-07 | README de instalación y controles | NOT_STARTED | P2 | F1-03, F7-02, F10-05 |
 | F10-08 | Cierre por Definition of Done | NOT_STARTED | P2 | F10-01, F10-02, F10-06 |
 | R-01 | Fórmula de MMR y reglas congeladas | NOT_STARTED | P4 | Núcleo jugable + David |
 | R-02 | Identidad y backend de resultados | NOT_STARTED | P4 | R-01 |
 | R-03 | Matchmaking y abandonos | NOT_STARTED | P4 | R-02 |
 | R-04 | Temporadas, rangos y recompensas cosméticas | NOT_STARTED | P4 | R-02 |
-| P-01 | Menú de pausa | INTEGRATED | P3 | Escape, cursor, bloqueo de input/tiempo, opciones/reinicio/resultados/Boot; local |
+| P-01 | Menú de pausa | VALIDATED | P3 | PlayMode cubre pausa local, bloqueo de input y tiempo, foco, puntero, navegación, continuar y retorno a Boot. |
 | P-02 | Bots de desconexión | NOT_STARTED | P4 | F3-11 |
 | P-03 | Barriles explosivos | NOT_STARTED | P4 | F2-08, F5-05 |
 | P-04 | Desmembramiento por piezas | NOT_STARTED | P4 | F8-06, F10-04 |

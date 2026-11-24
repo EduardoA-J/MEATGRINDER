@@ -131,15 +131,15 @@ namespace Meatgrinder.Presentation
             var stats = GameUi.Rect(canvas.transform, "VitalPanel", Vector2.zero, Vector2.zero, new Vector2(28, 28), new Vector2(420, 110));
             GameUi.Image(stats, GameUi.Ink);
             Label(stats, "HealthLabel", "+  SALUD", new Vector2(18, 72), new Vector2(180, 26), 17, GameUi.Accent);
-            Label(stats, "ArmorLabel", "◇  ARMADURA", new Vector2(226, 72), new Vector2(180, 26), 17, new Color(.4f, .7f, 1));
-            healthText = Label(stats, "Health", "100", new Vector2(18, 22), new Vector2(180, 56), 42, GameUi.Paper);
-            armorText = Label(stats, "Armor", "0", new Vector2(226, 22), new Vector2(180, 56), 42, GameUi.Paper);
+            Label(stats, "ArmorLabel", "ARMADURA", new Vector2(226, 72), new Vector2(180, 26), 17, new Color(.4f, .7f, 1));
+            healthText = Label(stats, "Health", "100", new Vector2(18, 22), new Vector2(180, 56), 42, GameUi.Paper, UiFontRole.System);
+            armorText = Label(stats, "Armor", "0", new Vector2(226, 22), new Vector2(180, 56), 42, GameUi.Paper, UiFontRole.System);
             healthFill = Bar(stats, "HealthBar", new Vector2(18, 12), new Vector2(178, 5), GameUi.Accent);
             armorFill = Bar(stats, "ArmorBar", new Vector2(226, 12), new Vector2(178, 5), new Color(.4f, .7f, 1));
             var ammo = GameUi.Rect(canvas.transform, "AmmoPanel", new Vector2(1, 0), new Vector2(1, 0), new Vector2(-28, 28), new Vector2(410, 110));
             GameUi.Image(ammo, GameUi.Ink);
             weaponText = Label(ammo, "Weapon", "MELEE", new Vector2(18, 75), new Vector2(380, 26), 17, GameUi.Accent);
-            ammoText = Label(ammo, "Ammo", "—", new Vector2(18, 20), new Vector2(380, 60), 44, GameUi.Paper);
+            ammoText = Label(ammo, "Ammo", "—", new Vector2(18, 20), new Vector2(380, 60), 44, GameUi.Paper, UiFontRole.System);
             reloadFill = Bar(ammo, "ReloadProgress", new Vector2(18, 12), new Vector2(374, 5), GameUi.Accent);
             crosshair = GameUi.Rect(canvas.transform, "Crosshair", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(60, 60));
             CrosshairScale = crosshairScale;
@@ -152,24 +152,33 @@ namespace Meatgrinder.Presentation
                 var mark = GameUi.Rect(crosshair, "Hit" + i, new Vector2(.5f, .5f), new Vector2(.5f, .5f), Quaternion.Euler(0, 0, angle + 45) * new Vector3(20, 0), new Vector2(10, 2));
                 mark.localRotation = Quaternion.Euler(0, 0, angle + 45); hitMarks[i] = GameUi.Image(mark, GameUi.Accent); hitMarks[i].enabled = false;
             }
-            statusText = GameUi.Text(canvas.transform, "State", "", new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -28), new Vector2(700, 32), 21, GameUi.Paper, TextAnchor.MiddleCenter);
-            pickupText = GameUi.Text(canvas.transform, "PickupMessage", "", new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(0, -95), new Vector2(600, 32), 22, GameUi.Accent, TextAnchor.MiddleCenter);
+            statusText = GameUi.Text(canvas.transform, "State", "", new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -28), new Vector2(700, 32), 21, GameUi.Paper, TextAnchor.MiddleCenter, UiFontRole.System);
+            pickupText = GameUi.Text(canvas.transform, "PickupMessage", "", new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(0, -95), new Vector2(600, 32), 22, GameUi.Accent, TextAnchor.MiddleCenter, UiFontRole.Industrial);
+            AddOutline(statusText);
+            AddOutline(pickupText);
             for (int i = 0; i < 6; i++)
             {
                 var card = GameUi.Rect(canvas.transform, "Power" + i, Vector2.one, Vector2.one, new Vector2(-28, -100 - i * 72), new Vector2(230, 62));
                 GameUi.Image(card, GameUi.Ink); cards[i] = card.gameObject;
                 var icon = GameUi.Image(GameUi.Rect(card, "Icon", Vector2.zero, Vector2.zero, new Vector2(8, 10), new Vector2(42, 42)), PresentationTheme.PowerColor((PowerUpType)i));
                 if (theme != null) icon.sprite = theme.Icon((PowerUpType)i);
-                timers[i] = Label(card, "Timer", "", new Vector2(62, 8), new Vector2(164, 50), 17, GameUi.Paper);
+                timers[i] = Label(card, "Timer", "", new Vector2(62, 8), new Vector2(164, 50), 17, GameUi.Paper, UiFontRole.System);
                 powerBars[i] = Bar(card, "Duration", Vector2.zero, new Vector2(230, 3), PresentationTheme.PowerColor((PowerUpType)i));
                 card.gameObject.SetActive(false);
             }
             deathPanel = GameUi.Rect(canvas.transform, "DeathPanel", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(720, 280));
             GameUi.Image(deathPanel, GameUi.Ink);
-            deathText = GameUi.Text(deathPanel, "Death", "", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(680, 230), 48, GameUi.Accent, TextAnchor.MiddleCenter);
+            deathText = GameUi.Text(deathPanel, "Death", "", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(680, 230), 48, GameUi.Accent, TextAnchor.MiddleCenter, UiFontRole.Industrial);
             deathPanel.gameObject.SetActive(false);
         }
-        static UnityEngine.UI.Text Label(Transform parent, string name, string value, Vector2 position, Vector2 size, int fontSize, Color color) => GameUi.Text(parent, name, value, Vector2.zero, Vector2.zero, position, size, fontSize, color);
+        static UnityEngine.UI.Text Label(Transform parent, string name, string value, Vector2 position, Vector2 size, int fontSize, Color color, UiFontRole role = UiFontRole.Industrial)
+            => GameUi.Text(parent, name, value, Vector2.zero, Vector2.zero, position, size, fontSize, color, role: role);
+        static void AddOutline(UnityEngine.UI.Text text)
+        {
+            var outline = text.gameObject.AddComponent<UnityEngine.UI.Outline>();
+            outline.effectColor = new Color(0, 0, 0, .95f);
+            outline.effectDistance = new Vector2(1.5f, -1.5f);
+        }
         static UnityEngine.UI.Image Bar(Transform parent, string name, Vector2 pos, Vector2 size, Color color) => GameUi.Image(GameUi.Rect(parent, name, Vector2.zero, Vector2.zero, pos, size), color);
         static void Alpha(UnityEngine.UI.Image image, float value) { var c = image.color; c.a = value; image.color = c; }
     }

@@ -1,6 +1,6 @@
 # Grafo de dependencias — juego completo
 
-Fecha: 22 de noviembre de 2026.
+Fecha: 24 de noviembre de 2026.
 Detalle por tarea: [MASTER_CHECKLIST.md](MASTER_CHECKLIST.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md).
 
 Las flechas significan «hace falta antes». Ranked y ampliaciones están **en el grafo** con prioridad baja; no están fuera del producto.
@@ -34,7 +34,8 @@ flowchart TD
   move --> combat
   combat --> pickups
   pickups --> combat
-  fusionSdk --> boot
+  audit --> boot
+  fusionSdk --> netPlayer
   boot --> netPlayer
   move --> sync
   combat --> sync
@@ -94,7 +95,22 @@ flowchart LR
 
 `Combat` no debe referenciar `Pickups`. Los modificadores de daño se inyectan vía `IDamageModifiers`.
 
-`GameBootstrap` crea una sola sesión persistente `LocalGameSession`: Boot → carga asíncrona → mapa → pausa/resultados → Boot. `MapDefinition` contiene la identidad de escena, no su estado. `MapRouteState` conserva las llaves compartidas durante el mapa y `KeyGate` solicita la transición. `Presentation` escucha estos estados; los menús solicitan operaciones a la sesión, sin escribir salud, daño ni inventario. No existe dependencia inversa Core → Presentation.
+```mermaid
+flowchart LR
+  startup[Startup] --> bootstrap[GameBootstrap]
+  bootstrap --> session[LocalGameSession persistente]
+  map[MapDefinition y KeyGate] --> session
+  menu[SessionMenu] --> session
+  session --> unity[SceneManager.LoadSceneAsync]
+  unity --> scene[Boot o arena]
+  unity --> progress[Fase, destino y progreso de sesión]
+  progress --> overlay[SessionLoadingScreen]
+  progress --> menu
+```
+
+`GameBootstrap` reutiliza una sola sesión local persistente. `Startup` solicita Boot y los menús solicitan las arenas, el reinicio y el retorno a Boot. Abrir Boot o un mapa directamente en el Editor sigue siendo válido. `MapDefinition` identifica la escena y `MapRouteState` conserva las llaves del mapa. `KeyGate` solicita la carga de la arena siguiente.
+
+`Core` controla la activación de la escena y el bloqueo de controles durante la fase de carga. `Presentation` lee la fase, el destino y el progreso de `AsyncOperation`. `GameUi` comparte los roles tipográficos entre el menú, el HUD y la pantalla de carga. Las vistas solicitan operaciones a la sesión y leen estado de juego. El ensamblado `Core` conserva su independencia de `Presentation`.
 
 `LifeTuning`, `MeleeTuning`, `WeaponDefinition`, `PickupDefinition` y `PresentationTheme` están serializados en prefabs/escenas. `PlayerLife` coordina un único ciclo de muerte; `PlayerVoidFall` resuelve el daño ambiental mediante `DamageResolver`. Las animaciones, audio, HUD y efectos no aplican daño. La sesión actual es local: falta conectar estas operaciones a autoridad Fusion antes de uso competitivo.
 

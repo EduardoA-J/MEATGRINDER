@@ -42,8 +42,11 @@ namespace Meatgrinder.Presentation
             textRect.offsetMin = Vector2.zero;
             textRect.offsetMax = Vector2.zero;
             Text label = textObject.AddComponent<Text>();
-            label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            label.font = GameUi.FontFor(UiFontRole.Industrial);
             label.fontSize = 32;
+            label.resizeTextForBestFit = true;
+            label.resizeTextMinSize = 18;
+            label.resizeTextMaxSize = 32;
             label.alignment = TextAnchor.MiddleCenter;
             label.color = color;
             label.text = title;

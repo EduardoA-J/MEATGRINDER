@@ -145,6 +145,7 @@ namespace Meatgrinder.Editor
         {
             var go = new GameObject("Sign_" + text); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(position, rotation);
             var mesh = go.AddComponent<TextMesh>(); mesh.text = text; mesh.fontSize = 64; mesh.characterSize = .055f; mesh.anchor = TextAnchor.MiddleCenter; mesh.color = color;
+            ApplySignFont(mesh);
         }
         static void Target(Transform parent, Vector3 position, int index)
         {

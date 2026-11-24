@@ -18,6 +18,8 @@ namespace Meatgrinder.Editor
 {
     public static class ProductSceneInstaller
     {
+        const string StartupScenePath = Root + "00_Scenes/Startup.unity";
+        const string BootScenePath = Root + "00_Scenes/Boot.unity";
         public static readonly string[] MapNames = { "M01_TheSlaughterhouse", "M02_CastleOfTheDamned", "M03_RuinsOfTheForgotten", "M04_TheLongestVoid" };
         static readonly string[] Titles = { "THE SLAUGHTERHOUSE", "CASTLE OF THE DAMNED", "RUINS OF THE FORGOTTEN", "THE LONGEST VOID" };
         static readonly string[] Descriptions = { "Metal, cámaras de procesado y pasarelas. Domina las rutas de la fábrica.", "Murallas, patios y criptas. Alterna exploración y combate entre torres.", "Templos rotos y terrazas. Busca recursos entre columnas y desniveles.", "Islas suspendidas. Controla los puentes y sobrevive al borde del vacío." };
@@ -43,9 +45,10 @@ namespace Meatgrinder.Editor
                 CreateSession();
                 for (int i = 0; i < MapNames.Length; i++) InstallMap(i);
                 CreateBoot();
+                CreateStartup();
                 AssetDatabase.SaveAssets();
                 Directory.CreateDirectory(ProductVerificationRunner.Output);
-                File.WriteAllText(Path.Combine(ProductVerificationRunner.Output, "installation.txt"), "Installed Boot, four map definitions, local session, player tuning, visual prefabs, pickups, map presentation. Existing map geometry preserved.\n" + DateTime.UtcNow.ToString("O"));
+                File.WriteAllText(Path.Combine(ProductVerificationRunner.Output, "installation.txt"), "Installed Startup, Boot, four map definitions, local session, player tuning, visual prefabs, pickups, map presentation. Existing map geometry preserved.\n" + DateTime.UtcNow.ToString("O"));
             }
             finally { if (setup.Length > 0 && !Application.isBatchMode) EditorSceneManager.RestoreSceneManagerSetup(setup); }
         }
@@ -245,6 +248,9 @@ namespace Meatgrinder.Editor
             var root = new GameObject("LocalGameSession"); var session = root.AddComponent<LocalGameSession>();
             Array(session, "maps", Enumerable.Range(1, 4).Select(i => (UnityEngine.Object)Asset<MapDefinition>(Root + "02_ScriptableObjects/Maps/M0" + i + ".asset")).ToArray());
             Set(root.AddComponent<SessionMenu>(), "navigationSound", Sound(9));
+            var loading = root.AddComponent<SessionLoadingScreen>();
+            Set(loading, "steelTexture", Asset<Texture2D>(Art + "BlackSteel.png"));
+            Set(loading, "oxideTexture", Asset<Texture2D>(Art + "Oxide.png"));
             sessionPrefab = SavePrefab(root, Root + "03_Prefabs/UI/LocalGameSession.prefab");
         }
         static void InstallMap(int index)
@@ -328,8 +334,7 @@ namespace Meatgrinder.Editor
         }
         static void CreateBoot()
         {
-            string path = Root + "00_Scenes/Boot.unity";
-            var scene = File.Exists(path) ? EditorSceneManager.OpenScene(path) : EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var scene = File.Exists(BootScenePath) ? EditorSceneManager.OpenScene(BootScenePath) : EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var root = GameObject.Find("Boot") ?? new GameObject("Boot"); Set(Get<GameBootstrap>(root), "sessionPrefab", sessionPrefab);
             if (GameObject.Find("MenuCamera") == null)
             {
@@ -339,8 +344,26 @@ namespace Meatgrinder.Editor
                 for (int i = 0; i < 7; i++) { Part(root.transform, "IndustrialColumn" + i, PrimitiveType.Cube, new Vector3(-10 + i * 4, 3, 8), new Vector3(.6f, 6, .8f), copper); Part(root.transform, "LightStrip" + i, PrimitiveType.Cube, new Vector3(-10 + i * 4, 3, 7.5f), new Vector3(.1f, 4, .08f), glow); }
                 var lamp = new GameObject("MenuLight", typeof(Light)); lamp.transform.rotation = Quaternion.Euler(40, -30, 0); lamp.GetComponent<Light>().type = LightType.Directional; lamp.GetComponent<Light>().intensity = 1.2f;
             }
-            EditorSceneManager.SaveScene(scene, path);
-            var scenes = EditorBuildSettings.scenes.Where(s => s.path != path).ToList(); scenes.Insert(0, new EditorBuildSettingsScene(path, true)); EditorBuildSettings.scenes = scenes.ToArray();
+            EditorSceneManager.SaveScene(scene, BootScenePath);
+        }
+        static void CreateStartup()
+        {
+            var scene = File.Exists(StartupScenePath) ? EditorSceneManager.OpenScene(StartupScenePath) : EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var root = GameObject.Find("Startup") ?? new GameObject("Startup");
+            var camera = Get<Camera>(root);
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(.025f, .03f, .04f);
+            camera.cullingMask = 0;
+            Get<AudioListener>(root);
+            var bootstrap = Get<GameBootstrap>(root);
+            Set(bootstrap, "sessionPrefab", sessionPrefab);
+            Set(bootstrap, "loadMenuOnStart", true);
+            EditorSceneManager.SaveScene(scene, StartupScenePath);
+
+            var scenes = EditorBuildSettings.scenes.Where(s => s.path != StartupScenePath && s.path != BootScenePath).ToList();
+            scenes.Insert(0, new EditorBuildSettingsScene(StartupScenePath, true));
+            scenes.Add(new EditorBuildSettingsScene(BootScenePath, true));
+            EditorBuildSettings.scenes = scenes.ToArray();
         }
         public static void Capture() => ProductMapPresentation.CaptureMaps();
         public static void CaptureAndBuild()
@@ -354,9 +377,11 @@ namespace Meatgrinder.Editor
             string folder = "Builds/LocalProduct"; Directory.CreateDirectory(folder);
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
-                scenes = EditorBuildSettings.scenes.Where(s => s.enabled && (s.path.EndsWith("/Boot.unity") || s.path.Contains("/Maps/M0"))).Select(s => s.path).ToArray(),
+                scenes = EditorBuildSettings.scenes.Where(s => s.enabled && (s.path == StartupScenePath || s.path == BootScenePath || s.path.Contains("/Maps/M0")))
+                    .OrderBy(s => s.path != StartupScenePath).Select(s => s.path).ToArray(),
                 locationPathName = folder + "/MEATGRINDER.exe", target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development
             });
+            Directory.CreateDirectory(ProductVerificationRunner.Output);
             File.WriteAllText(Path.Combine(ProductVerificationRunner.Output, "windows-build.txt"), report.summary.result + " errors=" + report.summary.totalErrors + " size=" + report.summary.totalSize);
             if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded) throw new InvalidOperationException("Windows build failed.");
         }

@@ -10,21 +10,28 @@ namespace Meatgrinder.Presentation
     {
         LocalGameSession session;
         Canvas canvas;
-        CanvasGroup group;
-        RectTransform main, maps, options, credits, pause, results, loading, setup, optionsReturn;
+        EventSystem menuEvents;
+        RectTransform main, maps, options, credits, pause, results, setup, optionsReturn;
+        RectTransform activePage, departingPage, pageBeforeLoading;
+        CanvasGroup activeGroup, departingGroup;
+        LocalSessionPhase? displayedPhase, phaseBeforeLoading;
         MapDefinition selectedMap;
-        bool configuring;
+        bool configuring, selectingInitial;
         UnityEngine.UI.Text setupText;
-        UnityEngine.UI.Text loadingText, resultText, errorText;
+        UnityEngine.UI.Text resultText, errorText;
         UnityEngine.UI.Slider volume, sensitivity, fov;
         UnityEngine.UI.Button motionButton, flashesButton;
         AudioSource source;
         [SerializeField] private AudioClip navigationSound;
-        float shown;
+        static readonly Vector2 PagePosition = new Vector2(68, -310);
+        const float PageTransitionSeconds = .19f;
+        float pageProgress, departingAlpha, nextFocusSound;
         void Awake()
         {
             session = GetComponent<LocalGameSession>();
-            source = gameObject.AddComponent<AudioSource>(); source.ignoreListenerPause = true;
+            source = gameObject.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.ignoreListenerPause = true;
             Build();
         }
         void OnEnable() { if (session != null) session.Changed += Refresh; }
@@ -32,34 +39,42 @@ namespace Meatgrinder.Presentation
         void OnDisable() { if (session != null) session.Changed -= Refresh; }
         void Update()
         {
-            bool visible = session.Phase != LocalSessionPhase.Playing;
-            canvas.enabled = visible;
-            if (!visible) { shown = 0; return; }
-            shown = Mathf.MoveTowards(shown, 1, Time.unscaledDeltaTime * 5);
-            group.alpha = shown;
-            if (session.Phase == LocalSessionPhase.Loading) loadingText.text = "PREPARANDO ARENA   /   " + Mathf.RoundToInt(session.LoadingProgress * 100) + "%";
+            if (activePage == null || pageProgress >= 1) return;
+            pageProgress = session.ReduceMotion ? 1 : Mathf.MoveTowards(pageProgress, 1, Time.unscaledDeltaTime / PageTransitionSeconds);
+            float eased = 1 - (1 - pageProgress) * (1 - pageProgress);
+            activeGroup.alpha = eased;
+            activePage.anchoredPosition = PagePosition + Vector2.right * (16 * (1 - eased));
+            if (departingPage == null) return;
+            departingGroup.alpha = departingAlpha * (1 - eased);
+            departingPage.anchoredPosition = PagePosition - Vector2.right * (10 * eased);
+            if (pageProgress >= 1) ClearDepartingPage();
         }
         void Build()
         {
             canvas = GameUi.Canvas(transform, "SessionScreens", 100);
+            canvas.GetComponent<UnityEngine.UI.CanvasScaler>().screenMatchMode = UnityEngine.UI.CanvasScaler.ScreenMatchMode.Expand;
             canvas.gameObject.AddComponent<UnityEngine.UI.GraphicRaycaster>();
-            group = canvas.gameObject.AddComponent<CanvasGroup>();
             var events = new GameObject("MenuEventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             events.transform.SetParent(transform, false);
+            menuEvents = events.GetComponent<EventSystem>();
             events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
             GameUi.Image(GameUi.Fill(canvas.transform, "Scrim"), new Color(.02f, .025f, .03f, .88f));
             GameUi.Image(GameUi.Rect(canvas.transform, "Rule", new Vector2(0, 1), new Vector2(0, 1), new Vector2(64, -70), new Vector2(64, 6)), GameUi.Accent);
-            GameUi.Text(canvas.transform, "Brand", "MEATGRINDER", new Vector2(0, 1), new Vector2(0, 1), new Vector2(64, -100), new Vector2(1400, 100), 74, GameUi.Paper);
-            GameUi.Text(canvas.transform, "Tagline", "STEEL. BLOOD. MOMENTUM.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(68, -206), new Vector2(900, 30), 20, GameUi.Accent);
-            GameUi.Text(canvas.transform, "Footer", "WASD  MOVER     ESPACIO  SALTAR     SHIFT  SPRINT     CTRL  AGACHARSE     V  MELEE     R  RECARGAR     1 / 2  ARMAS", Vector2.zero, Vector2.zero, new Vector2(64, 30), new Vector2(1450, 40), 16, new Color(.65f, .66f, .64f));
-            main = Page("Main"); maps = Page("MapSelection"); options = Page("Options"); credits = Page("Credits"); pause = Page("Pause"); results = Page("Results"); loading = Page("Loading"); setup = Page("LocalMatchSetup");
-            Add(main, "Play", "01   JUGAR", 0, () => { configuring = false; Show(maps); });
-            Add(main, "Create", "02   CREAR PARTIDA LOCAL", 1, () => { configuring = true; Show(maps); });
-            Add(main, "Options", "03   OPCIONES", 2, OpenOptions);
-            Add(main, "Credits", "04   CRÉDITOS", 3, () => Show(credits));
-            Add(main, "Quit", "05   SALIR", 4, session.Quit);
+            var brand = GameUi.Text(canvas.transform, "Brand", "MEATGRINDER", new Vector2(0, 1), new Vector2(0, 1),
+                new Vector2(64, -83), new Vector2(1460, 150), 100, GameUi.Paper, role: UiFontRole.Display);
+            brand.resizeTextForBestFit = true;
+            brand.resizeTextMinSize = 64;
+            brand.resizeTextMaxSize = 100;
+            GameUi.Text(canvas.transform, "Tagline", "STEEL. BLOOD. MOMENTUM.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(68, -218), new Vector2(900, 30), 18, GameUi.Accent, role: UiFontRole.System);
+            GameUi.Text(canvas.transform, "Footer", "WASD  MOVER     ESPACIO  SALTAR     SHIFT  SPRINT     CTRL  AGACHARSE     V  MELEE     R  RECARGAR     1 / 2  ARMAS", Vector2.zero, Vector2.zero, new Vector2(64, 30), new Vector2(1450, 40), 16, new Color(.65f, .66f, .64f), role: UiFontRole.System);
+            main = Page("Main"); maps = Page("MapSelection"); options = Page("Options"); credits = Page("Credits"); pause = Page("Pause"); results = Page("Results"); setup = Page("LocalMatchSetup");
+            Add(main, "Play", "JUGAR", 0, () => { configuring = false; Show(maps); });
+            Add(main, "Create", "CREAR PARTIDA LOCAL", 1, () => { configuring = true; Show(maps); });
+            Add(main, "Options", "OPCIONES", 2, OpenOptions);
+            Add(main, "Credits", "CRÉDITOS", 3, () => Show(credits));
+            Add(main, "Quit", "SALIR", 4, session.Quit);
             GameUi.Text(main, "Status", "ARENAS ABIERTAS\n\nExplora las rutas. Controla los recursos.\nEmpiezas con melee: busca tu arsenal.\n\nPráctica local disponible.\nVersus, ranked y sesiones de red: no disponibles.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(580, 0), new Vector2(650, 330), 24, GameUi.Paper);
-            for (int i = 0; i < session.Maps.Length; i++)
+            for (int i = 0; session.Maps != null && i < session.Maps.Length; i++)
             {
                 var map = session.Maps[i];
                 if (map == null) continue;
@@ -67,42 +82,48 @@ namespace Meatgrinder.Presentation
                 GameUi.Text(maps, map.MapId + "Description", map.Description, new Vector2(0, 1), new Vector2(0, 1), new Vector2(800, -i * 70), new Vector2(520, 60), 19, GameUi.Paper);
             }
             Add(maps, "Back", "VOLVER", 5, Back);
-            setupText = GameUi.Text(setup, "Configuration", "", new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, new Vector2(1300, 190), 27, GameUi.Paper);
+            setupText = GameUi.Text(setup, "Configuration", "", new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, new Vector2(1300, 190), 27, GameUi.Paper, role: UiFontRole.Industrial);
             Add(setup, "CreateConfirmed", "CREAR PARTIDA", 3, () => session.StartMap(selectedMap));
             Add(setup, "SetupOptions", "AJUSTES DE JUEGO", 4, OpenOptions);
             Add(setup, "ChangeMap", "CAMBIAR MAPA", 5, () => Show(maps));
-            errorText = GameUi.Text(maps, "LoadError", "", new Vector2(0, 1), new Vector2(0, 1), new Vector2(800, -300), new Vector2(500, 100), 20, GameUi.Accent);
+            errorText = GameUi.Text(canvas.transform, "LoadError", "", Vector2.zero, Vector2.zero, new Vector2(68, 74), new Vector2(1400, 42), 21, GameUi.Accent);
             Add(pause, "Resume", "CONTINUAR", 0, session.Resume);
             Add(pause, "Options", "OPCIONES", 1, OpenOptions);
             Add(pause, "Restart", "REINICIAR MAPA", 2, session.Restart);
             Add(pause, "Finish", "FINALIZAR SESIÓN", 3, session.Finish);
             Add(pause, "MainMenu", "MENÚ PRINCIPAL", 4, session.ReturnToMenu);
-            resultText = GameUi.Text(results, "SessionResults", "", new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, new Vector2(900, 290), 30, GameUi.Paper);
+            resultText = GameUi.Text(results, "SessionResults", "", new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, new Vector2(900, 290), 26, GameUi.Paper, role: UiFontRole.System);
             Add(results, "Replay", "VOLVER A JUGAR", 4, session.Restart);
             Add(results, "MainMenu", "MENÚ PRINCIPAL", 5, session.ReturnToMenu);
             GameUi.Text(credits, "CreditsText", "MEATGRINDER\nDirección y diseño: David\n\nImplementación y recursos procedurales propios.\nModelos aportados en el proyecto.\n\nReferencias de diseño: Quake, DOOM, ULTRAKILL y Left 4 Dead.\nConsulta de SourceEngineMovementUnity, Salvation’s Descent y doom.\nNo se han incorporado sus scripts ni sus recursos comerciales.", new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, new Vector2(1300, 330), 24, GameUi.Paper);
             Add(credits, "Back", "VOLVER", 5, Back);
-            loadingText = GameUi.Text(loading, "Progress", "PREPARANDO ARENA", new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, new Vector2(1300, 100), 35, GameUi.Paper);
             volume = Slider("VOLUMEN", 0, 0, 1, session.Volume);
             sensitivity = Slider("SENSIBILIDAD", 1, .2f, 3, session.Sensitivity);
             fov = Slider("CAMPO DE VISIÓN", 2, 70, 120, session.FieldOfView);
             motionButton = Add(options, "Motion", "", 3, () => SaveOptions(!session.ReduceMotion, session.ReduceFlashes));
             flashesButton = Add(options, "Flashes", "", 4, () => SaveOptions(session.ReduceMotion, !session.ReduceFlashes));
-            GameUi.Button(options, "Fullscreen", "PANTALLA COMPLETA", new Vector2(580, -210), new Vector2(500, 56), () => Screen.fullScreen = !Screen.fullScreen);
-            GameUi.Button(options, "Resolution", "1366 × 768 / 1920 × 1080", new Vector2(580, -280), new Vector2(500, 56), () => { bool low = Screen.width > 1400; Screen.SetResolution(low ? 1366 : 1920, low ? 768 : 1080, Screen.fullScreenMode); });
+            Add(options, "Fullscreen", "PANTALLA COMPLETA", 3, () => Screen.fullScreen = !Screen.fullScreen, x: 580);
+            Add(options, "Resolution", "1366 × 768 / 1920 × 1080", 4, () => { bool low = Screen.width > 1400; Screen.SetResolution(low ? 1366 : 1920, low ? 768 : 1080, Screen.fullScreenMode); }, x: 580);
             Add(options, "Back", "GUARDAR Y VOLVER", 5, () => { PlayerPrefs.Save(); Back(); });
             volume.onValueChanged.AddListener(_ => SaveOptions(session.ReduceMotion, session.ReduceFlashes));
             sensitivity.onValueChanged.AddListener(_ => SaveOptions(session.ReduceMotion, session.ReduceFlashes));
             fov.onValueChanged.AddListener(_ => SaveOptions(session.ReduceMotion, session.ReduceFlashes));
         }
-        RectTransform Page(string name) => GameUi.Rect(canvas.transform, name, new Vector2(0, 1), new Vector2(0, 1), new Vector2(68, -310), new Vector2(1450, 480));
-        UnityEngine.UI.Button Add(Transform page, string name, string label, int row, UnityEngine.Events.UnityAction action, float width = 500)
+        RectTransform Page(string name)
         {
-            return GameUi.Button(page, name, label, new Vector2(0, -row * 70), new Vector2(width, 56), () => { Click(); action(); });
+            var page = GameUi.Rect(canvas.transform, name, new Vector2(0, 1), new Vector2(0, 1), PagePosition, new Vector2(1450, 480));
+            page.gameObject.AddComponent<CanvasGroup>();
+            page.gameObject.SetActive(false);
+            return page;
+        }
+        UnityEngine.UI.Button Add(Transform page, string name, string label, int row, UnityEngine.Events.UnityAction action, float width = 500, float x = 0)
+        {
+            return GameUi.Button(page, name, label, new Vector2(x, -row * 70), new Vector2(width, 56),
+                () => { PlayNavigation(.45f); action(); }, () => session.ReduceMotion, PlayFocus);
         }
         UnityEngine.UI.Slider Slider(string label, int row, float min, float max, float value)
         {
-            GameUi.Text(options, label, label, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, -row * 70), new Vector2(300, 50), 23, GameUi.Paper);
+            GameUi.Text(options, label, label, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, -row * 70), new Vector2(300, 50), 21, GameUi.Paper, role: UiFontRole.System);
             var rect = GameUi.Rect(options, label + "Slider", new Vector2(0, 1), new Vector2(0, 1), new Vector2(340, -row * 70 - 12), new Vector2(600, 28));
             GameUi.Image(rect, new Color(.17f, .18f, .19f)).raycastTarget = true;
             var handle = GameUi.Image(GameUi.Rect(rect, "Handle", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, new Vector2(20, 38)), GameUi.Accent);
@@ -129,24 +150,90 @@ namespace Meatgrinder.Presentation
         }
         void OpenOptions()
         {
-            optionsReturn = setup.gameObject.activeSelf ? setup : session.Phase == LocalSessionPhase.Paused ? pause : main;
+            optionsReturn = activePage;
             UpdateOptionLabels(); Show(options);
         }
-        void Back() => Show(options.gameObject.activeSelf && optionsReturn != null ? optionsReturn : session.Phase == LocalSessionPhase.Paused ? pause : main);
-        void Click() { if (navigationSound != null) source.PlayOneShot(navigationSound, .45f); }
+        void Back() => Show(activePage == options && optionsReturn != null ? optionsReturn : session.Phase == LocalSessionPhase.Paused ? pause : main);
+        void PlayNavigation(float volume)
+        {
+            if (navigationSound != null) source.PlayOneShot(navigationSound, volume);
+        }
+        void PlayFocus()
+        {
+            if (selectingInitial || Time.unscaledTime < nextFocusSound) return;
+            nextFocusSound = Time.unscaledTime + .08f;
+            PlayNavigation(.16f);
+        }
         void Refresh()
         {
-            if (errorText != null) errorText.text = session.LoadError;
+            errorText.text = session.LoadError;
+            var phase = session.Phase;
+            if (phase == displayedPhase) return;
+            if (phase == LocalSessionPhase.Loading)
+            {
+                pageBeforeLoading = activePage;
+                phaseBeforeLoading = displayedPhase;
+            }
+            displayedPhase = phase;
+            if (phase == LocalSessionPhase.Playing || phase == LocalSessionPhase.Loading)
+            {
+                Hide();
+                return;
+            }
             resultText.text = "SESIÓN LOCAL FINALIZADA\n\nTiempo   " + System.TimeSpan.FromSeconds(session.Elapsed).ToString(@"mm\:ss") +
                 "     Disparos   " + session.Shots + "\nBlancos destruidos   " + session.TargetsDestroyed + "\nMuertes   " + session.Deaths + "     Recogidas   " + session.Pickups;
-            Show(session.Phase == LocalSessionPhase.Loading ? loading : session.Phase == LocalSessionPhase.Results ? results : session.Phase == LocalSessionPhase.Paused ? pause : main);
+            var page = !string.IsNullOrEmpty(session.LoadError) && phaseBeforeLoading == phase && pageBeforeLoading != null
+                ? pageBeforeLoading
+                : phase == LocalSessionPhase.Results ? results : phase == LocalSessionPhase.Paused ? pause : main;
+            pageBeforeLoading = null;
+            phaseBeforeLoading = null;
+            Show(page);
         }
         void Show(RectTransform page)
         {
-            foreach (var item in new[] { main, maps, options, credits, pause, results, loading, setup }) item.gameObject.SetActive(item == page);
-            shown = 0;
+            if (activePage == page) return;
+            ClearDepartingPage();
+            departingPage = activePage;
+            departingGroup = activeGroup;
+            if (departingPage != null)
+            {
+                departingAlpha = departingGroup.alpha;
+                departingGroup.interactable = false;
+                departingGroup.blocksRaycasts = false;
+            }
+            activePage = page;
+            activeGroup = page.GetComponent<CanvasGroup>();
+            page.SetAsLastSibling();
+            page.gameObject.SetActive(true);
+            activeGroup.interactable = true;
+            activeGroup.blocksRaycasts = true;
+            bool animate = !session.ReduceMotion && !session.ReduceFlashes;
+            pageProgress = animate ? 0 : 1;
+            activeGroup.alpha = pageProgress;
+            page.anchoredPosition = PagePosition + Vector2.right * (animate ? 16 : 0);
+            if (!animate) ClearDepartingPage();
+            canvas.enabled = true;
+            menuEvents.gameObject.SetActive(true);
             var first = page.GetComponentInChildren<UnityEngine.UI.Selectable>();
-            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(first != null ? first.gameObject : null);
+            selectingInitial = true;
+            menuEvents.SetSelectedGameObject(first != null ? first.gameObject : null);
+            selectingInitial = false;
+        }
+        void Hide()
+        {
+            menuEvents.SetSelectedGameObject(null);
+            menuEvents.gameObject.SetActive(false);
+            canvas.enabled = false;
+            if (activePage != null) activePage.gameObject.SetActive(false);
+            activePage = null;
+            activeGroup = null;
+            ClearDepartingPage();
+        }
+        void ClearDepartingPage()
+        {
+            if (departingPage != null) departingPage.gameObject.SetActive(false);
+            departingPage = null;
+            departingGroup = null;
         }
     }
 }

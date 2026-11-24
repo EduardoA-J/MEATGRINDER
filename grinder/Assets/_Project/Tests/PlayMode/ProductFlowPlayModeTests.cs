@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Meatgrinder.Combat;
@@ -28,6 +29,46 @@ namespace Meatgrinder.Tests
         }
 
         [UnityTest]
+        public IEnumerator StartupShowsLoadingOverlayAndReachesBootAfterCompletion()
+        {
+            var values = new List<float>();
+            LocalGameSession session = null;
+            bool sawStartup = false;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            try
+            {
+                yield return Load("Startup");
+                float deadline = Time.realtimeSinceStartup + 15;
+                while (session != null && session.Phase == LocalSessionPhase.Loading && Time.realtimeSinceStartup < deadline) yield return null;
+            }
+            finally
+            {
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+                if (session != null) session.LoadingProgressChanged -= values.Add;
+            }
+
+            Assert.True(sawStartup, "The loading overlay must be visible while Startup is active.");
+            Assert.AreEqual("Boot", SceneManager.GetActiveScene().name);
+            Assert.AreEqual(LocalSessionPhase.Menu, session.Phase);
+            Assert.That(values, Is.Not.Empty.And.Ordered);
+            Assert.True(values.Take(values.Count - 1).All(p => p <= .9f));
+            Assert.AreEqual(1, values.Last());
+            Assert.False(LoadingCanvas(session).enabled);
+            Assert.AreEqual(1, Object.FindObjectsByType<LocalGameSession>(FindObjectsSortMode.None).Length);
+
+            void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+            {
+                if (scene.name != "Startup") return;
+                session = Object.FindFirstObjectByType<LocalGameSession>();
+                if (session == null) return;
+                var overlay = LoadingCanvas(session);
+                sawStartup = session.Phase == LocalSessionPhase.Loading && overlay != null && overlay.enabled;
+                session.LoadingProgressChanged += values.Add;
+                if (sawStartup) Capture("00-startup-loading");
+            }
+        }
+
+        [UnityTest]
         public IEnumerator BootMenuMapPauseResultsAndReturnAreConnected()
         {
             yield return Load("Boot");
@@ -36,11 +77,29 @@ namespace Meatgrinder.Tests
             Assert.AreEqual(LocalSessionPhase.Menu, session.Phase);
             Assert.AreEqual(1, Object.FindObjectsByType<UnityEngine.EventSystems.EventSystem>(FindObjectsSortMode.None).Length);
             yield return new WaitForSecondsRealtime(.25f);
+            Canvas.ForceUpdateCanvases();
+            var brand = session.transform.Find("SessionScreens/Brand").GetComponent<UnityEngine.UI.Text>();
+            Assert.GreaterOrEqual(brand.cachedTextGenerator.characterCountVisible, brand.text.Length,
+                "The display font must fit inside the menu wordmark rectangle.");
             Capture("01-menu");
             Click("Play"); yield return null;
             Click("M01");
-            for (int i = 0; i < 600 && session.Phase != LocalSessionPhase.Playing; i++) yield return null;
+            AssertLoadingView(session, session.Maps[0].DisplayName, 0);
+            Assert.False(session.StartMap(session.Maps[1]), "Ignore load requests during an active load.");
+            Capture("00-arena-loading");
+            bool capturedProgress = false;
+            for (int i = 0; i < 600 && session.Phase != LocalSessionPhase.Playing; i++)
+            {
+                if (!capturedProgress && session.LoadingProgress > 0 && session.LoadingProgress < 1)
+                {
+                    Capture("00-arena-progress");
+                    capturedProgress = true;
+                }
+                yield return null;
+            }
             Assert.AreEqual(LocalSessionPhase.Playing, session.Phase);
+            Assert.AreEqual(1, session.LoadingProgress);
+            Assert.False(LoadingCanvas(session).enabled);
             Assert.NotNull(session.Player);
             yield return new WaitForFixedUpdate();
             var weapons = session.Player.GetComponent<WeaponController>();
@@ -72,6 +131,7 @@ namespace Meatgrinder.Tests
             yield return new WaitForSecondsRealtime(.25f);
             Capture("06-results");
             Click("MainMenu");
+            AssertLoadingView(session, "MENÚ PRINCIPAL", 0);
             for (int i = 0; i < 600 && session.Phase != LocalSessionPhase.Menu; i++) yield return null;
             Assert.AreEqual("Boot", SceneManager.GetActiveScene().name);
             Assert.AreEqual(1, Object.FindObjectsByType<LocalGameSession>(FindObjectsSortMode.None).Length);
@@ -90,11 +150,47 @@ namespace Meatgrinder.Tests
         }
 
         [UnityTest]
+        public IEnumerator RejectingUnavailableMapKeepsPauseAndRestartLoadsTheCurrentMap()
+        {
+            yield return Load(Maps[0]);
+            var session = Object.FindFirstObjectByType<LocalGameSession>();
+            session.Pause();
+            var oldPlayer = session.Player;
+            var oldMap = session.CurrentMap;
+            var invalid = ScriptableObject.CreateInstance<MapDefinition>();
+            Assert.False(session.StartMap(invalid));
+            Object.Destroy(invalid);
+            Assert.AreEqual(LocalSessionPhase.Paused, session.Phase);
+            Assert.IsNotEmpty(session.LoadError);
+            Assert.False(LoadingCanvas(session).enabled);
+
+            session.Restart();
+            AssertLoadingView(session, oldMap.DisplayName, 0);
+            Assert.False(oldPlayer.GetComponent<PlayerInputReader>().enabled);
+            float deadline = Time.realtimeSinceStartup + 15;
+            while (session.Phase == LocalSessionPhase.Loading && Time.realtimeSinceStartup < deadline) yield return null;
+            Assert.AreEqual(LocalSessionPhase.Playing, session.Phase);
+            Assert.AreEqual(1, session.LoadingProgress);
+            Assert.AreEqual(oldMap, session.CurrentMap);
+            Assert.AreNotSame(oldPlayer, session.Player);
+            Assert.True(session.Player.GetComponent<PlayerInputReader>().enabled);
+            Assert.IsNull(session.LoadError);
+        }
+
+        [UnityTest]
         public IEnumerator EveryMapHasConnectedTuningWeaponPickupsAndSixPowers()
         {
             foreach (string name in Maps)
             {
                 yield return Load(name);
+                var signs = Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None);
+                Assert.IsNotEmpty(signs, name + " must have in-world signs.");
+                var signFont = GameUi.FontFor(UiFontRole.Industrial);
+                foreach (var sign in signs)
+                {
+                    Assert.AreSame(signFont, sign.font, name + ": " + sign.text);
+                    Assert.AreSame(signFont.material, sign.GetComponent<MeshRenderer>().sharedMaterial, name + ": " + sign.text);
+                }
                 var player = GameObject.Find("LocalPlayer");
                 Assert.AreEqual(1, player.GetComponents<PlayerLife>().Length, name + " duplicate lifecycle component");
                 yield return new WaitForSeconds(.15f);
@@ -165,11 +261,20 @@ namespace Meatgrinder.Tests
             yield return new WaitForSeconds(1.3f);
             Assert.True(gates.All(g => g.IsOpen));
             var exit = gates.First(g => g.AdvancesMap);
-            Assert.AreEqual(LocalSessionPhase.Playing, Object.FindFirstObjectByType<LocalGameSession>().Phase);
+            var session = Object.FindFirstObjectByType<LocalGameSession>();
+            Assert.AreEqual(LocalSessionPhase.Playing, session.Phase);
+            bool sawTransition = false;
+            session.Changed += () =>
+            {
+                if (session.Phase == LocalSessionPhase.Loading)
+                    sawTransition = session.LoadingDestination == session.Maps[1].DisplayName;
+            };
             Teleport(player, exit.transform.position + new Vector3(0, .1f, .7f));
             yield return new WaitForFixedUpdate(); yield return new WaitForFixedUpdate();
             float deadline = Time.realtimeSinceStartup + 15;
-            while (SceneManager.GetActiveScene().name != Maps[1] && Time.realtimeSinceStartup < deadline) yield return null;
+            while ((!sawTransition || session.Phase == LocalSessionPhase.Loading) && Time.realtimeSinceStartup < deadline) yield return null;
+            Assert.True(sawTransition);
+            Assert.AreEqual(1, session.LoadingProgress);
             Assert.AreEqual(Maps[1], SceneManager.GetActiveScene().name);
             yield return null;
             Assert.AreEqual(0, GameObject.Find("LocalPlayer").GetComponent<WeaponController>().SlotCount);
@@ -256,9 +361,22 @@ namespace Meatgrinder.Tests
             while (!operation.isDone) yield return null;
             yield return null;
         }
+        static Canvas LoadingCanvas(LocalGameSession session) => session.transform.Find("LoadingScreen")?.GetComponent<Canvas>();
+
+        static void AssertLoadingView(LocalGameSession session, string destination, float progress)
+        {
+            Assert.AreEqual(LocalSessionPhase.Loading, session.Phase);
+            var canvas = LoadingCanvas(session);
+            Assert.True(canvas.enabled);
+            Assert.False(session.transform.Find("SessionScreens").GetComponent<Canvas>().enabled);
+            Assert.AreEqual(destination, canvas.transform.Find("Destination").GetComponent<UnityEngine.UI.Text>().text);
+            Assert.AreEqual(progress, session.LoadingProgress);
+            Assert.AreEqual(progress, ((RectTransform)canvas.transform.Find("ProgressTrack/ProgressFill")).anchorMax.x);
+        }
+
         static void Click(string name)
         {
-            var button = Object.FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None).FirstOrDefault(b => b.name == name && b.gameObject.activeInHierarchy);
+            var button = Object.FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None).FirstOrDefault(b => b.name == name && b.IsInteractable());
             Assert.NotNull(button, "Missing active button " + name); button.onClick.Invoke();
         }
         static void Capture(string name)
@@ -267,6 +385,8 @@ namespace Meatgrinder.Tests
             var camera = Object.FindFirstObjectByType<Camera>(); if (camera == null) return;
             var canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None).Where(c => c.renderMode == RenderMode.ScreenSpaceOverlay).ToArray();
             var texture = new RenderTexture(1366, 768, 24); var previous = camera.targetTexture;
+            int previousMask = camera.cullingMask;
+            if (previousMask == 0) camera.cullingMask = 1;
             camera.targetTexture = texture;
             foreach (var canvas in canvases) { canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = camera.nearClipPlane + .001f; }
             Canvas.ForceUpdateCanvases(); camera.Render();
@@ -274,7 +394,7 @@ namespace Meatgrinder.Tests
             var image = new Texture2D(1366, 768, TextureFormat.RGB24, false); image.ReadPixels(new Rect(0, 0, 1366, 768), 0, 0); image.Apply();
             string folder = Path.GetFullPath(Path.Combine(Application.dataPath, "../../Documentation/test-results/product")); Directory.CreateDirectory(folder);
             File.WriteAllBytes(Path.Combine(folder, name + ".png"), image.EncodeToPNG());
-            RenderTexture.active = old; camera.targetTexture = previous;
+            RenderTexture.active = old; camera.targetTexture = previous; camera.cullingMask = previousMask;
             foreach (var canvas in canvases) { canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.worldCamera = null; }
             Object.Destroy(texture); Object.Destroy(image);
         }

@@ -12,6 +12,11 @@ namespace Meatgrinder.Editor
         public const string Root = "Assets/_Project/";
         public static string Art => Root + "05_ArtModels/Product/";
         public static T Asset<T>(string path) where T : UnityEngine.Object => AssetDatabase.LoadAssetAtPath<T>(path);
+        internal static void ApplySignFont(TextMesh sign)
+        {
+            sign.font = GameUi.FontFor(UiFontRole.Industrial);
+            sign.GetComponent<MeshRenderer>().sharedMaterial = sign.font.material;
+        }
         public static T Data<T>(string path) where T : ScriptableObject
         {
             var value = Asset<T>(path);
