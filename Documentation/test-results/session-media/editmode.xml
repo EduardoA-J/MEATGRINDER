@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="44" result="Passed" total="44" passed="44" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0,8162878">
+  <test-suite type="TestSuite" id="1040" name="grinder" fullname="grinder" runstate="Runnable" testcasecount="44" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.816288" total="44" passed="44" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1091" name="Meatgrinder.Tests.EditMode.dll" fullname="F:/MAPAUNI/MEATGRINDER/grinder/Library/ScriptAssemblies/Meatgrinder.Tests.EditMode.dll" runstate="Runnable" testcasecount="44" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.718749" total="44" passed="44" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="15300" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1092" name="Meatgrinder" fullname="Meatgrinder" runstate="Runnable" testcasecount="44" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.618693" total="44" passed="44" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1093" name="Tests" fullname="Meatgrinder.Tests" runstate="Runnable" testcasecount="44" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.519198" total="44" passed="44" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1042" name="CombatEditModeTests" fullname="Meatgrinder.Tests.CombatEditModeTests" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.119376" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1049" name="CadenceReloadAndEmptyMagazineFollowTheAsset" fullname="Meatgrinder.Tests.CombatEditModeTests.CadenceReloadAndEmptyMagazineFollowTheAsset" methodname="CadenceReloadAndEmptyMagazineFollowTheAsset" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="408151136" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.002706" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Combat] Shot weapon loaded 1
+]]></output>
+            </test-case>
+            <test-case id="1045" name="DamageTypesCoverTheFourChannels" fullname="Meatgrinder.Tests.CombatEditModeTests.DamageTypesCoverTheFourChannels" methodname="DamageTypesCoverTheFourChannels" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1779277189" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000346" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1058" name="DefinitionExposesTheWeaponCatalog" fullname="Meatgrinder.Tests.CombatEditModeTests.DefinitionExposesTheWeaponCatalog" methodname="DefinitionExposesTheWeaponCatalog" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1384088379" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000546" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1051" name="DrawBlocksTheShotAndLeavesTheOtherMagazine" fullname="Meatgrinder.Tests.CombatEditModeTests.DrawBlocksTheShotAndLeavesTheOtherMagazine" methodname="DrawBlocksTheShotAndLeavesTheOtherMagazine" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="691127818" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001304" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Combat] Shot weapon loaded 3
+]]></output>
+            </test-case>
+            <test-case id="1053" name="EmptyWeaponDoesNotDamageTheTarget" fullname="Meatgrinder.Tests.CombatEditModeTests.EmptyWeaponDoesNotDamageTheTarget" methodname="EmptyWeaponDoesNotDamageTheTarget" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="577894735" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001152" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1047" name="FriendlyFireBlocksTheSameTeam" fullname="Meatgrinder.Tests.CombatEditModeTests.FriendlyFireBlocksTheSameTeam" methodname="FriendlyFireBlocksTheSameTeam" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="2107065817" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000541" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1044" name="MissingAuthorityDoesNotChangeHealth" fullname="Meatgrinder.Tests.CombatEditModeTests.MissingAuthorityDoesNotChangeHealth" methodname="MissingAuthorityDoesNotChangeHealth" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1150249142" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000378" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1046" name="PartialDamageStopsAtZeroAndRaisesOneDeath" fullname="Meatgrinder.Tests.CombatEditModeTests.PartialDamageStopsAtZeroAndRaisesOneDeath" methodname="PartialDamageStopsAtZeroAndRaisesOneDeath" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1121760277" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000635" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="ProjectileAdvancesAtTheAssetSpeedAndStopsOnAWall" fullname="Meatgrinder.Tests.CombatEditModeTests.ProjectileAdvancesAtTheAssetSpeedAndStopsOnAWall" methodname="ProjectileAdvancesAtTheAssetSpeedAndStopsOnAWall" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1548363770" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001447" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1043" name="SameConfirmationDoesNotApplyTwice" fullname="Meatgrinder.Tests.CombatEditModeTests.SameConfirmationDoesNotApplyTwice" methodname="SameConfirmationDoesNotApplyTwice" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1877415641" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001209" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1048" name="ShooterIsExcludedFromTheBlast" fullname="Meatgrinder.Tests.CombatEditModeTests.ShooterIsExcludedFromTheBlast" methodname="ShooterIsExcludedFromTheBlast" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1823513501" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001017" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1054" name="SpreadLeavesTheCenterAndFalloffDropsWithDistance" fullname="Meatgrinder.Tests.CombatEditModeTests.SpreadLeavesTheCenterAndFalloffDropsWithDistance" methodname="SpreadLeavesTheCenterAndFalloffDropsWithDistance" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1057012837" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001374" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1050" name="SwitchingBackDoesNotSpendAnotherRound" fullname="Meatgrinder.Tests.CombatEditModeTests.SwitchingBackDoesNotSpendAnotherRound" methodname="SwitchingBackDoesNotSpendAnotherRound" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="456401591" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001042" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Combat] Shot weapon loaded 3
+]]></output>
+            </test-case>
+            <test-case id="1052" name="ViewmodelKickDoesNotChangeTheRay" fullname="Meatgrinder.Tests.CombatEditModeTests.ViewmodelKickDoesNotChangeTheRay" methodname="ViewmodelKickDoesNotChangeTheRay" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1748861302" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.002034" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1055" name="WallStopsTheShotgun" fullname="Meatgrinder.Tests.CombatEditModeTests.WallStopsTheShotgun" methodname="WallStopsTheShotgun" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="1182319686" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000751" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1057" name="ZeroRecoilLeavesTheCamera" fullname="Meatgrinder.Tests.CombatEditModeTests.ZeroRecoilLeavesTheCamera" methodname="ZeroRecoilLeavesTheCamera" classname="Meatgrinder.Tests.CombatEditModeTests" runstate="Runnable" seed="2136315415" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001025" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1059" name="GameplayEditModeTests" fullname="Meatgrinder.Tests.GameplayEditModeTests" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.086131" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1062" name="BerserkScalesMeleeAndLeavesHitscanAlone" fullname="Meatgrinder.Tests.GameplayEditModeTests.BerserkScalesMeleeAndLeavesHitscanAlone" methodname="BerserkScalesMeleeAndLeavesHitscanAlone" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="296566369" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.002455" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[PowerUp] Berserk activado: 2x daño melee durante 30s
+]]></output>
+            </test-case>
+            <test-case id="1060" name="GrantedRocketKeepsAmmoSeparateFromTheShotgun" fullname="Meatgrinder.Tests.GameplayEditModeTests.GrantedRocketKeepsAmmoSeparateFromTheShotgun" methodname="GrantedRocketKeepsAmmoSeparateFromTheShotgun" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1981829572" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000815" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1066" name="HasteRaisesGroundSpeed" fullname="Meatgrinder.Tests.GameplayEditModeTests.HasteRaisesGroundSpeed" methodname="HasteRaisesGroundSpeed" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1330081236" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000509" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1065" name="PickupHealsAndGrantsTheRocket" fullname="Meatgrinder.Tests.GameplayEditModeTests.PickupHealsAndGrantsTheRocket" methodname="PickupHealsAndGrantsTheRocket" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="917026465" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001044" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1061" name="QuadDamageDoublesTheConfirmedHit" fullname="Meatgrinder.Tests.GameplayEditModeTests.QuadDamageDoublesTheConfirmedHit" methodname="QuadDamageDoublesTheConfirmedHit" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="1214348680" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.001187" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[PowerUp] Quad Damage activado: 2x durante 30s
+]]></output>
+            </test-case>
+            <test-case id="1064" name="RespawnRestoresHealthAfterThePendingDelay" fullname="Meatgrinder.Tests.GameplayEditModeTests.RespawnRestoresHealthAfterThePendingDelay" methodname="RespawnRestoresHealthAfterThePendingDelay" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="786504181" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000693" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1063" name="SpawnProtectionExpires" fullname="Meatgrinder.Tests.GameplayEditModeTests.SpawnProtectionExpires" methodname="SpawnProtectionExpires" classname="Meatgrinder.Tests.GameplayEditModeTests" runstate="Runnable" seed="749189619" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000366" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1067" name="MovementEditModeTests" fullname="Meatgrinder.Tests.MovementEditModeTests" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.030182" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1075" name="AirborneHorizontalSpeedSurvivesWithoutInput" fullname="Meatgrinder.Tests.MovementEditModeTests.AirborneHorizontalSpeedSurvivesWithoutInput" methodname="AirborneHorizontalSpeedSurvivesWithoutInput" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1598039464" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000484" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1077" name="AirControlRedirectsWhenAccelerationIsZero" fullname="Meatgrinder.Tests.MovementEditModeTests.AirControlRedirectsWhenAccelerationIsZero" methodname="AirControlRedirectsWhenAccelerationIsZero" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1883261685" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.016289" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1076" name="AirInputChangesHorizontalVelocity" fullname="Meatgrinder.Tests.MovementEditModeTests.AirInputChangesHorizontalVelocity" methodname="AirInputChangesHorizontalVelocity" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="999039494" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000430" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1082" name="ALongLandingWithoutJumpAppliesFriction" fullname="Meatgrinder.Tests.MovementEditModeTests.ALongLandingWithoutJumpAppliesFriction" methodname="ALongLandingWithoutJumpAppliesFriction" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1758055192" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000348" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1086" name="GameActionsBindWasdSpaceMouseSprintAndCrouch" fullname="Meatgrinder.Tests.MovementEditModeTests.GameActionsBindWasdSpaceMouseSprintAndCrouch" methodname="GameActionsBindWasdSpaceMouseSprintAndCrouch" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="821758560" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.002584" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Movement] Actions Move, Look, Jump, Attack, Sprint and Crouch are bound.
+]]></output>
+            </test-case>
+            <test-case id="1074" name="GravityUsesTheAssetValue" fullname="Meatgrinder.Tests.MovementEditModeTests.GravityUsesTheAssetValue" methodname="GravityUsesTheAssetValue" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="717611661" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000487" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1084" name="HalfTicksStayCloseToTheFixedStep" fullname="Meatgrinder.Tests.MovementEditModeTests.HalfTicksStayCloseToTheFixedStep" methodname="HalfTicksStayCloseToTheFixedStep" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="436540864" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000358" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1072" name="HigherFrictionStopsSooner" fullname="Meatgrinder.Tests.MovementEditModeTests.HigherFrictionStopsSooner" methodname="HigherFrictionStopsSooner" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1912189952" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000406" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1070" name="HigherGroundAccelerationIsFasterBeforeTheCap" fullname="Meatgrinder.Tests.MovementEditModeTests.HigherGroundAccelerationIsFasterBeforeTheCap" methodname="HigherGroundAccelerationIsFasterBeforeTheCap" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="2101408951" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000447" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1069" name="HoldingForwardApproachesGroundSpeed" fullname="Meatgrinder.Tests.MovementEditModeTests.HoldingForwardApproachesGroundSpeed" methodname="HoldingForwardApproachesGroundSpeed" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="671054331" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000414" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1080" name="HoldingSpaceDoesNotRefreshTheJump" fullname="Meatgrinder.Tests.MovementEditModeTests.HoldingSpaceDoesNotRefreshTheJump" methodname="HoldingSpaceDoesNotRefreshTheJump" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="881725791" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000199" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1073" name="JumpSetsVerticalSpeedAndBlocksASecondJump" fullname="Meatgrinder.Tests.MovementEditModeTests.JumpSetsVerticalSpeedAndBlocksASecondJump" methodname="JumpSetsVerticalSpeedAndBlocksASecondJump" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1344638979" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000372" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1085" name="LookYawsTheBodyAndClampsPitch" fullname="Meatgrinder.Tests.MovementEditModeTests.LookYawsTheBodyAndClampsPitch" methodname="LookYawsTheBodyAndClampsPitch" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1667199904" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000731" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1071" name="ReleasingDirectionAppliesFriction" fullname="Meatgrinder.Tests.MovementEditModeTests.ReleasingDirectionAppliesFriction" methodname="ReleasingDirectionAppliesFriction" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1126545450" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000317" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1079" name="SpeedStaysUnderTheSafetyCap" fullname="Meatgrinder.Tests.MovementEditModeTests.SpeedStaysUnderTheSafetyCap" methodname="SpeedStaysUnderTheSafetyCap" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1700440106" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000386" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1078" name="StrafeJumpExceedsAStraightJumpInsideMaxSpeed" fullname="Meatgrinder.Tests.MovementEditModeTests.StrafeJumpExceedsAStraightJumpInsideMaxSpeed" methodname="StrafeJumpExceedsAStraightJumpInsideMaxSpeed" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1170465842" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000732" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1083" name="TheSameTickCountIsRepeatable" fullname="Meatgrinder.Tests.MovementEditModeTests.TheSameTickCountIsRepeatable" methodname="TheSameTickCountIsRepeatable" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="1627308905" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000329" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1081" name="TimedHopKeepsSpeedAboveGroundSpeed" fullname="Meatgrinder.Tests.MovementEditModeTests.TimedHopKeepsSpeedAboveGroundSpeed" methodname="TimedHopKeepsSpeedAboveGroundSpeed" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="210371554" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000515" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1068" name="TuningExposesTheDesignFields" fullname="Meatgrinder.Tests.MovementEditModeTests.TuningExposesTheDesignFields" methodname="TuningExposesTheDesignFields" classname="Meatgrinder.Tests.MovementEditModeTests" runstate="Runnable" seed="296137810" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000348" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1087" name="PresentationEditModeTests" fullname="Meatgrinder.Tests.PresentationEditModeTests" classname="Meatgrinder.Tests.PresentationEditModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.071795" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1088" name="ViewmodelKickDoesNotRotateTheCamera" fullname="Meatgrinder.Tests.PresentationEditModeTests.ViewmodelKickDoesNotRotateTheCamera" methodname="ViewmodelKickDoesNotRotateTheCamera" classname="Meatgrinder.Tests.PresentationEditModeTests" runstate="Runnable" seed="1584968822" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.000883" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1089" name="ProductAssetsEditModeTests" fullname="Meatgrinder.Tests.ProductAssetsEditModeTests" classname="Meatgrinder.Tests.ProductAssetsEditModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.110290" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1090" name="ProductPrefabHasTuningIconsAmmoAndProjectileAssets" fullname="Meatgrinder.Tests.ProductAssetsEditModeTests.ProductPrefabHasTuningIconsAmmoAndProjectileAssets" methodname="ProductPrefabHasTuningIconsAmmoAndProjectileAssets" classname="Meatgrinder.Tests.ProductAssetsEditModeTests" runstate="Runnable" seed="855833163" result="Passed" start-time="2026-11-26 03:31:05Z" end-time="2026-11-26 03:31:05Z" duration="0.011793" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/pc/AppData/LocalLow/DefaultCompany/grinder\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

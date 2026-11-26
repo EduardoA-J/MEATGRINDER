@@ -6645,6 +6645,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrainingTarget_0
       objectReference: {fileID: 0}
+    - target: {fileID: 3402330241678753015, guid: e96794695658be242a65ff4a073459f3, type: 3}
+      propertyPath: m_Color.rgba
+      value: 4291944678
+      objectReference: {fileID: 0}
     - target: {fileID: 5771053061640464912, guid: e96794695658be242a65ff4a073459f3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -48
@@ -212827,7 +212831,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 4a98bd17aeb644b48a7ff28e3eeee66b, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4284920793
+    rgba: 4291944678
 --- !u!23 &770002427
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -241323,7 +241327,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 4a98bd17aeb644b48a7ff28e3eeee66b, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4281575167
+    rgba: 4291944678
 --- !u!23 &864576821
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -354354,7 +354358,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 4a98bd17aeb644b48a7ff28e3eeee66b, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4291944678
 --- !u!23 &1259816281
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -358599,6 +358603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meatgrinder.Core::Meatgrinder.Core.GameBootstrap
   sessionPrefab: {fileID: 1903008032233098323, guid: ae3768b3b133f794cac867bc5fc5f7bd, type: 3}
+  loadMenuOnStart: 0
 --- !u!114 &1277052855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383430,6 +383435,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 69294814}
     m_Modifications:
+    - target: {fileID: 1074538687274731115, guid: 4a38915c3a318054eab67d00f771a359, type: 3}
+      propertyPath: m_Color.rgba
+      value: 4291944678
+      objectReference: {fileID: 0}
     - target: {fileID: 4955922609266185859, guid: 4a38915c3a318054eab67d00f771a359, type: 3}
       propertyPath: m_Name
       value: TrainingTarget_2
@@ -555817,6 +555826,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 69294814}
     m_Modifications:
+    - target: {fileID: 60570083420323157, guid: 924612a0c3fa2b641b8c13f697cfae68, type: 3}
+      propertyPath: m_Color.rgba
+      value: 4291944678
+      objectReference: {fileID: 0}
     - target: {fileID: 6814641756830803660, guid: 924612a0c3fa2b641b8c13f697cfae68, type: 3}
       propertyPath: m_LocalPosition.x
       value: -44
@@ -565666,7 +565679,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 4a98bd17aeb644b48a7ff28e3eeee66b, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4281575167
+    rgba: 4291944678
 --- !u!23 &2006062312
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ namespace Meatgrinder.Presentation
     {
         [SerializeField] private PresentationTheme theme;
         AudioSource source;
+        AudioSource deathSource;
+        bool deathPlayed;
         HealthComponent health;
         PlayerImpactFeedback feedback;
         PlayerMelee melee;
@@ -19,6 +21,7 @@ namespace Meatgrinder.Presentation
         void Awake()
         {
             source = gameObject.AddComponent<AudioSource>(); source.playOnAwake = false;
+            deathSource = gameObject.AddComponent<AudioSource>(); deathSource.playOnAwake = false;
             health = GetComponent<HealthComponent>(); feedback = GetComponent<PlayerImpactFeedback>();
             melee = GetComponent<PlayerMelee>(); weapons = GetComponent<WeaponController>(); life = GetComponent<PlayerLife>();
         }
@@ -46,8 +49,15 @@ namespace Meatgrinder.Presentation
         }
         void Swing() => Play(3);
         void Damaged(float value) { if (!source.isPlaying) Play(4, .45f); }
-        void Died() => Play(5);
-        void Respawn() => Play(6);
+        void Died()
+        {
+            if (deathPlayed) return;
+            deathPlayed = true;
+            if (theme == null || theme.DeathSound == null) return;
+            deathSource.clip = theme.DeathSound;
+            deathSource.Play();
+        }
+        void Respawn() { deathPlayed = false; Play(6); }
         void Hit(bool target) { if (target && !source.isPlaying) Play(7, .25f); }
         void Changed() { bool next = weapons.IsReloading; if (next && !reloading) Play(2); reloading = next; }
         public void Pickup(PickupDefinition definition, AudioClip clip)

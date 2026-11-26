@@ -4,6 +4,16 @@ Fecha base: 2 de noviembre de 2026. Actualización de alcance: 9 de noviembre de
 Una decisión «tomada» está escrita en el GDD sin contradicción interna, o está materializada en el proyecto. Una decisión «pendiente» necesita la aprobación de David antes de programarla. No se cierra nada por inferencia.
 Alcance del producto: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md).
 
+## Identidad de interfaz y fondos — 26 de noviembre de 2026
+
+El usuario solicita una identidad industrial/SYSTEM/death metal legible para toda la UI, con controles oscuros, metal, rojo sangre y blanco envejecido. La instrucción posterior prevalece para los fondos: conservar las imágenes originales, sin recoloreado rojo/gris ni oscurecimiento añadido. La paleta de controles no restringe los colores de las ilustraciones ni del mundo. Reutilizar Metal Mania, Barlow Semi Condensed y IBM Plex Mono existentes, con sus licencias SIL OFL 1.1; no importar recursos de Luna.
+
+También solicita reducir textos, botones y HUD y hacer más lentas las cargas. Ajuste adoptado: referencia común 1920×1080 (antes 1600×900, reducción lineal del 16,7 % a igual pantalla) y mínimo configurable de 3 segundos por carga, conservando el progreso real y el bloqueo de entrada. El usuario autoriza finalizar, commitear y subir a la rama actual; sustituye la restricción anterior de no commit/push para esta entrega.
+
+## Recursos de menú y música — 25 de noviembre de 2026
+
+Decisión explícita del usuario: usar PrincipalMenu como imagen y música del menú; fondos level1–level4 y canciones homónimas para M01–M04; al terminar la primera canción de cualquier nivel, reproducir afterFirstSong como música posterior. DeathSfx debe sonar una sola vez por muerte. Conservar las transiciones y barra de carga. Implementación: afterFirstSong se repite en bucle; pausa/respawn/reinicio del mismo mapa no reinician música y cambiar de mapa sí selecciona su canción. Los recursos originales están en Assets/_Project; los nombres reales son PrincipalMenu, afterFirstSong y DeathSfx.
+
 ## Tomadas
 
 ### Resoluciones de David — 22 de noviembre de 2026

@@ -17,3 +17,5 @@ MonoBehaviour:
   sceneName: M03_RuinsOfTheForgotten
   description: Templos rotos y terrazas. Busca recursos entre columnas y desniveles.
   accent: {r: 0.85, g: 0.24, b: 0.1, a: 1}
+  loadingBackground: {fileID: 8734330385334484451, guid: 7f74e3af9c0b75d4a84a75b4eef214fa, type: 3}
+  firstSong: {fileID: 8300000, guid: ea605a20a4aa5114394ef4f2541d4470, type: 3}

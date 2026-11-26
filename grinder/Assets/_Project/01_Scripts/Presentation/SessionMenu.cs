@@ -23,6 +23,9 @@ namespace Meatgrinder.Presentation
         UnityEngine.UI.Button motionButton, flashesButton;
         AudioSource source;
         [SerializeField] private AudioClip navigationSound;
+        [SerializeField] private Texture2D menuBackground;
+        ScreenBackground background;
+        UnityEngine.UI.Image scrim;
         static readonly Vector2 PagePosition = new Vector2(68, -310);
         const float PageTransitionSeconds = .19f;
         float pageProgress, departingAlpha, nextFocusSound;
@@ -58,22 +61,25 @@ namespace Meatgrinder.Presentation
             events.transform.SetParent(transform, false);
             menuEvents = events.GetComponent<EventSystem>();
             events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
-            GameUi.Image(GameUi.Fill(canvas.transform, "Scrim"), new Color(.02f, .025f, .03f, .88f));
-            GameUi.Image(GameUi.Rect(canvas.transform, "Rule", new Vector2(0, 1), new Vector2(0, 1), new Vector2(64, -70), new Vector2(64, 6)), GameUi.Accent);
+            background = ScreenBackground.Create(canvas.transform, menuBackground);
+            scrim = GameUi.Image(GameUi.Fill(canvas.transform, "Scrim"), new Color(0, 0, 0, .65f));
+            GameUi.Image(GameUi.Rect(canvas.transform, "Rule", new Vector2(0, 1), new Vector2(0, 1), new Vector2(64, -70), new Vector2(1470, 7)), GameUi.Accent);
             var brand = GameUi.Text(canvas.transform, "Brand", "MEATGRINDER", new Vector2(0, 1), new Vector2(0, 1),
                 new Vector2(64, -83), new Vector2(1460, 150), 100, GameUi.Paper, role: UiFontRole.Display);
             brand.resizeTextForBestFit = true;
             brand.resizeTextMinSize = 64;
             brand.resizeTextMaxSize = 100;
-            GameUi.Text(canvas.transform, "Tagline", "STEEL. BLOOD. MOMENTUM.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(68, -218), new Vector2(900, 30), 18, GameUi.Accent, role: UiFontRole.System);
-            GameUi.Text(canvas.transform, "Footer", "WASD  MOVER     ESPACIO  SALTAR     SHIFT  SPRINT     CTRL  AGACHARSE     V  MELEE     R  RECARGAR     1 / 2  ARMAS", Vector2.zero, Vector2.zero, new Vector2(64, 30), new Vector2(1450, 40), 16, new Color(.65f, .66f, .64f), role: UiFontRole.System);
+            GameUi.Text(canvas.transform, "Tagline", "STEEL. BLOOD. MOMENTUM.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(68, -218), new Vector2(900, 30), 18, GameUi.Paper, role: UiFontRole.System);
+            var footer = GameUi.Rect(canvas.transform, "FooterPlate", Vector2.zero, Vector2.zero, new Vector2(48, 18), new Vector2(1488, 62));
+            GameUi.Panel(footer);
+            GameUi.Text(footer, "Footer", "WASD  MOVER     ESPACIO  SALTAR     SHIFT  SPRINT     CTRL  AGACHARSE     V  MELEE     R  RECARGAR     1 / 2  ARMAS", Vector2.zero, Vector2.zero, new Vector2(16, 10), new Vector2(1450, 40), 16, GameUi.Muted, role: UiFontRole.System);
             main = Page("Main"); maps = Page("MapSelection"); options = Page("Options"); credits = Page("Credits"); pause = Page("Pause"); results = Page("Results"); setup = Page("LocalMatchSetup");
             Add(main, "Play", "JUGAR", 0, () => { configuring = false; Show(maps); });
             Add(main, "Create", "CREAR PARTIDA LOCAL", 1, () => { configuring = true; Show(maps); });
             Add(main, "Options", "OPCIONES", 2, OpenOptions);
             Add(main, "Credits", "CRÉDITOS", 3, () => Show(credits));
             Add(main, "Quit", "SALIR", 4, session.Quit);
-            GameUi.Text(main, "Status", "ARENAS ABIERTAS\n\nExplora las rutas. Controla los recursos.\nEmpiezas con melee: busca tu arsenal.\n\nPráctica local disponible.\nVersus, ranked y sesiones de red: no disponibles.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(580, 0), new Vector2(650, 330), 24, GameUi.Paper);
+            GameUi.Text(main, "Status", "OPERACIONES / LOCAL\n\nExplora las rutas. Controla los recursos.\nEmpiezas con melee: busca tu arsenal.\n\nPráctica local disponible.\nVersus, ranked y sesiones de red: no disponibles.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(580, 0), new Vector2(700, 330), 26, GameUi.Paper, role: UiFontRole.Industrial);
             for (int i = 0; session.Maps != null && i < session.Maps.Length; i++)
             {
                 var map = session.Maps[i];
@@ -112,6 +118,8 @@ namespace Meatgrinder.Presentation
         RectTransform Page(string name)
         {
             var page = GameUi.Rect(canvas.transform, name, new Vector2(0, 1), new Vector2(0, 1), PagePosition, new Vector2(1450, 480));
+            var plate = GameUi.Rect(page, "PagePlate", new Vector2(0, 1), new Vector2(0, 1), new Vector2(-20, 20), new Vector2(1488, 450));
+            GameUi.Panel(plate).color = GameUi.Ink;
             page.gameObject.AddComponent<CanvasGroup>();
             page.gameObject.SetActive(false);
             return page;
@@ -125,10 +133,23 @@ namespace Meatgrinder.Presentation
         {
             GameUi.Text(options, label, label, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, -row * 70), new Vector2(300, 50), 21, GameUi.Paper, role: UiFontRole.System);
             var rect = GameUi.Rect(options, label + "Slider", new Vector2(0, 1), new Vector2(0, 1), new Vector2(340, -row * 70 - 12), new Vector2(600, 28));
-            GameUi.Image(rect, new Color(.17f, .18f, .19f)).raycastTarget = true;
-            var handle = GameUi.Image(GameUi.Rect(rect, "Handle", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, new Vector2(20, 38)), GameUi.Accent);
+            GameUi.Panel(rect, false).raycastTarget = true;
+            var track = GameUi.Fill(rect, "Track"); track.offsetMin = new Vector2(4, 6); track.offsetMax = new Vector2(-4, -6);
+            GameUi.Image(track, GameUi.Ink);
+            var fill = GameUi.Image(GameUi.Fill(track, "Fill"), GameUi.Accent);
+            var handleArea = GameUi.Fill(rect, "HandleArea"); handleArea.offsetMin = new Vector2(12, 0); handleArea.offsetMax = new Vector2(-12, 0);
+            var handle = GameUi.Panel(GameUi.Rect(handleArea, "Handle", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, new Vector2(22, 38)), false);
+            handle.color = Color.white;
             var slider = rect.gameObject.AddComponent<UnityEngine.UI.Slider>(); slider.handleRect = handle.rectTransform; slider.targetGraphic = handle;
+            slider.fillRect = fill.rectTransform;
+            var colors = slider.colors;
+            colors.normalColor = GameUi.Muted; colors.highlightedColor = GameUi.Paper; colors.selectedColor = GameUi.Accent;
+            colors.pressedColor = GameUi.Pressed; colors.disabledColor = GameUi.Metal; colors.colorMultiplier = 1;
+            slider.colors = colors;
             slider.minValue = min; slider.maxValue = max; slider.value = value;
+            var readout = GameUi.Text(options, label + "Value", value.ToString("0.00"), new Vector2(0, 1), new Vector2(0, 1),
+                new Vector2(980, -row * 70), new Vector2(220, 50), 24, GameUi.Paper, role: UiFontRole.System);
+            slider.onValueChanged.AddListener(current => readout.text = current.ToString("0.00"));
             return slider;
         }
         void SaveOptions(bool motion, bool flashes)
@@ -168,6 +189,8 @@ namespace Meatgrinder.Presentation
         {
             errorText.text = session.LoadError;
             var phase = session.Phase;
+            background.gameObject.SetActive(phase == LocalSessionPhase.Menu);
+            scrim.enabled = phase != LocalSessionPhase.Menu;
             if (phase == displayedPhase) return;
             if (phase == LocalSessionPhase.Loading)
             {

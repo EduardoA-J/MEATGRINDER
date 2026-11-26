@@ -8,6 +8,8 @@ namespace Meatgrinder.Presentation
     {
         [SerializeField] private Sprite[] powerIcons;
         [SerializeField] private AudioClip[] feedbackSounds;
+        [SerializeField] private AudioClip deathSound;
+        public AudioClip DeathSound => deathSound != null ? deathSound : Sound(5);
         public Sprite Icon(PowerUpType type) => powerIcons != null && (int)type < powerIcons.Length ? powerIcons[(int)type] : null;
         public AudioClip Sound(int index) => feedbackSounds != null && index >= 0 && index < feedbackSounds.Length ? feedbackSounds[index] : null;
         public static Color PowerColor(PowerUpType type) => type switch

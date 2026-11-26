@@ -75,7 +75,7 @@ namespace Meatgrinder.Presentation
             Alpha(fallOverlay, falling);
             bool dead = life != null && life.IsWaitingToRespawn;
             deathPanel.gameObject.SetActive(dead); crosshair.gameObject.SetActive(!dead);
-            if (dead) deathText.text = "HAS MUERTO\n<size=22>" + life.DeathCause + "</size>\n<size=26>REAPARICIÓN EN " + life.RespawnRemaining.ToString("0.0") + " s</size>";
+            if (dead) deathText.text = life.DeathCause.ToUpperInvariant() + "\n\nREAPARICIÓN EN " + life.RespawnRemaining.ToString("0.0") + " s";
             foreach (var mark in hitMarks) mark.enabled = Time.time < hitTime;
             pickupText.enabled = Time.time < pickupTime;
             float reload = weapons != null && weapons.IsReloading && weapons.ActiveDefinition != null ? 1 - weapons.ReloadRemaining / Mathf.Max(.01f, weapons.ActiveDefinition.ReloadDuration) : 0;
@@ -104,7 +104,7 @@ namespace Meatgrinder.Presentation
         void OnHit(bool damaged)
         {
             hitTime = Time.time + .12f;
-            foreach (var mark in hitMarks) mark.color = damaged ? GameUi.Accent : new Color(.7f, .7f, .7f, .5f);
+            foreach (var mark in hitMarks) mark.color = damaged ? GameUi.Accent : GameUi.Muted;
         }
         public void ShowPickup(string name) { pickupText.text = "+ " + name.ToUpperInvariant(); pickupTime = Time.time + 2; }
         void RefreshHealth()
@@ -126,21 +126,26 @@ namespace Meatgrinder.Presentation
         void Build()
         {
             canvas = GameUi.Canvas(transform, "CombatHud", 20);
-            damageOverlay = GameUi.Image(GameUi.Fill(canvas.transform, "DamageOverlay"), new Color(.5f, .01f, .005f, 0));
+            damageOverlay = GameUi.Image(GameUi.Fill(canvas.transform, "DamageOverlay"), new Color(.5f, .01f, .01f, 0));
             fallOverlay = GameUi.Image(GameUi.Fill(canvas.transform, "VoidDarkness"), new Color(0, 0, 0, 0));
-            var stats = GameUi.Rect(canvas.transform, "VitalPanel", Vector2.zero, Vector2.zero, new Vector2(28, 28), new Vector2(420, 110));
-            GameUi.Image(stats, GameUi.Ink);
+            var dock = GameUi.Fill(canvas.transform, "StatusBar");
+            dock.anchorMax = Vector2.right; dock.offsetMin = new Vector2(18, 18); dock.offsetMax = new Vector2(-18, 160);
+            GameUi.Panel(dock);
+            var stats = GameUi.Rect(dock, "VitalPanel", Vector2.zero, Vector2.zero, new Vector2(12, 12), new Vector2(420, 116));
+            GameUi.Panel(stats, false).color = GameUi.Ink;
             Label(stats, "HealthLabel", "+  SALUD", new Vector2(18, 72), new Vector2(180, 26), 17, GameUi.Accent);
-            Label(stats, "ArmorLabel", "ARMADURA", new Vector2(226, 72), new Vector2(180, 26), 17, new Color(.4f, .7f, 1));
+            Label(stats, "ArmorLabel", "ARMADURA", new Vector2(226, 72), new Vector2(180, 26), 17, GameUi.Muted);
             healthText = Label(stats, "Health", "100", new Vector2(18, 22), new Vector2(180, 56), 42, GameUi.Paper, UiFontRole.System);
             armorText = Label(stats, "Armor", "0", new Vector2(226, 22), new Vector2(180, 56), 42, GameUi.Paper, UiFontRole.System);
-            healthFill = Bar(stats, "HealthBar", new Vector2(18, 12), new Vector2(178, 5), GameUi.Accent);
-            armorFill = Bar(stats, "ArmorBar", new Vector2(226, 12), new Vector2(178, 5), new Color(.4f, .7f, 1));
-            var ammo = GameUi.Rect(canvas.transform, "AmmoPanel", new Vector2(1, 0), new Vector2(1, 0), new Vector2(-28, 28), new Vector2(410, 110));
-            GameUi.Image(ammo, GameUi.Ink);
+            healthFill = Bar(stats, "HealthBar", new Vector2(18, 12), new Vector2(178, 8), GameUi.Accent);
+            armorFill = Bar(stats, "ArmorBar", new Vector2(226, 12), new Vector2(178, 8), GameUi.Muted);
+            GameUi.Text(dock, "CombatWordmark", "MEATGRINDER", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 62), new Vector2(390, 48), 39, GameUi.Paper, TextAnchor.MiddleCenter, UiFontRole.Display);
+            GameUi.Text(dock, "Controls", "V / MELEE   1–2 / ARMAS", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 28), new Vector2(390, 26), 16, GameUi.Muted, TextAnchor.MiddleCenter, UiFontRole.System);
+            var ammo = GameUi.Rect(dock, "AmmoPanel", new Vector2(1, 0), new Vector2(1, 0), new Vector2(-12, 12), new Vector2(410, 116));
+            GameUi.Panel(ammo, false).color = GameUi.Ink;
             weaponText = Label(ammo, "Weapon", "MELEE", new Vector2(18, 75), new Vector2(380, 26), 17, GameUi.Accent);
             ammoText = Label(ammo, "Ammo", "—", new Vector2(18, 20), new Vector2(380, 60), 44, GameUi.Paper, UiFontRole.System);
-            reloadFill = Bar(ammo, "ReloadProgress", new Vector2(18, 12), new Vector2(374, 5), GameUi.Accent);
+            reloadFill = Bar(ammo, "ReloadProgress", new Vector2(18, 12), new Vector2(374, 8), GameUi.Accent);
             crosshair = GameUi.Rect(canvas.transform, "Crosshair", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(60, 60));
             CrosshairScale = crosshairScale;
             hitMarks = new UnityEngine.UI.Image[4];
@@ -159,16 +164,17 @@ namespace Meatgrinder.Presentation
             for (int i = 0; i < 6; i++)
             {
                 var card = GameUi.Rect(canvas.transform, "Power" + i, Vector2.one, Vector2.one, new Vector2(-28, -100 - i * 72), new Vector2(230, 62));
-                GameUi.Image(card, GameUi.Ink); cards[i] = card.gameObject;
-                var icon = GameUi.Image(GameUi.Rect(card, "Icon", Vector2.zero, Vector2.zero, new Vector2(8, 10), new Vector2(42, 42)), PresentationTheme.PowerColor((PowerUpType)i));
+                GameUi.Panel(card, false); cards[i] = card.gameObject;
+                var icon = GameUi.Image(GameUi.Rect(card, "Icon", Vector2.zero, Vector2.zero, new Vector2(8, 10), new Vector2(42, 42)), GameUi.Paper);
                 if (theme != null) icon.sprite = theme.Icon((PowerUpType)i);
                 timers[i] = Label(card, "Timer", "", new Vector2(62, 8), new Vector2(164, 50), 17, GameUi.Paper, UiFontRole.System);
-                powerBars[i] = Bar(card, "Duration", Vector2.zero, new Vector2(230, 3), PresentationTheme.PowerColor((PowerUpType)i));
+                powerBars[i] = Bar(card, "Duration", new Vector2(4, 4), new Vector2(222, 4), GameUi.Accent);
                 card.gameObject.SetActive(false);
             }
             deathPanel = GameUi.Rect(canvas.transform, "DeathPanel", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(720, 280));
-            GameUi.Image(deathPanel, GameUi.Ink);
-            deathText = GameUi.Text(deathPanel, "Death", "", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(680, 230), 48, GameUi.Accent, TextAnchor.MiddleCenter, UiFontRole.Industrial);
+            GameUi.Panel(deathPanel).color = GameUi.Ink;
+            GameUi.Text(deathPanel, "DeathTitle", "HAS MUERTO", new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -24), new Vector2(680, 90), 60, GameUi.Accent, TextAnchor.MiddleCenter, UiFontRole.Display);
+            deathText = GameUi.Text(deathPanel, "Death", "", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 26), new Vector2(680, 130), 24, GameUi.Paper, TextAnchor.MiddleCenter, UiFontRole.System);
             deathPanel.gameObject.SetActive(false);
         }
         static UnityEngine.UI.Text Label(Transform parent, string name, string value, Vector2 position, Vector2 size, int fontSize, Color color, UiFontRole role = UiFontRole.Industrial)
@@ -179,7 +185,7 @@ namespace Meatgrinder.Presentation
             outline.effectColor = new Color(0, 0, 0, .95f);
             outline.effectDistance = new Vector2(1.5f, -1.5f);
         }
-        static UnityEngine.UI.Image Bar(Transform parent, string name, Vector2 pos, Vector2 size, Color color) => GameUi.Image(GameUi.Rect(parent, name, Vector2.zero, Vector2.zero, pos, size), color);
+        static UnityEngine.UI.Image Bar(Transform parent, string name, Vector2 pos, Vector2 size, Color color) => GameUi.Meter(parent, name, pos, size, color);
         static void Alpha(UnityEngine.UI.Image image, float value) { var c = image.color; c.a = value; image.color = c; }
     }
 }

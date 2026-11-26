@@ -18,3 +18,5 @@ MonoBehaviour:
   description: "Islas suspendidas. Controla los puentes y sobrevive al borde del
     vac\xEDo."
   accent: {r: 0.85, g: 0.24, b: 0.1, a: 1}
+  loadingBackground: {fileID: 8734330385334484451, guid: 3895dc7f0895b024293ca2e0346b68d7, type: 3}
+  firstSong: {fileID: 8300000, guid: 2c56fd54bab3a52438a75e82e51948f9, type: 3}

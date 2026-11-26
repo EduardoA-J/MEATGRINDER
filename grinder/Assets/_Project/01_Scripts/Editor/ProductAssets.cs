@@ -15,6 +15,7 @@ namespace Meatgrinder.Editor
         internal static void ApplySignFont(TextMesh sign)
         {
             sign.font = GameUi.FontFor(UiFontRole.Industrial);
+            sign.color = GameUi.Paper;
             sign.GetComponent<MeshRenderer>().sharedMaterial = sign.font.material;
         }
         public static T Data<T>(string path) where T : ScriptableObject

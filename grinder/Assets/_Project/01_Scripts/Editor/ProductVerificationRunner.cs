@@ -27,12 +27,14 @@ namespace Meatgrinder.Editor
             try
             {
                 if (command == "inspect") InspectModels();
+                else if (command == "media") SessionMediaInstaller.Install();
+                else if (command == "style") UiStyleInstaller.Install();
                 else if (command == "install") typeof(ProductVerificationRunner).Assembly.GetType("Meatgrinder.Editor.ProductSceneInstaller").GetMethod("Install").Invoke(null, null);
-                else if (command == "editTests" || command == "playTests")
+                else if (command == "editTests" || command == "playTests" || command == "mediaEditTests" || command == "mediaPlayTests")
                 {
                     var api = ScriptableObject.CreateInstance<TestRunnerApi>();
                     api.RegisterCallbacks(new Results(command));
-                    api.Execute(new ExecutionSettings(new Filter { testMode = command == "editTests" ? TestMode.EditMode : TestMode.PlayMode }));
+                    api.Execute(new ExecutionSettings(new Filter { testMode = command == "editTests" || command == "mediaEditTests" ? TestMode.EditMode : TestMode.PlayMode }));
                 }
                 else if (command == "capture") typeof(ProductVerificationRunner).Assembly.GetType("Meatgrinder.Editor.ProductSceneInstaller").GetMethod("Capture").Invoke(null, null);
                 else if (command == "refresh") AssetDatabase.Refresh();

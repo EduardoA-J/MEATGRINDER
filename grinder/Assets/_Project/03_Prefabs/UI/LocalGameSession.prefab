@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6284110156681355461}
   - component: {fileID: 3918317939397045721}
   - component: {fileID: 5910934530197175160}
+  - component: {fileID: 6055276771936303130}
   m_Layer: 0
   m_Name: LocalGameSession
   m_TagString: Untagged
@@ -44,13 +45,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34759c1c8023eb34299f195ff4325e7e, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Meatgrinder.Core::Meatgrinder.Core.LocalGameSession
   maps:
   - {fileID: 11400000, guid: 163ffab394a8aa84f952fd95541dfedd, type: 2}
   - {fileID: 11400000, guid: 722f71775d091254aa860c5ff1e6a379, type: 2}
   - {fileID: 11400000, guid: f2ae12a6d6f48634cad4efd2647296d9, type: 2}
   - {fileID: 11400000, guid: e868df98fc3ecf24fac5f6f061053f15, type: 2}
+  minimumLoadingSeconds: 3
 --- !u!114 &3918317939397045721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,9 +63,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c133874942694f84fac1425cf5f56bf8, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Meatgrinder.Presentation::Meatgrinder.Presentation.SessionMenu
   navigationSound: {fileID: 8300000, guid: b3d24363bcea8c647873023bc853b644, type: 3}
+  menuBackground: {fileID: 8734330385334484451, guid: 838b634bb6157514a8b4095e7b801435, type: 3}
 --- !u!114 &5910934530197175160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,3 +81,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Meatgrinder.Presentation::Meatgrinder.Presentation.SessionLoadingScreen
   steelTexture: {fileID: 2800000, guid: 6aa2e4b7dc754dd468a42aa7756c926a, type: 3}
   oxideTexture: {fileID: 2800000, guid: 5ef4a10a292b5564ba856a3184038deb, type: 3}
+  menuBackground: {fileID: 8734330385334484451, guid: 838b634bb6157514a8b4095e7b801435, type: 3}
+--- !u!114 &6055276771936303130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903008032233098323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 875da846a956b3a45a283de879b559b1, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Meatgrinder.Presentation::Meatgrinder.Presentation.SessionMusic
+  menuMusic: {fileID: 8300000, guid: b1eb5583d0ecefd4084a7196b9d3ae1b, type: 3}
+  afterFirstSong: {fileID: 8300000, guid: cc4bf5f4a9a0a7142841e37b4fb34e93, type: 3}

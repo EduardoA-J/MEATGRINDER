@@ -7,11 +7,6 @@ namespace Meatgrinder.Presentation
     [AddComponentMenu("")]
     public sealed class MenuButton : UnityEngine.UI.Button
     {
-        static readonly Color Rest = new Color(.12f, .13f, .14f, .98f);
-        static readonly Color Hover = new Color(.20f, .17f, .15f);
-        static readonly Color Selected = new Color(.26f, .17f, .12f);
-        static readonly Color Pressed = new Color(.38f, .19f, .10f);
-        static readonly Color Disabled = new Color(.09f, .095f, .10f);
         UnityEngine.UI.Image face;
         UnityEngine.UI.Image rail;
         UnityEngine.UI.Text caption;
@@ -55,18 +50,18 @@ namespace Meatgrinder.Presentation
             if (reduced) blend = 1;
             face.color = Color.Lerp(face.color, state switch
             {
-                SelectionState.Highlighted => Hover,
-                SelectionState.Selected => Selected,
-                SelectionState.Pressed => Pressed,
-                SelectionState.Disabled => Disabled,
-                _ => Rest
+                SelectionState.Highlighted => GameUi.Hover,
+                SelectionState.Selected => GameUi.Blood,
+                SelectionState.Pressed => GameUi.Pressed,
+                SelectionState.Disabled => GameUi.Ink,
+                _ => GameUi.Charcoal
             }, blend);
             var edge = GameUi.Accent;
             edge.a = state == SelectionState.Disabled ? 0 : state == SelectionState.Normal ? .22f : 1;
             rail.color = Color.Lerp(rail.color, edge, blend);
             rail.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
                 state == SelectionState.Selected ? 8 : state == SelectionState.Highlighted ? 6 : 4);
-            caption.color = state == SelectionState.Disabled ? new Color(.56f, .56f, .55f) : GameUi.Paper;
+            caption.color = state == SelectionState.Disabled ? GameUi.Muted : GameUi.Paper;
             float offset = state == SelectionState.Pressed ? -3 : IsFocus(state) ? 4 : 0;
             motion = reduced ? 0 : Mathf.Lerp(motion, offset, blend);
             face.rectTransform.anchoredPosition = new Vector2(motion, 0);

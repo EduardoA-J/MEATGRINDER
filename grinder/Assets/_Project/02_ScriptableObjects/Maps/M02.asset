@@ -18,3 +18,5 @@ MonoBehaviour:
   description: "Murallas, patios y criptas. Alterna exploraci\xF3n y combate entre
     torres."
   accent: {r: 0.85, g: 0.24, b: 0.1, a: 1}
+  loadingBackground: {fileID: 8734330385334484451, guid: 209d26496cef2c2489365842d1798a23, type: 3}
+  firstSong: {fileID: 8300000, guid: 5ae8dff1125d1d04a90e5ad5af2e003f, type: 3}

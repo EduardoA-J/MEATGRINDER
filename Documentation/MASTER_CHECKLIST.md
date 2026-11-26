@@ -1,6 +1,6 @@
 # Checklist maestro — juego completo
 
-Fecha de redefinición: 9 de noviembre de 2026. Auditoría vigente: 24 de noviembre de 2026.
+Fecha de redefinición: 9 de noviembre de 2026. Auditoría vigente: 24 de noviembre de 2026; adenda de UI/media: 26 de noviembre.
 Fuente: `MEATGRINDER_GDD_TDD.docx`. Alcance: [GDD_SCOPE_ADDENDUM.md](GDD_SCOPE_ADDENDUM.md). Requisitos: [GDD_REQUIREMENTS.md](GDD_REQUIREMENTS.md). Decisiones: [DECISIONS.md](DECISIONS.md). Plan: [FULL_GAME_DEVELOPMENT_PLAN.md](FULL_GAME_DEVELOPMENT_PLAN.md). Estado código: [IMPLEMENTATION_STATUS_AUDIT.md](IMPLEMENTATION_STATUS_AUDIT.md).
 
 ## Política
@@ -137,15 +137,15 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F6-10 | Berserk (definición y pickup) | INTEGRATED | P0 | ×2 melee durante 20 s |
 | F6-11 | Regeneración | INTEGRATED | P2 | 10 HP/s durante 10 s |
 | F6-12 | Megahealth | INTEGRATED | P2 | Cap 200, demora 5 s, decaimiento 5 HP/s |
-| F7-01 | Menú principal | PARTIALLY_IMPLEMENTED | P1 | Menú uGUI local con fuentes, feedback, transiciones, créditos y ajuste de movimiento reducido. Sala privada pendiente. |
+| F7-01 | Menú principal | PARTIALLY_IMPLEMENTED | P1 | Menú uGUI local con fuentes, feedback, transiciones, créditos y ajuste de movimiento reducido. Fondos originales PrincipalMenu/level1–level4, estilo compartido y carga mínima de 3 s (26 nov); ver PROGRESS para pruebas. Sala privada pendiente. |
 | F7-02 | Crear y unirse | PARTIALLY_IMPLEMENTED | P1 | Crear práctica local: mapa, ajustes y confirmación. Crear/unir red pendiente |
 | F7-03 | Selección de equipo y de monstruo | NOT_STARTED | P2 | F4-03, F7-02 |
-| F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | HUD SYSTEM de vida, armadura y munición en juego local. Red pendiente (F3-06). |
+| F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | HUD SYSTEM de vida, armadura y munición en juego local; paneles y poderes con identidad compartida, escala reducida (26 nov). Red pendiente (F3-06). |
 | F7-05 | Retícula | INTEGRATED | P1 | F1-02 |
 | F7-06 | Indicador de potenciador | INTEGRATED | P1 | Seis símbolos, timers y barras por efecto; pruebas y capturas reales |
 | F7-07 | Marcador y feed | NOT_STARTED | P2 | F3-07, F3-10, F9-03 |
 | F7-08 | Resultados y revancha | PARTIALLY_IMPLEMENTED | P2 | Resultados locales y reinicio; marcador/victoria/roles competitivos pendientes |
-| F7-09 | Ajustes | PARTIALLY_IMPLEMENTED | P3 | Volumen, sensibilidad, FOV, reducción de movimiento/destellos y pantalla. Inversión, calidad/gore, escala UI y subtítulos pendientes. |
+| F7-09 | Ajustes | PARTIALLY_IMPLEMENTED | P3 | Volumen, sensibilidad, FOV, reducción de movimiento/destellos y pantalla; sliders y estados visuales unificados (26 nov). Inversión, calidad/gore, escala UI y subtítulos pendientes. |
 | F7-10 | Errores de conexión | NOT_STARTED | P1 | F3-02, F3-11, F7-02 |
 | F8-01 | Materiales base y volumen | INTEGRATED | P3 | Materiales/texturas propios URP en cuatro mapas; acabado y rendimiento pendientes |
 | F8-02 | Humano, manos FPS y silueta remota | PARTIALLY_IMPLEMENTED | P3 | Guantes procedurales y tres modelos como blancos; rig/silueta remota pendientes |
@@ -153,7 +153,7 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F8-04 | Modelos de escopeta y lanzacohetes | INTEGRATED | P3 | Prefabs propios con ModelSocket/MuzzleSocket, vista, recarga/retroceso; arte provisional |
 | F8-05 | Kit de M01 | PARTIALLY_IMPLEMENTED | P3 | Tanques, controles, raíles, señales y materiales integrados; kit final pendiente |
 | F8-06 | VFX de disparo, sangre y decals con tope | INTEGRATED | P3 | Proyectil/estela y pool de efectos; revisión visual y coste final pendientes |
-| F8-07 | Set de audio de combate | PARTIALLY_IMPLEMENTED | P3 | Clips sintéticos propios conectados a eventos; diseño y mezcla final pendientes |
+| F8-07 | Set de audio de combate | PARTIALLY_IMPLEMENTED | P3 | DeathSfx aportado, música PrincipalMenu y level1–level4 → afterFirstSong integrados (25 nov). Clips de combate existentes conservados. Ver PROGRESS para pruebas; diseño y mezcla final pendientes. |
 | F8-08 | Animación mínima de presentación | PARTIALLY_IMPLEMENTED | P3 | Armas/melee/cámara/targets/puertas procedurales; rigs de personajes pendientes |
 | F9-01 | Cerrar el modo versus de producto | BLOCKED | P2 | David / D-04 |
 | F9-02 | Reglas de equipo | NOT_STARTED | P2 | F3-05, F9-01 |

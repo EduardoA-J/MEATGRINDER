@@ -117,7 +117,7 @@ namespace Meatgrinder.Tests
             Assert.AreEqual(Resources.Load<Font>("MeatgrinderFonts/MetalMania-Regular"), GameUi.FontFor(UiFontRole.Display));
             Assert.AreEqual(Resources.Load<Font>("MeatgrinderFonts/BarlowSemiCondensed-SemiBold"), GameUi.FontFor(UiFontRole.Industrial));
             Assert.AreEqual(Resources.Load<Font>("MeatgrinderFonts/IBMPlexMono-Medium"), GameUi.FontFor(UiFontRole.System));
-            Assert.AreEqual(Resources.Load<Font>("MeatgrinderFonts/BarlowSemiCondensed-Regular"), GameUi.FontFor(UiFontRole.Body));
+            Assert.AreEqual(Resources.Load<Font>("MeatgrinderFonts/BarlowSemiCondensed-SemiBold"), GameUi.FontFor(UiFontRole.Body));
 
             foreach (var role in new[] { UiFontRole.Industrial, UiFontRole.System, UiFontRole.Body })
                 foreach (char glyph in "áéíóúÁÉÍÓÚñÑ¿¡×—·")

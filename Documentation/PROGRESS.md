@@ -1,7 +1,27 @@
 # Progreso
 
-Actualización vigente: 24 de noviembre de 2026.
+Actualización vigente: 26 de noviembre de 2026.
 Alcance: juego completo (`GDD_SCOPE_ADDENDUM.md`). Estados: `MASTER_CHECKLIST.md`.
+
+## Interfaz compartida, escala y fondos originales — 26 de noviembre
+
+GameUi centraliza fuentes y paleta de controles: Barlow Semi Condensed SemiBold para lectura/etiquetas, IBM Plex Mono para datos y Metal Mania para marca y encabezados expresivos. Se reutilizan las fuentes existentes con sus avisos SIL OFL 1.1. Botones, sliders, opciones, créditos, creación local, pausa, resultados, mensajes, carga y HUD comparten paneles metálicos, bordes, indicadores segmentados y estados normal/hover/seleccionado/pulsado/deshabilitado. Se actualizan también los rótulos TextMesh de M01–M04 y los tres prefabs de blancos. No se modifica Fusion ni las reglas de combate.
+
+La petición posterior del usuario conserva PrincipalMenu y level1–level4 intactos: sin material de recoloreado, tinte rojo/gris ni velo oscuro sobre las imágenes. Se mantiene el recorte proporcional sin deformación. El oscurecimiento de pausa sigue limitado a la vista de juego. La referencia común pasa de 1600×900 a 1920×1080: textos, botones y HUD se reducen un 16,7 % a igual resolución. No se añade todavía un ajuste de escala al menú.
+
+LocalGameSession conserva cada pantalla de carga al menos 3 segundos (campo serializado minimumLoadingSeconds). El porcentaje sigue reflejando la operación real; si acaba antes, se mantiene el 100 % hasta completar ese mínimo. El jugador continúa sin entrada durante esa espera. Se conservan las transiciones y la integración de música/DeathSfx de la pasada anterior.
+
+Verificación realizada antes de la instrucción de detener pruebas: scripts compilados en Unity 6000.5.6f1. Primera pasada: 25/26 PlayMode; el caso nuevo de identidad falló por comparar Color con el Color32 serializado de TextMesh y se corrigió la comparación. La segunda pasada completó la prueba de identidad, estados, HUD y cargas de M01–M04; resultado global **25/26**, con un error de E/S Win32 1224 al escribir `product/M04-spawn.png` en la prueba de mapas. No se presenta como una suite totalmente verde. Evidencia final en [playmode.xml](test-results/ui-redesign/playmode.xml) y capturas en [ui-redesign](test-results/ui-redesign). Se conservaron los XML/capturas históricos de la pasada de media. No se repitió EditMode ni se generó un ejecutable en esta entrega. Por petición explícita del usuario se detienen nuevas pruebas y se procede a commit/push.
+
+## Fondos y audio de sesión — 25 de noviembre
+
+Solicitud: integrar los recursos aportados en `Assets/_Project/05_ArtModels/Materials/Menu`, `04_Audio/Music` y `04_Audio/SFX/DeathSfx.mp3`. `PrincipalMenu.jfif` es el fondo del menú y de la carga de Boot; `level1`–`level4` se asignan explícitamente a M01–M04 mediante sus MapDefinition. La carga consulta el mapa de destino, no el mapa que se abandona. Se conservan barra, porcentaje y transiciones de páginas. Los fondos cubren la pantalla mediante recorte centrado proporcional, sin estirar. La capa oscura de esta pasada fue retirada el 26 de noviembre por petición del usuario.
+
+Los JFIF originales se conservan y un importador de Editor los convierte en texturas de Unity con GUID estable. El prefab persistente LocalGameSession contiene SessionMusic: un solo AudioSource musical, PrincipalMenu en bucle, canción numerada una vez y después afterFirstSong en bucle. Pausa, opciones, muerte, respawn, resultados y reinicio del mismo mapa conservan la pista; entrar a un mapa diferente inicia su canción. La música anterior continúa durante la carga hasta activar el destino. El volumen maestro existente controla también música y muerte. Las seis canciones usan streaming para evitar descomprimirlas enteras en memoria.
+
+CombatAudio usa el DeathSfx aportado mediante ProductTheme y un canal independiente. El evento de muerte reproduce una vez, con guardia reiniciada por Respawned. SessionMediaInstaller asigna referencias al prefab y assets existentes sin reconstruir mapas; el instalador general también conserva esta integración.
+
+Verificación en Unity 6000.5.6f1: **44/44 EditMode y 25/25 PlayMode**, sin fallos. Evidencia en [editmode.xml](test-results/session-media/editmode.xml) y [playmode.xml](test-results/session-media/playmode.xml). La prueba nueva recorre M01–M04, comprueba fondos de destino, reproducción real de cada canción, final natural del clip (avanzando cerca del final), paso a afterFirstSong en bucle, continuidad al pausar/reiniciar, dos muertes separadas por respawn y retorno a la música del menú. También se comprueban proporciones a 1366×768, 1920×1080, 1024×768, 2560×1080 y 600×900. Las pruebas existentes de flujo, barra/progreso, Startup, puertas, navegación y combate siguen pasando. Capturas reales revisadas del menú y las cuatro cargas a 2560×1440 en [session-media](test-results/session-media). Esta pasada se validó en el Editor; no se generó un nuevo ejecutable. Sin cambios de Fusion, commits, merge ni push. Esta entrega no cierra el conjunto completo de producción/mezcla de audio ni el menú de red.
 
 ## Auditoría, interfaz y carga local — 24 de noviembre
 

@@ -163,6 +163,9 @@ namespace Meatgrinder.Presentation
             {
                 canvas = existing;
                 readout = existing.GetComponentInChildren<Text>();
+                if (readout != null) GameUi.StyleText(readout, UiFontRole.System);
+                var existingBack = existing.GetComponent<Image>();
+                if (existingBack != null) existingBack.color = GameUi.Ink;
                 return;
             }
 
@@ -181,7 +184,7 @@ namespace Meatgrinder.Presentation
             rect.sizeDelta = new Vector2(360f, 120f);
             Image back = root.AddComponent<Image>();
             back.sprite = White();
-            back.color = new Color(0.03f, 0.03f, 0.04f, 0.72f);
+            back.color = GameUi.Ink;
             back.raycastTarget = false;
             GameObject textObject = new GameObject("Label", typeof(RectTransform));
             textObject.transform.SetParent(root.transform, false);
@@ -191,10 +194,10 @@ namespace Meatgrinder.Presentation
             textRect.offsetMin = new Vector2(8f, 6f);
             textRect.offsetMax = new Vector2(-8f, -6f);
             readout = textObject.AddComponent<Text>();
-            readout.font = GameUi.FontFor(UiFontRole.Industrial);
+            GameUi.StyleText(readout, UiFontRole.System);
             readout.fontSize = 28;
             readout.alignment = TextAnchor.MiddleCenter;
-            readout.color = Color.white;
+            readout.color = GameUi.Paper;
             readout.raycastTarget = false;
             readout.horizontalOverflow = HorizontalWrapMode.Overflow;
             WriteReadout();

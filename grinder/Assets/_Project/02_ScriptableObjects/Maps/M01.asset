@@ -18,3 +18,5 @@ MonoBehaviour:
   description: "Metal, c\xE1maras de procesado y pasarelas. Domina las rutas de la
     f\xE1brica."
   accent: {r: 0.85, g: 0.24, b: 0.1, a: 1}
+  loadingBackground: {fileID: 8734330385334484451, guid: 268b09c1f20b68341bc7e9c57d684b43, type: 3}
+  firstSong: {fileID: 8300000, guid: 14c7429b5d1c30342a1967ebc065420a, type: 3}

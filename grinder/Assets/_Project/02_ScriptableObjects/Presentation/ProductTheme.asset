@@ -30,3 +30,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 52d2f5b297f9e724e922de24f548b5e1, type: 3}
   - {fileID: 8300000, guid: 6d6ac75756018c541a09935cd9567fd6, type: 3}
   - {fileID: 8300000, guid: b3d24363bcea8c647873023bc853b644, type: 3}
+  deathSound: {fileID: 8300000, guid: 4d1d1dc29bb428e49be2c46db46eeafa, type: 3}

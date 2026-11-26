@@ -46,6 +46,7 @@ namespace Meatgrinder.Editor
                 for (int i = 0; i < MapNames.Length; i++) InstallMap(i);
                 CreateBoot();
                 CreateStartup();
+                SessionMediaInstaller.Install();
                 AssetDatabase.SaveAssets();
                 Directory.CreateDirectory(ProductVerificationRunner.Output);
                 File.WriteAllText(Path.Combine(ProductVerificationRunner.Output, "installation.txt"), "Installed Startup, Boot, four map definitions, local session, player tuning, visual prefabs, pickups, map presentation. Existing map geometry preserved.\n" + DateTime.UtcNow.ToString("O"));

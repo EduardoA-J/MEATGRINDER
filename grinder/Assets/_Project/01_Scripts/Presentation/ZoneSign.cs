@@ -16,6 +16,10 @@ namespace Meatgrinder.Presentation
             if (transform.Find("Board") != null)
             {
                 board = transform.Find("Board");
+                var existingLabel = board.GetComponentInChildren<Text>();
+                if (existingLabel != null) GameUi.StyleText(existingLabel, UiFontRole.Industrial);
+                var existingBack = board.GetComponent<Image>();
+                if (existingBack != null) existingBack.color = GameUi.Ink;
                 return;
             }
 
@@ -28,7 +32,7 @@ namespace Meatgrinder.Presentation
             rect.sizeDelta = new Vector2(280f, 64f);
             rect.localScale = Vector3.one * 0.01f;
             Image back = root.AddComponent<Image>();
-            back.color = new Color(0.05f, 0.05f, 0.06f, 0.8f);
+            back.color = GameUi.Ink;
             back.raycastTarget = false;
             Texture2D texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             texture.SetPixel(0, 0, Color.white);
@@ -42,13 +46,13 @@ namespace Meatgrinder.Presentation
             textRect.offsetMin = Vector2.zero;
             textRect.offsetMax = Vector2.zero;
             Text label = textObject.AddComponent<Text>();
-            label.font = GameUi.FontFor(UiFontRole.Industrial);
+            GameUi.StyleText(label, UiFontRole.Industrial);
             label.fontSize = 32;
             label.resizeTextForBestFit = true;
             label.resizeTextMinSize = 18;
             label.resizeTextMaxSize = 32;
             label.alignment = TextAnchor.MiddleCenter;
-            label.color = color;
+            label.color = GameUi.Paper;
             label.text = title;
             label.raycastTarget = false;
         }

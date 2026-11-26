@@ -17,12 +17,14 @@ namespace Meatgrinder.Core
     {
         const string MenuScene = "Boot";
         [SerializeField] private MapDefinition[] maps;
+        [SerializeField, Min(0)] private float minimumLoadingSeconds = 3;
         public MapDefinition[] Maps => maps;
         public LocalSessionPhase Phase { get; private set; } = LocalSessionPhase.Menu;
         public GameObject Player { get; private set; }
         public MapDefinition CurrentMap { get; private set; }
         public float LoadingProgress { get; private set; }
         public string LoadingDestination { get; private set; }
+        public MapDefinition LoadingMap { get; private set; }
         public string LoadError { get; private set; }
         public float Elapsed { get; private set; }
         public int Shots { get; private set; }
@@ -124,9 +126,11 @@ namespace Meatgrinder.Core
 
         IEnumerator Load(string sceneName, string destination, bool resetStats)
         {
+            float loadingStarted = Time.realtimeSinceStartup;
             var previousPhase = Phase;
             changingScene = true;
             LoadingDestination = destination;
+            LoadingMap = Array.Find(maps ?? Array.Empty<MapDefinition>(), map => map != null && map.SceneName == sceneName);
             LoadError = null;
             LoadingProgress = 0;
             SetPhase(LocalSessionPhase.Loading);
@@ -155,6 +159,7 @@ namespace Meatgrinder.Core
                 yield return null;
             }
             SetLoadingProgress(1);
+            while (Time.realtimeSinceStartup - loadingStarted < minimumLoadingSeconds) yield return null;
             yield return null;
 
             if (resetStats)

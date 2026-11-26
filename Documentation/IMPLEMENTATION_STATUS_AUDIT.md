@@ -1,5 +1,9 @@
 # Auditoría de implementación de MEATGRINDER
 
+Adenda de 26 de noviembre: UI local unificada mediante GameUi, fuentes existentes, controles metálicos, HUD y estados compartidos; escala lineal reducida un 16,7 %, fondos originales sin recoloreado ni oscurecimiento y carga mínima configurable de 3 segundos. Se conservan estados de alcance: no cierra red ni ajustes pendientes. La prueba nueva de identidad recorre M01–M04 y pasó; la última suite global quedó en 25/26 por error de escritura de una captura (Win32 1224). No se ejecutan más pruebas por instrucción del usuario. Detalles y evidencia en PROGRESS.md.
+
+Adenda de 25 de noviembre: fondos PrincipalMenu/level1–level4, música persistente por mapa con transición a afterFirstSong y DeathSfx integrado. Los detalles y evidencia de esta pasada están en PROGRESS.md. Se mantienen los estados parciales de F7-01 y F8-07: esta integración no completa salas de red, producción de todo el audio ni mezcla final. La auditoría completa inferior conserva su fecha y alcance originales.
+
 24 de noviembre de 2026. La revisión abarca Git 89dedc8, los cambios de interfaz y carga de esta pasada y los 130 IDs REQUIRED del [checklist maestro](MASTER_CHECKLIST.md).
 
 Se leyó el [GDD/TDD v1.0](../MEATGRINDER_GDD_TDD.docx), incluidas sus tablas de requisitos, la [adenda de alcance](GDD_SCOPE_ADDENDUM.md), las [decisiones](DECISIONS.md), el plan y las reglas del repositorio. Se contrastaron con el manifiesto, los ensamblados, las escenas y los prefabs serializados, los ScriptableObjects, los recursos y las pruebas del proyecto. La adenda mantiene dentro del producto los objetivos que el GDD situaba después de la demo. Las decisiones posteriores de llaves, sprint y agacharse se aplican según su registro.
