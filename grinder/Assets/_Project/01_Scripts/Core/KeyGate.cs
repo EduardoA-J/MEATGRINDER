@@ -15,10 +15,14 @@ namespace Meatgrinder.Core
         bool transitioned;
         public bool IsOpen => opening >= 1;
         public bool AdvancesMap => advancesMap;
+        public event System.Action<HealthComponent> OnlineExitReached;
+        public bool Replicated { get; set; }
+        public bool Unlocked => state != null && state.Has(requiredKey);
+        public bool RemoteUnlocked { get; set; }
         void Awake() { if (door != null) closed = door.localPosition; }
         void Update()
         {
-            if (state == null || !state.Has(requiredKey)) return;
+            if (!(Replicated ? RemoteUnlocked : Unlocked)) return;
             opening = Mathf.MoveTowards(opening, 1, Time.deltaTime / openingDuration);
             if (door != null) door.localPosition = closed + Vector3.up * (Mathf.SmoothStep(0, 1, opening) * 4.5f);
         }
@@ -32,6 +36,11 @@ namespace Meatgrinder.Core
             var authority = health.GetComponent<LocalCombatAuthority>();
             if (authority != null && !authority.IsAuthoritative) return;
             var session = FindFirstObjectByType<LocalGameSession>();
+            if (session != null && session.Online)
+            {
+                OnlineExitReached?.Invoke(health);
+                return;
+            }
             if (session == null || session.Phase != LocalSessionPhase.Playing) return;
             transitioned = true;
             if (nextMap != null) { if (!session.StartMap(nextMap)) transitioned = false; }

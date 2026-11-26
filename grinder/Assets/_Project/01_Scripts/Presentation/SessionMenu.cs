@@ -24,6 +24,7 @@ namespace Meatgrinder.Presentation
         AudioSource source;
         [SerializeField] private AudioClip navigationSound;
         [SerializeField] private Texture2D menuBackground;
+        public Texture2D MenuBackground => menuBackground;
         ScreenBackground background;
         UnityEngine.UI.Image scrim;
         static readonly Vector2 PagePosition = new Vector2(68, -310);
@@ -79,7 +80,7 @@ namespace Meatgrinder.Presentation
             Add(main, "Options", "OPCIONES", 2, OpenOptions);
             Add(main, "Credits", "CRÉDITOS", 3, () => Show(credits));
             Add(main, "Quit", "SALIR", 4, session.Quit);
-            GameUi.Text(main, "Status", "OPERACIONES / LOCAL\n\nExplora las rutas. Controla los recursos.\nEmpiezas con melee: busca tu arsenal.\n\nPráctica local disponible.\nVersus, ranked y sesiones de red: no disponibles.", new Vector2(0, 1), new Vector2(0, 1), new Vector2(580, 0), new Vector2(700, 330), 26, GameUi.Paper, role: UiFontRole.Industrial);
+            Add(main, "Online", "MULTIJUGADOR", 0, session.OpenOnline, x: 580);
             for (int i = 0; session.Maps != null && i < session.Maps.Length; i++)
             {
                 var map = session.Maps[i];
@@ -187,6 +188,13 @@ namespace Meatgrinder.Presentation
         }
         void Refresh()
         {
+            if (session.Online)
+            {
+                Hide();
+                menuEvents.gameObject.SetActive(true);
+                displayedPhase = null;
+                return;
+            }
             errorText.text = session.LoadError;
             var phase = session.Phase;
             background.gameObject.SetActive(phase == LocalSessionPhase.Menu);

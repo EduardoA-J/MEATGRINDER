@@ -9,7 +9,7 @@ namespace Meatgrinder.Players
         public float VoidHeight => voidHeight;
         public Transform[] Points => points;
 
-        internal void SetPoints(Transform[] value) => points = value;
+        public void SetPoints(Transform[] value) => points = value;
 
         public Transform Choose(Vector3 deathPosition, Transform previous, Transform body, float height, float radius)
         {

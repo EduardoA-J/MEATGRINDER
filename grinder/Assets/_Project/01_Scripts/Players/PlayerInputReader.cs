@@ -27,11 +27,26 @@ namespace Meatgrinder.Players
         bool meleeLatched;
         int slotLatched;
 
-        public Vector2 Move => moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
-        public bool JumpHeld => jumpAction != null && jumpAction.IsPressed();
+        public bool ExternalInput { get; set; }
+        Vector2 externalMove;
+        bool externalJump, externalSprint, externalCrouch;
+        public Vector2 Move => ExternalInput ? externalMove : moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+        public bool JumpHeld => ExternalInput ? externalJump : jumpAction != null && jumpAction.IsPressed();
         public Vector2 LookDelta => lookDelta;
-        public bool SprintHeld => sprintAction != null && sprintAction.IsPressed();
-        public bool CrouchHeld => crouchAction != null && crouchAction.IsPressed();
+        public bool SprintHeld => ExternalInput ? externalSprint : sprintAction != null && sprintAction.IsPressed();
+        public bool CrouchHeld => ExternalInput ? externalCrouch : crouchAction != null && crouchAction.IsPressed();
+
+        public void SetExternalInput(Vector2 move, bool jump, bool sprint, bool crouch, bool attack, bool reload, bool melee, int slot)
+        {
+            externalMove = move;
+            externalJump = jump;
+            externalSprint = sprint;
+            externalCrouch = crouch;
+            attackLatched |= attack;
+            reloadLatched |= reload;
+            meleeLatched |= melee;
+            if (slot > 0) slotLatched = slot;
+        }
 
         public bool ConsumeAttack()
         {
@@ -63,6 +78,7 @@ namespace Meatgrinder.Players
 
         void OnEnable()
         {
+            if (ExternalInput) return;
             Bind();
             playerMap?.Enable();
         }
@@ -77,6 +93,7 @@ namespace Meatgrinder.Players
 
         void Update()
         {
+            if (ExternalInput) return;
             Poll();
             Latch();
         }

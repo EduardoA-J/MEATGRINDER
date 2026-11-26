@@ -11,6 +11,7 @@ namespace Meatgrinder.Combat
         readonly Queue<(int, int, DamageType, string, ulong)> order = new();
 
         public bool FriendlyFire { get; set; }
+        public event System.Action<DamageInfo> Killed;
         public IDamageModifiers AttackerPowerUps { get; set; }
         public IDamageModifiers TargetPowerUps { get; set; }
 
@@ -46,6 +47,7 @@ namespace Meatgrinder.Combat
             if (finalDamage <= 0f) return false;
             if (environmental && info.Target is HealthComponent body) body.ReceiveConfirmed(finalDamage, true);
             else info.Target.ReceiveConfirmed(finalDamage);
+            if (!info.Target.IsAlive) Killed?.Invoke(info);
             return true;
         }
     }

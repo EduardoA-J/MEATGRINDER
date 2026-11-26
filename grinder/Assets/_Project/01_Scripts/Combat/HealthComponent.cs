@@ -19,6 +19,7 @@ namespace Meatgrinder.Combat
         float spawnProtectionRemaining;
 
         public bool RecoverySuppressed { get; set; }
+        public bool AllowWeapons { get; set; } = true;
         public float Current { get; private set; }
         public float Armor { get; private set; }
         public float Max => profile != null ? profile.MaxHealth : (maxHealth > 0f ? maxHealth : 1f);
@@ -168,7 +169,7 @@ namespace Meatgrinder.Combat
             ResetHealth();
         }
 
-        internal void SetTeam(int value)
+        public void SetTeam(int value)
         {
             teamId = value;
         }

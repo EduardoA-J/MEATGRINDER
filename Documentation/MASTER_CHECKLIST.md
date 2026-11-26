@@ -2633,6 +2633,14 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
   - F8-08b Clips mínimos.
   - F8-08c Lista de cortes.
 
+### Integración Fusion en Boot
+
+- La creación y la unión por código usan el fondo, la tipografía y los controles compartidos con el menú local.
+
+- F3 y F9-02…F9-05: **PARTIALLY_IMPLEMENTED**. Crear/unir por código, equipos, movimiento y combate bajo autoridad del host, mapas, resultados y revancha disponibles en el flujo online. Pendiente validación con dos procesos y cobertura de predicción, reconexión y presentación competitiva.
+- F9-01: Campaign, Continuous y Private Match comparten la sesión Fusion. Duración, límite de bajas y capacidad de referencia se configuran en `VersusRules` con valores provisionales. D-05 y D-14 siguen abiertas.
+- E11: Ranked Versus sigue bloqueado por identidad persistente, matchmaking, persistencia y autoridad confiable.
+
 ### F9-01 Cerrar el modo de la demo
 
 - **ID:** F9-01

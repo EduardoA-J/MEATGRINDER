@@ -3,6 +3,12 @@
 Actualización vigente: 26 de noviembre de 2026.
 Alcance: juego completo (`GDD_SCOPE_ADDENDUM.md`). Estados: `MASTER_CHECKLIST.md`.
 
+## Versus con Photon Fusion — 26 de noviembre
+
+La pantalla de creación y unión usa uGUI y reutiliza `GameUi` y el fondo del menú principal. El lobby y sus mensajes de carga, pausa y resultados comparten el mismo panel.
+
+Boot incluye Multijugador con salas por código, lobby, Campaign con intercambio de roles tras recorrer M01–M04, Continuous con rotación automática y Private Match con mapa y fuego amigo configurables. El host confirma movimiento, combate, bajas, progresión de puertas, pickups y resultados. La práctica local conserva su flujo. Se compilaron los ensamblados afectados con las referencias de Unity 6000.5.6f1. Falta conectar dos procesos con un App ID local y validar la jugabilidad de red. Ranked requiere identidad y un backend de resultados confiable.
+
 ## Interfaz compartida, escala y fondos originales — 26 de noviembre
 
 GameUi centraliza fuentes y paleta de controles: Barlow Semi Condensed SemiBold para lectura/etiquetas, IBM Plex Mono para datos y Metal Mania para marca y encabezados expresivos. Se reutilizan las fuentes existentes con sus avisos SIL OFL 1.1. Botones, sliders, opciones, créditos, creación local, pausa, resultados, mensajes, carga y HUD comparten paneles metálicos, bordes, indicadores segmentados y estados normal/hover/seleccionado/pulsado/deshabilitado. Se actualizan también los rótulos TextMesh de M01–M04 y los tres prefabs de blancos. No se modifica Fusion ni las reglas de combate.

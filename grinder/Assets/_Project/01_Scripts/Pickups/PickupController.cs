@@ -20,6 +20,12 @@ namespace Meatgrinder.Pickups
 
         public PickupDefinition Definition => definition;
         public bool IsAvailable => available;
+        public bool Replica { get; set; }
+        public void ShowReplica(bool value)
+        {
+            if (visual != null) visual.gameObject.SetActive(value);
+            if (trigger != null) trigger.enabled = false;
+        }
 
         void Awake()
         {
@@ -36,6 +42,7 @@ namespace Meatgrinder.Pickups
 
         void Update()
         {
+            if (Replica) return;
             if (available == false)
             {
                 respawnTimer -= Time.deltaTime;
@@ -52,7 +59,7 @@ namespace Meatgrinder.Pickups
 
         void OnTriggerEnter(Collider other)
         {
-            if (available == false || definition == null)
+            if (Replica || available == false || definition == null)
             {
                 return;
             }
@@ -69,6 +76,8 @@ namespace Meatgrinder.Pickups
 
         bool CanPickup(HealthComponent health)
         {
+            if (!health.AllowWeapons && (definition.Type == PickupType.Weapon || definition.Type == PickupType.Ammo))
+                return false;
             if (definition == null)
             {
                 return false;

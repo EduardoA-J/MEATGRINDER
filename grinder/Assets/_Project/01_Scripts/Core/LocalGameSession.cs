@@ -32,6 +32,14 @@ namespace Meatgrinder.Core
         public int Pickups { get; private set; }
         public int TargetsDestroyed { get; private set; }
         public event Action Changed;
+        public static event Action<LocalGameSession> OnlineRequested;
+        public bool Online { get; private set; }
+        public void OpenOnline() => OnlineRequested?.Invoke(this);
+        public void SetOnline(bool value)
+        {
+            Online = value;
+            Changed?.Invoke();
+        }
         public event Action<float> LoadingProgressChanged;
         HealthComponent health;
         PlayerImpactFeedback feedback;
@@ -66,6 +74,7 @@ namespace Meatgrinder.Core
         }
         void SceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (Online) return;
             if (!changingScene || mode == LoadSceneMode.Single) BindScene(scene);
         }
         void BindScene(Scene scene)
@@ -102,6 +111,7 @@ namespace Meatgrinder.Core
         }
         void Update()
         {
+            if (Online) return;
             if (Phase == LocalSessionPhase.Playing) Elapsed += Time.deltaTime;
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
             {

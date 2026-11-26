@@ -39,6 +39,7 @@ namespace Meatgrinder.Players
 
         void Update()
         {
+            if (input != null && input.ExternalInput) return;
             if (tuning == null)
             {
                 return;
@@ -62,6 +63,14 @@ namespace Meatgrinder.Players
         {
             yaw = rotation.eulerAngles.y;
             pitch = recoilOffset = 0f;
+            ApplyPose();
+        }
+
+        public void SetExternalAim(float heading, float elevation)
+        {
+            yaw = heading;
+            pitch = tuning != null ? Mathf.Clamp(elevation, tuning.MinPitch, tuning.MaxPitch) : elevation;
+            recoilOffset = 0;
             ApplyPose();
         }
 
