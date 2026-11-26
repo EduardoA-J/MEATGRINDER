@@ -44,8 +44,12 @@ namespace Meatgrinder.Networking
         bool busy, friendlyFire, paused, leaving;
         bool routeCompleted, killLimitReached;
         Canvas roomCanvas;
+        Canvas vitalsCanvas;
+        VitalsPanel combatVitals;
         RectTransform roomSetup, roomSummary, mapOptions;
-        RectTransform monsterOptions;
+        RectTransform monsterOptions, teamOptions;
+        readonly UnityEngine.UI.Button[] teamButtons = new UnityEngine.UI.Button[2];
+        readonly UnityEngine.UI.Image[] teamMarkers = new UnityEngine.UI.Image[2];
         UnityEngine.UI.Image lightMarker, heavyMarker;
         UnityEngine.UI.InputField roomCode;
         UnityEngine.UI.Text roomTitle, roomDetails, roomStatus, mapName;
@@ -71,6 +75,9 @@ namespace Meatgrinder.Networking
             online.teamSize = online.rules.PlayersPerTeam;
             local.SetOnline(true);
             online.BuildRoomMenu();
+            online.vitalsCanvas = GameUi.Canvas(online.transform, "VersusVitals", 20);
+            online.combatVitals = new VitalsPanel(online.vitalsCanvas.transform, new Vector2(30, 30));
+            online.vitalsCanvas.enabled = false;
         }
 
         async Task Connect(bool host)
@@ -115,13 +122,17 @@ namespace Meatgrinder.Networking
                 if (!result.Ok) throw new InvalidOperationException(result.ShutdownReason.ToString());
                 room = code;
                 if (host)
-                    runner.Spawn(StatePrefab, onBeforeSpawned: (_, obj) =>
+                {
+                    match = runner.Spawn(StatePrefab, onBeforeSpawned: (_, obj) =>
                     {
                         var state = obj.GetComponent<VersusState>();
                         state.IsMatch = true;
                         state.Mode = mode;
                         state.Phase = VersusPhase.Lobby;
-                    });
+                        state.TeamCapacity = teamSize;
+                    }).GetComponent<VersusState>();
+                    foreach (var entry in seats) match.TeamByPlayer.Set(entry.Key, (VersusTeam)(entry.Value % 2));
+                }
                 status = "";
             }
             catch (Exception error)
@@ -144,6 +155,7 @@ namespace Meatgrinder.Networking
                 if (arena.IsValid() && arena.isLoaded) await SceneManager.UnloadSceneAsync(arena);
                 roomCanvas.gameObject.SetActive(false);
                 Destroy(roomCanvas.gameObject);
+                Destroy(vitalsCanvas.gameObject);
                 local.SetOnline(false);
                 Destroy(this);
             }
@@ -190,7 +202,7 @@ namespace Meatgrinder.Networking
             {
                 SyncEnvironment();
                 if (runner.IsServer && !busy && !HasBothTeams())
-                    EndMatch(seats.Values.Any(seat => seat % 2 == 0) ? 1 : 2);
+                    EndMatch(WinnerByForfeit());
                 else if (runner.IsServer && !busy && (routeCompleted || killLimitReached || match.Deadline.Expired(runner)))
                     _ = Advance(routeCompleted);
             }
@@ -199,6 +211,12 @@ namespace Meatgrinder.Networking
         void LateUpdate()
         {
             RefreshRoomMenu();
+            if (vitalsCanvas != null)
+            {
+                vitalsCanvas.enabled = !PanelVisible && viewedPlayer != null && viewedPlayer.MaxHealth > 0;
+                if (vitalsCanvas.enabled)
+                    combatVitals.Show(viewedPlayer.Health, viewedPlayer.MaxHealth, viewedPlayer.Armor, viewedPlayer.MaxArmor);
+            }
             if (view == null || viewedPlayer == null) return;
             var player = viewedPlayer;
             var body = player.Body;
@@ -256,7 +274,7 @@ namespace Meatgrinder.Networking
                 if (!sceneRef.IsValid) throw new InvalidOperationException("Mapa fuera de Build Settings.");
                 await WaitForScene(runner.LoadScene(sceneRef, LoadSceneMode.Additive), deadline);
                 PrepareArena(SceneManager.GetSceneByName(map.SceneName));
-                foreach (var entry in seats) Spawn(entry.Key, entry.Value);
+                foreach (var entry in seats) Spawn(entry.Key);
                 SyncEnvironment();
                 match.Deadline = TickTimer.CreateFromSeconds(runner, rules.RoundSeconds);
                 match.Phase = VersusPhase.Playing;
@@ -356,10 +374,12 @@ namespace Meatgrinder.Networking
             }
         }
 
-        void Spawn(PlayerRef player, int seat)
+        void Spawn(PlayerRef player)
         {
             if (template == null) throw new InvalidOperationException("El mapa no tiene plantilla de jugador.");
-            int team = seat % 2;
+            if (!match.TeamByPlayer.TryGet(player, out var assigned))
+                throw new InvalidOperationException("El jugador no tiene equipo.");
+            int team = (int)assigned;
             int role = team ^ match.Half;
             var kind = role == 1 ? ChoiceFor(player) : MonsterKind.None;
             var definition = MonsterDefinition.Get(kind);
@@ -504,16 +524,19 @@ namespace Meatgrinder.Networking
             _ = LoadRound(match.Mode == VersusMode.Campaign ? 0 : firstMap);
         }
 
-        bool HasBothTeams() => seats.Values.Any(seat => seat % 2 == 0) && seats.Values.Any(seat => seat % 2 == 1);
+        bool HasBothTeams() => match != null &&
+            match.CountTeam(VersusTeam.Marines) > 0 && match.CountTeam(VersusTeam.Demons) > 0;
+
+        int WinnerByForfeit() => match.CountTeam(VersusTeam.Marines) > 0 ? 1 : 2;
 
         void OnGUI()
         {
             if (local == null || PanelVisible || viewedPlayer == null) return;
             var player = viewedPlayer;
             GUI.Label(new Rect(20, 16, 650, 32),
-                $"Equipo {(player.Team == 0 ? "A" : "B")} · {MonsterDefinition.Get(player.Archetype)?.DisplayName ?? "Humano"}   |   {match.ScoreA} – {match.ScoreB}   |   {Mathf.CeilToInt(match.Deadline.RemainingTime(runner) ?? 0)} s");
-            GUI.Label(new Rect(20, Screen.height - 62, 750, 42),
-                $"Salud {player.Health:0}   Armadura {player.Armor:0}   Munición {player.Loaded}/{player.Reserve}   Bajas {player.Kills}   Muertes {player.Deaths}");
+                $"Equipo {(player.Team == 0 ? "A" : "B")} · {MonsterDefinition.Get(player.Archetype)?.DisplayName ?? "Marine"}   |   {match.ScoreA} – {match.ScoreB}   |   {Mathf.CeilToInt(match.Deadline.RemainingTime(runner) ?? 0)} s");
+            string ammo = player.Monster ? "" : $"Munición {player.Loaded}/{player.Reserve}   ";
+            GUI.Label(new Rect(20, 43, 750, 32), $"{ammo}Bajas {player.Kills}   Muertes {player.Deaths}");
             GUI.Label(new Rect(Screen.width / 2f - 6, Screen.height / 2f - 10, 24, 24), "+");
             if (player.Health <= 0) GUI.Label(new Rect(Screen.width / 2f - 75, Screen.height / 2f + 20, 250, 30), "Esperando reaparición");
         }
@@ -580,6 +603,11 @@ namespace Meatgrinder.Networking
             RoomButton(roomSetup, "CreateRoom", "CREAR SALA", 32, -380, 310, () => _ = Connect(true));
             RoomButton(roomSetup, "JoinRoom", "UNIRSE POR CÓDIGO", 356, -380, 310, () => _ = Connect(false));
             roomDetails = RoomText(roomSummary, "RoomDetails", "", 32, -24, 1390, 210, 31, UiFontRole.Industrial);
+            teamOptions = GameUi.Fill(roomSummary, "TeamSelection");
+            RoomText(teamOptions, "TeamLabel", "ELIGE EQUIPO", 810, -28, 630, 34, 20, UiFontRole.System);
+            teamButtons[0] = RoomButton(teamOptions, "Marines", "MARINES", 810, -72, 560, () => match.RPC_ChooseTeam(VersusTeam.Marines));
+            teamButtons[1] = RoomButton(teamOptions, "Demons", "DEMONIOS", 810, -140, 560, () => match.RPC_ChooseTeam(VersusTeam.Demons));
+            for (int i = 0; i < teamButtons.Length; i++) teamMarkers[i] = ChoiceMarker(teamButtons[i]);
             monsterOptions = GameUi.Fill(roomSummary, "MonsterSelection");
             RoomText(monsterOptions, "MonsterLabel", "DEMONIO PARA LA SIGUIENTE APARICIÓN", 32, -230, 900, 35, 20, UiFontRole.System);
             lightMarker = MonsterButton(MonsterKind.Light, 32);
@@ -628,6 +656,9 @@ namespace Meatgrinder.Networking
             leaveAction.interactable = !busy;
             SetCaption(leaveAction, runner == null ? "VOLVER" : "SALIR DE SALA");
             roomStatus.text = status;
+            var selectedTeam = VersusTeam.Marines;
+            bool lobby = match != null && match.Phase == VersusPhase.Lobby;
+            bool assigned = lobby && match.TeamByPlayer.TryGet(runner.LocalPlayer, out selectedTeam);
             if (setup)
             {
                 for (int i = 0; i < modeMarkers.Length; i++) modeMarkers[i].enabled = i == (int)mode;
@@ -644,8 +675,21 @@ namespace Meatgrinder.Networking
             {
                 string action = "";
                 roomDetails.text = "";
-                monsterOptions.gameObject.SetActive(match != null && (match.Phase == VersusPhase.Lobby ||
-                    (paused && viewedPlayer != null && viewedPlayer.Monster)));
+                teamOptions.gameObject.SetActive(lobby);
+                monsterOptions.gameObject.SetActive((assigned && selectedTeam == VersusTeam.Demons) ||
+                    (paused && viewedPlayer != null && viewedPlayer.Monster));
+                if (lobby)
+                {
+                    for (int i = 0; i < teamButtons.Length; i++)
+                    {
+                        var team = (VersusTeam)i;
+                        int count = match.CountTeam(team);
+                        bool selected = assigned && team == selectedTeam;
+                        teamMarkers[i].enabled = selected;
+                        teamButtons[i].interactable = assigned && (selected || count < match.TeamCapacity);
+                        SetCaption(teamButtons[i], $"{(team == VersusTeam.Marines ? "MARINES" : "DEMONIOS")}   {count}/{match.TeamCapacity}");
+                    }
+                }
                 if (match != null)
                 {
                     var choice = ChoiceFor(runner.LocalPlayer);
@@ -671,6 +715,7 @@ namespace Meatgrinder.Networking
             var events = EventSystem.current;
             if (events != null && (events.currentSelectedGameObject == null || !events.currentSelectedGameObject.activeInHierarchy))
                 events.SetSelectedGameObject(setup ? roomCode.gameObject :
+                    teamOptions.gameObject.activeInHierarchy && assigned ? teamButtons[(int)selectedTeam].gameObject :
                     primaryAction.gameObject.activeInHierarchy ? primaryAction.gameObject : leaveAction.gameObject);
         }
 
@@ -686,6 +731,12 @@ namespace Meatgrinder.Networking
             if (!current.IsServer || seats.ContainsKey(player)) return;
             int seat = Enumerable.Range(0, teamSize * 2).First(value => !seats.ContainsValue(value));
             seats.Add(player, seat);
+            if (match != null && match.Object.IsValid)
+            {
+                var team = match.CountTeam(VersusTeam.Marines) <= match.CountTeam(VersusTeam.Demons) ?
+                    VersusTeam.Marines : VersusTeam.Demons;
+                match.TeamByPlayer.Set(player, team);
+            }
         }
 
         public void OnPlayerLeft(NetworkRunner current, PlayerRef player)
@@ -693,9 +744,13 @@ namespace Meatgrinder.Networking
             if (!current.IsServer) return;
             Despawn(player);
             seats.Remove(player);
-            if (match != null) match.MonsterChoices.Remove(player);
+            if (match != null)
+            {
+                match.MonsterChoices.Remove(player);
+                match.TeamByPlayer.Remove(player);
+            }
             if (!busy && match != null && match.Phase == VersusPhase.Playing && !HasBothTeams())
-                EndMatch(seats.Values.Any(seat => seat % 2 == 0) ? 1 : 2);
+                EndMatch(WinnerByForfeit());
         }
 
         public void OnSceneLoadDone(NetworkRunner current)

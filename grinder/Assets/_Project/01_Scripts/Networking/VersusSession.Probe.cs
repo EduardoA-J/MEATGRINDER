@@ -217,8 +217,15 @@ namespace Meatgrinder.Networking
 
         async Task HostProbe()
         {
+            await WaitProbe(() => match.CountTeam(VersusTeam.Marines) == 2 && teamButtons[1].interactable,
+                "selección remota de Marines");
+            teamButtons[1].onClick.Invoke();
+            await WaitProbe(() => match.TeamByPlayer.TryGet(runner.LocalPlayer, out var team) && team == VersusTeam.Demons,
+                "selección local de Demonios");
             StartMatch();
             await WaitProbe(() => viewedPlayer != null && match.Phase == VersusPhase.Playing, "spawn del host");
+            await WaitProbe(() => viewedPlayer.Monster && vitalsCanvas.enabled && combatVitals.HealthReadout.Contains("/ 90"),
+                "HUD compartido del demonio");
             var remoteRef = seats.Keys.Single(player => player != runner.LocalPlayer);
             var connection = runner.GetPlayerConnectionType(remoteRef);
             if (probeRelay && connection != ConnectionType.Relayed)
@@ -251,6 +258,7 @@ namespace Meatgrinder.Networking
                 throw new InvalidOperationException($"Daño autoritativo: aplicado={applied}, repetido={repeated}, vida={remote.Vitality.Current}, marcador={match.ScoreA}-{match.ScoreB}");
             await WaitProbe(() => remote.Vitality.IsAlive, "reaparición remota");
             Debug.Log("[VersusProbe] Damage, single score and respawn confirmed");
+            Debug.Log("[VersusProbe] Lobby team selection and demon vitals confirmed");
 
             for (int map = 1; map < local.Maps.Length; map++)
             {
@@ -272,7 +280,14 @@ namespace Meatgrinder.Networking
 
         async Task ClientProbe()
         {
+            await WaitProbe(() => teamOptions.gameObject.activeInHierarchy && teamButtons[0].interactable,
+                "opciones de equipo en el lobby");
+            teamButtons[0].onClick.Invoke();
+            await WaitProbe(() => match.TeamByPlayer.TryGet(runner.LocalPlayer, out var team) && team == VersusTeam.Marines,
+                "selección de Marines confirmada");
             await WaitProbe(() => viewedPlayer != null && match.Phase == VersusPhase.Playing, "spawn remoto");
+            await WaitProbe(() => !viewedPlayer.Monster && vitalsCanvas.enabled && combatVitals.HealthReadout.Contains("/ 100"),
+                "HUD compartido del marine");
             probeMove = true;
             await Task.Delay(1000);
             probeMove = false;

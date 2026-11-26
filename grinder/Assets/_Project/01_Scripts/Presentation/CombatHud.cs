@@ -15,8 +15,9 @@ namespace Meatgrinder.Presentation
         [SerializeField] private PowerUpManager powerUps;
         [SerializeField] private PresentationTheme theme;
         [SerializeField] private float crosshairScale = 1;
-        UnityEngine.UI.Text healthText, armorText, weaponText, ammoText, statusText, deathText, pickupText;
-        UnityEngine.UI.Image healthFill, armorFill, damageOverlay, fallOverlay, reloadFill;
+        UnityEngine.UI.Text weaponText, ammoText, statusText, deathText, pickupText;
+        UnityEngine.UI.Image damageOverlay, fallOverlay, reloadFill;
+        VitalsPanel vitals;
         RectTransform crosshair, deathPanel;
         UnityEngine.UI.Image[] hitMarks;
         readonly GameObject[] cards = new GameObject[6];
@@ -30,7 +31,7 @@ namespace Meatgrinder.Presentation
         Canvas canvas;
         float damageFlash, hitTime, pickupTime, refreshTime;
         public float CrosshairScale { get => crosshairScale; set { crosshairScale = Mathf.Max(.2f, value); if (crosshair != null) crosshair.localScale = Vector3.one * crosshairScale; } }
-        public string HealthReadout => healthText != null ? healthText.text : "";
+        public string HealthReadout => vitals?.HealthReadout ?? "";
         public string AmmoReadout => ammoText != null ? ammoText.text : "";
         void Awake()
         {
@@ -109,11 +110,7 @@ namespace Meatgrinder.Presentation
         public void ShowPickup(string name) { pickupText.text = "+ " + name.ToUpperInvariant(); pickupTime = Time.time + 2; }
         void RefreshHealth()
         {
-            if (healthText == null || health == null) return;
-            healthText.text = Mathf.CeilToInt(health.Current) + " <size=19>/ " + health.Max.ToString("0") + "</size>";
-            armorText.text = Mathf.CeilToInt(health.Armor) + " <size=19>/ " + health.MaxArmor.ToString("0") + "</size>";
-            healthFill.rectTransform.localScale = new Vector3(Mathf.Clamp01(health.Current / health.Max), 1, 1);
-            armorFill.rectTransform.localScale = new Vector3(health.MaxArmor > 0 ? health.Armor / health.MaxArmor : 0, 1, 1);
+            if (health != null) vitals?.Show(health.Current, health.Max, health.Armor, health.MaxArmor);
         }
         void RefreshWeapon()
         {
@@ -131,14 +128,7 @@ namespace Meatgrinder.Presentation
             var dock = GameUi.Fill(canvas.transform, "StatusBar");
             dock.anchorMax = Vector2.right; dock.offsetMin = new Vector2(18, 18); dock.offsetMax = new Vector2(-18, 160);
             GameUi.Panel(dock);
-            var stats = GameUi.Rect(dock, "VitalPanel", Vector2.zero, Vector2.zero, new Vector2(12, 12), new Vector2(420, 116));
-            GameUi.Panel(stats, false).color = GameUi.Ink;
-            Label(stats, "HealthLabel", "+  SALUD", new Vector2(18, 72), new Vector2(180, 26), 17, GameUi.Accent);
-            Label(stats, "ArmorLabel", "ARMADURA", new Vector2(226, 72), new Vector2(180, 26), 17, GameUi.Muted);
-            healthText = Label(stats, "Health", "100", new Vector2(18, 22), new Vector2(180, 56), 42, GameUi.Paper, UiFontRole.System);
-            armorText = Label(stats, "Armor", "0", new Vector2(226, 22), new Vector2(180, 56), 42, GameUi.Paper, UiFontRole.System);
-            healthFill = Bar(stats, "HealthBar", new Vector2(18, 12), new Vector2(178, 8), GameUi.Accent);
-            armorFill = Bar(stats, "ArmorBar", new Vector2(226, 12), new Vector2(178, 8), GameUi.Muted);
+            vitals = new VitalsPanel(dock, new Vector2(12, 12));
             GameUi.Text(dock, "CombatWordmark", "MEATGRINDER", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 62), new Vector2(390, 48), 39, GameUi.Paper, TextAnchor.MiddleCenter, UiFontRole.Display);
             GameUi.Text(dock, "Controls", "V / MELEE   1–2 / ARMAS", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 28), new Vector2(390, 26), 16, GameUi.Muted, TextAnchor.MiddleCenter, UiFontRole.System);
             var ammo = GameUi.Rect(dock, "AmmoPanel", new Vector2(1, 0), new Vector2(1, 0), new Vector2(-12, 12), new Vector2(410, 116));
@@ -187,5 +177,42 @@ namespace Meatgrinder.Presentation
         }
         static UnityEngine.UI.Image Bar(Transform parent, string name, Vector2 pos, Vector2 size, Color color) => GameUi.Meter(parent, name, pos, size, color);
         static void Alpha(UnityEngine.UI.Image image, float value) { var c = image.color; c.a = value; image.color = c; }
+    }
+
+    public sealed class VitalsPanel
+    {
+        readonly UnityEngine.UI.Text healthText, armorText;
+        readonly UnityEngine.UI.Image healthFill, armorFill;
+        Vector4 lastValues = new Vector4(-1, -1, -1, -1);
+        public string HealthReadout => healthText.text;
+
+        public VitalsPanel(Transform parent, Vector2 position)
+        {
+            var panel = GameUi.Rect(parent, "VitalPanel", Vector2.zero, Vector2.zero, position, new Vector2(420, 116));
+            GameUi.Panel(panel, false).color = GameUi.Ink;
+            GameUi.Text(panel, "HealthLabel", "+  SALUD", Vector2.zero, Vector2.zero, new Vector2(18, 72),
+                new Vector2(180, 26), 17, GameUi.Accent, role: UiFontRole.Industrial);
+            GameUi.Text(panel, "ArmorLabel", "ARMADURA", Vector2.zero, Vector2.zero, new Vector2(226, 72),
+                new Vector2(180, 26), 17, GameUi.Muted, role: UiFontRole.Industrial);
+            healthText = GameUi.Text(panel, "Health", "100", Vector2.zero, Vector2.zero, new Vector2(18, 22),
+                new Vector2(180, 56), 42, GameUi.Paper, role: UiFontRole.System);
+            armorText = GameUi.Text(panel, "Armor", "0", Vector2.zero, Vector2.zero, new Vector2(226, 22),
+                new Vector2(180, 56), 42, GameUi.Paper, role: UiFontRole.System);
+            healthFill = GameUi.Meter(panel, "HealthBar", new Vector2(18, 12), new Vector2(178, 8), GameUi.Accent);
+            armorFill = GameUi.Meter(panel, "ArmorBar", new Vector2(226, 12), new Vector2(178, 8), GameUi.Muted);
+        }
+
+        public void Show(float health, float maxHealth, float armor, float maxArmor)
+        {
+            var values = new Vector4(health, maxHealth, armor, maxArmor);
+            if (values.Equals(lastValues)) return;
+            lastValues = values;
+            healthText.text = $"{Mathf.CeilToInt(health)} <size=19>/ {maxHealth:0}</size>";
+            armorText.text = $"{Mathf.CeilToInt(armor)} <size=19>/ {maxArmor:0}</size>";
+            healthFill.rectTransform.localScale = new Vector3(Ratio(health, maxHealth), 1, 1);
+            armorFill.rectTransform.localScale = new Vector3(Ratio(armor, maxArmor), 1, 1);
+        }
+
+        static float Ratio(float value, float max) => max > 0 ? Mathf.Clamp01(value / max) : 0;
     }
 }

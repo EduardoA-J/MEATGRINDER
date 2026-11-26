@@ -139,7 +139,7 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F6-12 | Megahealth | INTEGRATED | P2 | Cap 200, demora 5 s, decaimiento 5 HP/s |
 | F7-01 | Menú principal | PARTIALLY_IMPLEMENTED | P1 | Menú uGUI local con fuentes, feedback, transiciones, créditos y ajuste de movimiento reducido. Fondos originales PrincipalMenu/level1–level4, estilo compartido y carga mínima de 3 s (26 nov); ver PROGRESS para pruebas. Sala privada pendiente. |
 | F7-02 | Crear y unirse | PARTIALLY_IMPLEMENTED | P1 | Crear práctica local: mapa, ajustes y confirmación. Crear/unir red pendiente |
-| F7-03 | Selección de equipo y de monstruo | NOT_STARTED | P2 | F4-03, F7-02 |
+| F7-03 | Selección de equipo y de monstruo | INTEGRATED | P2 | Marines y Demonios se eligen en el lobby con cupos validados por el host. El equipo de Demonios elige ligero o pesado. |
 | F7-04 | HUD de salud, armadura y munición | INTEGRATED | P1 | HUD SYSTEM de vida, armadura y munición en juego local; paneles y poderes con identidad compartida, escala reducida (26 nov). Red pendiente (F3-06). |
 | F7-05 | Retícula | INTEGRATED | P1 | F1-02 |
 | F7-06 | Indicador de potenciador | INTEGRATED | P1 | Seis símbolos, timers y barras por efecto; pruebas y capturas reales |

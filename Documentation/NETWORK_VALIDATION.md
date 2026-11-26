@@ -38,3 +38,5 @@ La sonda valida la preferencia de clase con Fusion, rechaza una opción inválid
 ```
 
 Todos los procesos deben usar la misma región de Photon. El script usa `cae` por defecto y admite `-Region`. Estas comprobaciones cubren la réplica y la lógica de las reglas; el playtest con personas, balance y rendimiento en equipos separados quedan pendientes.
+
+La sonda de dos procesos también acciona los botones del lobby para cambiar el cliente a Marines y el host a Demonios. Comprueba la asignación replicada y el mismo panel de salud en ambos procesos, con máximos respectivos de 100 y 90.

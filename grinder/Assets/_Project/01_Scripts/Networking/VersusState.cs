@@ -8,6 +8,7 @@ namespace Meatgrinder.Networking
 {
     public enum VersusMode { Campaign, Continuous, Private }
     public enum VersusPhase { Lobby, Loading, Playing, Results }
+    public enum VersusTeam { Marines, Demons }
     public enum VersusButton { Jump, Sprint, Crouch, Attack, Reload, Melee, Shotgun, Rocket }
 
     public struct VersusInput : INetworkInput
@@ -33,6 +34,8 @@ namespace Meatgrinder.Networking
         [Networked, Capacity(32)] public NetworkArray<NetworkBool> Gates => default;
         [Networked, Capacity(32)] public NetworkArray<NetworkBool> Keys => default;
         [Networked] public int Team { get; set; }
+        [Networked] public int TeamCapacity { get; set; }
+        [Networked, Capacity(8)] public NetworkDictionary<PlayerRef, VersusTeam> TeamByPlayer => default;
         [Networked] public NetworkBool Monster { get; set; }
         [Networked] public MonsterKind Archetype { get; set; }
         [Networked, Capacity(8)] public NetworkDictionary<PlayerRef, MonsterKind> MonsterChoices => default;
@@ -43,6 +46,8 @@ namespace Meatgrinder.Networking
         [Networked] public Vector2 Aim { get; set; }
         [Networked] public float Health { get; set; }
         [Networked] public float Armor { get; set; }
+        [Networked] public float MaxHealth { get; set; }
+        [Networked] public float MaxArmor { get; set; }
         [Networked] public float EyeHeight { get; set; }
         [Networked] public int Loaded { get; set; }
         [Networked] public int Reserve { get; set; }
@@ -109,6 +114,26 @@ namespace Meatgrinder.Networking
             Position = body.transform.position;
             Aim = new Vector2(look.Yaw, look.Pitch);
             Health = Vitality.Current;
+            MaxHealth = Vitality.Max;
+            MaxArmor = Vitality.MaxArmor;
+        }
+
+        public int CountTeam(VersusTeam team)
+        {
+            int count = 0;
+            foreach (var assignment in TeamByPlayer)
+                if (assignment.Value == team) count++;
+            return count;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+        public void RPC_ChooseTeam(VersusTeam requested, RpcInfo info = default)
+        {
+            if (!IsMatch || Phase != VersusPhase.Lobby || !info.Source.IsRealPlayer ||
+                (requested != VersusTeam.Marines && requested != VersusTeam.Demons)) return;
+            if (!TeamByPlayer.TryGet(info.Source, out var current) || current == requested ||
+                CountTeam(requested) >= TeamCapacity) return;
+            TeamByPlayer.Set(info.Source, requested);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
@@ -155,6 +180,8 @@ namespace Meatgrinder.Networking
             EyeHeight = look.View.transform.localPosition.y;
             Health = Vitality.Current;
             Armor = Vitality.Armor;
+            MaxHealth = Vitality.Max;
+            MaxArmor = Vitality.MaxArmor;
             Swing = melee.IsSwinging ? melee.SwingProgress : 0;
             Loaded = weapons.Loaded;
             Reserve = weapons.Reserve;

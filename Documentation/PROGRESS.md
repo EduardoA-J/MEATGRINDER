@@ -5,6 +5,8 @@ Alcance: juego completo (`GDD_SCOPE_ADDENDUM.md`). Estados: `MASTER_CHECKLIST.md
 
 ## Versus con Photon Fusion — 26 de noviembre
 
+El lobby permite elegir Marines o Demonios y muestra los cupos de cada equipo. Fusion valida el cambio en el host y mantiene la asignación durante la partida. Ambos roles usan el mismo panel uGUI de salud y armadura de la práctica, con los máximos de su perfil.
+
 Se integraron los demonios ligero y pesado. Sus cápsulas de combate, salud, movilidad y ataques se definen por perfil. Cada `MonsterDefinition` enlaza un prefab visual provisional reemplazable desde el Inspector. Las reglas de recursos y victoria figuran en D-13 y D-14.
 
 Para sustituir el arte, asignar el prefab final al campo **Visual Prefab** de `DemonLight.asset` o `DemonHeavy.asset` en `02_ScriptableObjects/Resources`. Preparar la raíz del modelo con el pivote a los pies, eje Y hacia arriba y frente +Z. Las hitboxes y los sockets de juego quedan en el cuerpo autoritativo; el modelo remoto solo aporta imagen.
