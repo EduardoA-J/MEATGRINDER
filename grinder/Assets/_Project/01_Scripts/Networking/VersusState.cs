@@ -34,6 +34,9 @@ namespace Meatgrinder.Networking
         [Networked, Capacity(32)] public NetworkArray<NetworkBool> Keys => default;
         [Networked] public int Team { get; set; }
         [Networked] public NetworkBool Monster { get; set; }
+        [Networked] public MonsterKind Archetype { get; set; }
+        [Networked, Capacity(8)] public NetworkDictionary<PlayerRef, MonsterKind> MonsterChoices => default;
+        [Networked] public float Swing { get; set; }
         [Networked] public int Kills { get; set; }
         [Networked] public int Deaths { get; set; }
         [Networked] public Vector3 Position { get; set; }
@@ -49,7 +52,9 @@ namespace Meatgrinder.Networking
         PlayerInputReader input;
         PlayerLook look;
         WeaponController weapons;
+        PlayerMelee melee;
         GameObject silhouette;
+        MonsterKind renderedKind;
         RocketProjectile projectile;
         bool placed;
 
@@ -62,6 +67,22 @@ namespace Meatgrinder.Networking
             }
             if (IsProjectile && HasStateAuthority) return;
             if (HasInputAuthority) return;
+            UpdateVisual();
+        }
+
+        void UpdateVisual()
+        {
+            if (silhouette != null && renderedKind == Archetype) return;
+            if (silhouette != null) { silhouette.SetActive(false); Destroy(silhouette); }
+            renderedKind = Archetype;
+            var definition = MonsterDefinition.Get(renderedKind);
+            if (definition != null && definition.VisualPrefab != null)
+            {
+                silhouette = Instantiate(definition.VisualPrefab, transform, false);
+                // Replacement models are presentation only.
+                foreach (var hitbox in silhouette.GetComponentsInChildren<Collider>(true)) hitbox.enabled = false;
+                return;
+            }
             silhouette = GameObject.CreatePrimitive(IsProjectile ? PrimitiveType.Sphere : PrimitiveType.Capsule);
             silhouette.transform.SetParent(transform, false);
             silhouette.transform.localPosition = IsProjectile ? Vector3.zero : Vector3.up * .9f;
@@ -83,10 +104,23 @@ namespace Meatgrinder.Networking
             look = body.GetComponent<PlayerLook>();
             Vitality = body.GetComponent<HealthComponent>();
             weapons = body.GetComponent<WeaponController>();
+            melee = body.GetComponent<PlayerMelee>();
             Vitality.Died += CountDeath;
             Position = body.transform.position;
             Aim = new Vector2(look.Yaw, look.Pitch);
             Health = Vitality.Current;
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+        public void RPC_ChooseMonster(MonsterKind choice, RpcInfo info = default)
+        {
+            if (!IsMatch || !info.Source.IsRealPlayer || MonsterDefinition.Get(choice) == null) return;
+            foreach (var player in Runner.ActivePlayers)
+            {
+                if (player != info.Source) continue;
+                MonsterChoices.Set(player, choice);
+                break;
+            }
         }
 
         void CountDeath() => Deaths++;
@@ -121,18 +155,21 @@ namespace Meatgrinder.Networking
             EyeHeight = look.View.transform.localPosition.y;
             Health = Vitality.Current;
             Armor = Vitality.Armor;
+            Swing = melee.IsSwinging ? melee.SwingProgress : 0;
             Loaded = weapons.Loaded;
             Reserve = weapons.Reserve;
         }
 
         public override void Render()
         {
-            if (silhouette == null) return;
+            if (IsMatch || HasInputAuthority || (IsProjectile && HasStateAuthority)) return;
+            UpdateVisual();
             bool snap = !placed || (transform.position - Position).sqrMagnitude > 16;
             transform.SetPositionAndRotation(snap ? Position : Vector3.Lerp(transform.position, Position, 20 * Time.deltaTime),
                 Quaternion.Euler(0, Aim.x, 0));
             placed = true;
             silhouette.SetActive(IsProjectile || Health > 0);
+            if (Monster) silhouette.transform.localRotation = Quaternion.Euler(Mathf.Sin(Swing * Mathf.PI) * 14, 0, 0);
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)

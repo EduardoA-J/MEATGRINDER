@@ -169,6 +169,8 @@ namespace Meatgrinder.Combat
             ResetHealth();
         }
 
+        public void SetProfile(HealthProfile value) => profile = value;
+
         public void SetTeam(int value)
         {
             teamId = value;

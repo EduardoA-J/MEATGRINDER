@@ -45,6 +45,8 @@ namespace Meatgrinder.Networking
         bool routeCompleted, killLimitReached;
         Canvas roomCanvas;
         RectTransform roomSetup, roomSummary, mapOptions;
+        RectTransform monsterOptions;
+        UnityEngine.UI.Image lightMarker, heavyMarker;
         UnityEngine.UI.InputField roomCode;
         UnityEngine.UI.Text roomTitle, roomDetails, roomStatus, mapName;
         UnityEngine.UI.Button primaryAction, leaveAction, fireOption;
@@ -104,6 +106,7 @@ namespace Meatgrinder.Networking
                     PlayerCount = teamSize * 2,
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
                     DisableNATPunchthrough = probeRelay,
+                    CustomPhotonAppSettings = GetProbeSettings(settings.AppSettings),
 #endif
                     IsVisible = mode != VersusMode.Private,
                     EnableClientSessionCreation = false,
@@ -309,8 +312,28 @@ namespace Meatgrinder.Networking
                 var group = new GameObject(prefix + "Network");
                 SceneManager.MoveGameObjectToScene(group, scene);
                 spawns[role] = group.AddComponent<LocalSpawnPoints>();
-                spawns[role].SetPoints(markers);
+                spawns[role].SetPoints(ExpandSpawnPoints(group.transform, markers));
             }
+        }
+
+        static Transform[] ExpandSpawnPoints(Transform group, Transform[] markers)
+        {
+            var points = new List<Transform>(markers);
+            // M01–M04 author two starts per role. Sample nearby grounded spots for larger rosters.
+            foreach (var marker in markers)
+            for (int direction = 0; direction < 8; direction++)
+            {
+                var offset = Quaternion.Euler(0, direction * 45, 0) * marker.right * 1.6f;
+                if (!Physics.Raycast(marker.position + offset + Vector3.up * .6f, Vector3.down, out var floor, 1.2f,
+                        Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) || floor.normal.y < .75f) continue;
+                if (points.Any(point => (point.position - floor.point).sqrMagnitude < 1.3f * 1.3f) ||
+                    !LocalSpawnPoints.IsClear(floor.point, null, 2.12f, .55f)) continue;
+                var extra = new GameObject("AlternateSpawn").transform;
+                extra.SetParent(group, false);
+                extra.SetPositionAndRotation(floor.point, marker.rotation);
+                points.Add(extra);
+            }
+            return points.ToArray();
         }
 
         void SyncEnvironment()
@@ -338,10 +361,13 @@ namespace Meatgrinder.Networking
             if (template == null) throw new InvalidOperationException("El mapa no tiene plantilla de jugador.");
             int team = seat % 2;
             int role = team ^ match.Half;
-            var points = spawns[role].Points;
-            var point = points[(seat / 2) % points.Length];
-            var offset = seat / 2 >= points.Length ? point.right * 1.25f : Vector3.zero;
-            var body = Instantiate(template, point.position + offset, point.rotation);
+            var kind = role == 1 ? ChoiceFor(player) : MonsterKind.None;
+            var definition = MonsterDefinition.Get(kind);
+            var movement = definition != null ? definition.Movement : template.GetComponent<Meatgrinder.Movement.PlayerMovement>().Tuning;
+            var point = spawns[role].Points.FirstOrDefault(candidate =>
+                LocalSpawnPoints.IsClear(candidate.position, null, movement.Height, movement.Radius));
+            if (point == null) throw new InvalidOperationException("No hay una aparición despejada para el equipo " + team);
+            var body = Instantiate(template, point.position, point.rotation);
             SceneManager.MoveGameObjectToScene(body, arena);
             body.name = "VersusPlayer-" + player.PlayerId;
             body.GetComponent<PlayerInputReader>().ExternalInput = true;
@@ -351,6 +377,7 @@ namespace Meatgrinder.Networking
             vitality.SetStableId(++nextCombatantId);
             vitality.SetTeam(team + 1);
             vitality.AllowWeapons = role == 0;
+            definition?.Apply(body);
             var resolver = body.GetComponent<DamageResolverHost>().Resolver;
             resolver.FriendlyFire = friendlyFire;
             resolver.Killed += AwardKill;
@@ -360,6 +387,7 @@ namespace Meatgrinder.Networking
             body.GetComponent<CombatHud>().enabled = false;
             body.GetComponent<PlayerLife>().SetSpawnContext(null, spawns[role]);
             body.SetActive(true);
+            Physics.SyncTransforms();
             body.GetComponent<WeaponController>().ClearInventory();
             body.GetComponent<LocalProjectileSpawner>().Spawned += ReplicateProjectile;
             var avatar = runner.Spawn(StatePrefab, point.position, point.rotation, player, (_, obj) =>
@@ -367,10 +395,23 @@ namespace Meatgrinder.Networking
                 var state = obj.GetComponent<VersusState>();
                 state.Team = team;
                 state.Monster = role == 1;
+                state.Archetype = kind;
             });
-            avatar.GetComponent<VersusState>().BindBody(body);
+            var avatarState = avatar.GetComponent<VersusState>();
+            avatarState.BindBody(body);
+            if (role == 1)
+                body.GetComponent<PlayerLife>().PreparingRespawn += () =>
+                {
+                    var next = ChoiceFor(player);
+                    if (next == avatarState.Archetype) return;
+                    MonsterDefinition.Get(next).Apply(body);
+                    avatarState.Archetype = next;
+                };
             runner.SetPlayerObject(player, avatar);
         }
+
+        MonsterKind ChoiceFor(PlayerRef player) =>
+            match.MonsterChoices.TryGet(player, out var choice) ? choice : MonsterKind.Light;
 
         void ReplicateProjectile(RocketProjectile rocket)
         {
@@ -412,7 +453,7 @@ namespace Meatgrinder.Networking
 
         void ExitReached(HealthComponent body)
         {
-            if (!busy && match.Phase == VersusPhase.Playing && body.AllowWeapons)
+            if (!busy && match.Mode == VersusMode.Campaign && match.Phase == VersusPhase.Playing && body.AllowWeapons)
                 routeCompleted = true;
         }
 
@@ -455,7 +496,7 @@ namespace Meatgrinder.Networking
 
         void StartMatch()
         {
-            if (seats.Count < 2 || busy) return;
+            if (!HasBothTeams() || busy) return;
             runner.SessionInfo.IsOpen = false;
             match.Half = match.ScoreA = match.ScoreB = 0;
             match.ForfeitWinner = roundsPlayed = 0;
@@ -470,7 +511,7 @@ namespace Meatgrinder.Networking
             if (local == null || PanelVisible || viewedPlayer == null) return;
             var player = viewedPlayer;
             GUI.Label(new Rect(20, 16, 650, 32),
-                $"Equipo {(player.Team == 0 ? "A" : "B")} · {(player.Monster ? "Monstruo" : "Humano")}   |   {match.ScoreA} – {match.ScoreB}   |   {Mathf.CeilToInt(match.Deadline.RemainingTime(runner) ?? 0)} s");
+                $"Equipo {(player.Team == 0 ? "A" : "B")} · {MonsterDefinition.Get(player.Archetype)?.DisplayName ?? "Humano"}   |   {match.ScoreA} – {match.ScoreB}   |   {Mathf.CeilToInt(match.Deadline.RemainingTime(runner) ?? 0)} s");
             GUI.Label(new Rect(20, Screen.height - 62, 750, 42),
                 $"Salud {player.Health:0}   Armadura {player.Armor:0}   Munición {player.Loaded}/{player.Reserve}   Bajas {player.Kills}   Muertes {player.Deaths}");
             GUI.Label(new Rect(Screen.width / 2f - 6, Screen.height / 2f - 10, 24, 24), "+");
@@ -539,11 +580,23 @@ namespace Meatgrinder.Networking
             RoomButton(roomSetup, "CreateRoom", "CREAR SALA", 32, -380, 310, () => _ = Connect(true));
             RoomButton(roomSetup, "JoinRoom", "UNIRSE POR CÓDIGO", 356, -380, 310, () => _ = Connect(false));
             roomDetails = RoomText(roomSummary, "RoomDetails", "", 32, -24, 1390, 210, 31, UiFontRole.Industrial);
+            monsterOptions = GameUi.Fill(roomSummary, "MonsterSelection");
+            RoomText(monsterOptions, "MonsterLabel", "DEMONIO PARA LA SIGUIENTE APARICIÓN", 32, -230, 900, 35, 20, UiFontRole.System);
+            lightMarker = MonsterButton(MonsterKind.Light, 32);
+            heavyMarker = MonsterButton(MonsterKind.Heavy, 500);
             primaryAction = RoomButton(roomSummary, "RoomAction", "", 32, -380, 310,
                 () => { if (paused && match.Phase == VersusPhase.Playing) paused = false; else StartMatch(); });
             roomStatus = RoomText(panel, "RoomStatus", "", 32, -450, 1390, 48, 22, UiFontRole.System);
             leaveAction = RoomButton(panel, "LeaveRoom", "VOLVER", 1115, -380, 325, () => _ = Leave());
             RefreshRoomMenu();
+        }
+
+        UnityEngine.UI.Image MonsterButton(MonsterKind kind, int x)
+        {
+            var definition = MonsterDefinition.Get(kind);
+            var label = $"{definition.DisplayName}   /   {definition.Health.MaxHealth:0} PS   ·   {definition.Melee.Damage:0} DAÑO";
+            return ChoiceMarker(RoomButton(monsterOptions, kind.ToString(), label, x, -270, 450,
+                () => match.RPC_ChooseMonster(kind)));
         }
 
         UnityEngine.UI.Button RoomButton(Transform parent, string name, string label, int x, int y, int width,
@@ -591,8 +644,13 @@ namespace Meatgrinder.Networking
             {
                 string action = "";
                 roomDetails.text = "";
+                monsterOptions.gameObject.SetActive(match != null && (match.Phase == VersusPhase.Lobby ||
+                    (paused && viewedPlayer != null && viewedPlayer.Monster)));
                 if (match != null)
                 {
+                    var choice = ChoiceFor(runner.LocalPlayer);
+                    lightMarker.enabled = choice == MonsterKind.Light;
+                    heavyMarker.enabled = choice == MonsterKind.Heavy;
                     string map = local.Maps[match.Map].DisplayName;
                     string detail = match.Phase switch
                     {
@@ -603,7 +661,7 @@ namespace Meatgrinder.Networking
                     };
                     roomDetails.text = $"{match.Mode}   /   {room}\n\n{detail}";
                     if (paused && match.Phase == VersusPhase.Playing) action = "CONTINUAR";
-                    else if (runner.IsServer && seats.Count >= 2 && !busy)
+                    else if (runner.IsServer && HasBothTeams() && !busy)
                         action = match.Phase == VersusPhase.Lobby ? "INICIAR PARTIDA" :
                             match.Phase == VersusPhase.Results ? "REVANCHA" : "";
                 }
@@ -635,6 +693,7 @@ namespace Meatgrinder.Networking
             if (!current.IsServer) return;
             Despawn(player);
             seats.Remove(player);
+            if (match != null) match.MonsterChoices.Remove(player);
             if (!busy && match != null && match.Phase == VersusPhase.Playing && !HasBothTeams())
                 EndMatch(seats.Values.Any(seat => seat % 2 == 0) ? 1 : 2);
         }
@@ -699,7 +758,12 @@ namespace Meatgrinder.Networking
         public void OnHostMigration(NetworkRunner current, HostMigrationToken token) { }
         public void OnObjectEnterAOI(NetworkRunner current, NetworkObject obj, PlayerRef player) { }
         public void OnObjectExitAOI(NetworkRunner current, NetworkObject obj, PlayerRef player) { }
-        public void OnReliableDataReceived(NetworkRunner current, PlayerRef player, ReliableKey key, ReadOnlySpan<byte> data) { }
+        public void OnReliableDataReceived(NetworkRunner current, PlayerRef player, ReliableKey key, ReadOnlySpan<byte> data)
+        {
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            ReceiveProbeAck(current, player, key, data);
+#endif
+        }
         public void OnReliableDataProgress(NetworkRunner current, PlayerRef player, ReliableKey key, float progress) { }
         public void OnUserSimulationMessage(NetworkRunner current, SimulationMessagePtr message) { }
     }

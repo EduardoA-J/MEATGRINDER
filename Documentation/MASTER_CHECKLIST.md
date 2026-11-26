@@ -106,14 +106,14 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F3-15 | Transición de mapa en red | INTEGRATED | P2 | Rotación M01–M04 y conservación de puntuación comprobadas en Continuous; quedan Campaign y casos de error. |
 | F3-16 | Muertes casi simultáneas | NOT_STARTED | P2 | F3-10 |
 | F3-17 | Recogida simultánea | PARTIALLY_IMPLEMENTED | P2 | Dos intentos en el mismo frame en el host, con ambos avatares conectados, conceden un solo pickup; queda probar la carrera por colisión. |
-| F4-01 | MonsterDefinition | NOT_STARTED | P2 | F0-07 |
-| F4-02 | Ficha del demonio ligero y del pesado | BLOCKED | P2 | David, F4-01, D-12 |
-| F4-03 | Selección validada por la autoridad | NOT_STARTED | P2 | F3-05, F4-02 |
-| F4-04 | Hitboxes | NOT_STARTED | P2 | F4-02 |
-| F4-05 | Ataque melee de monstruo | NOT_STARTED | P2 | F2-01, F4-04, F2-13 |
-| F4-06 | Armas y potenciadores para el monstruo | BLOCKED | P2 | D-13, F2-10, F6-05, F4-03 |
-| F4-07 | Identidad visual en red | NOT_STARTED | P3 | F4-03, F3-06, F8-03 |
-| F4-08 | Prueba de asimetría 2v2 | NOT_STARTED | P2 | F4-05, F3-13, F5-02 |
+| F4-01 | MonsterDefinition | INTEGRATED | P2 | Ligero y pesado enlazan salud, movimiento, melee y prefab visual. |
+| F4-02 | Ficha del demonio ligero y del pesado | INTEGRATED | P2 | Perfiles configurables; cifras de balance provisionales. |
+| F4-03 | Selección validada por la autoridad | INTEGRATED | P2 | Preferencia en lobby o pausa del demonio, aplicada al aparecer o reaparecer. |
+| F4-04 | Hitboxes | INTEGRATED | P2 | Cápsula autoritativa distinta por perfil; el modelo visual es independiente. |
+| F4-05 | Ataque melee de monstruo | INTEGRATED | P2 | Ataques con daño, alcance, anticipación y cadencia distintos; comparten DamageResolver. |
+| F4-06 | Armas y potenciadores para el monstruo | INTEGRATED | P2 | Salud, armadura y potenciadores permitidos; armas, munición, botín de armas y llaves reservados a humanos. |
+| F4-07 | Identidad visual en red | INTEGRATED | P3 | Arquetipo replicado y dos prefabs genéricos reemplazables. |
+| F4-08 | Prueba de asimetría 2v2 | PARTIALLY_IMPLEMENTED | P2 | Sonda 2v2 verifica los dos perfiles, replicación y reglas; falta playtest de balance. |
 | F5-01 | Arena gris (laboratorio) | VALIDATED | P0 | F0-07 |
 | F5-02 | Blockout de M01 The Slaughterhouse | PARTIALLY_IMPLEMENTED | P2 | ProBuilder y primera pasada industrial texturada; MapDefinition. Rampa y llegada conservadas; recorrido completo pendiente |
 | F5-03 | Dos rutas y verticalidad (M01) | PARTIALLY_IMPLEMENTED | P2 | Flancos, foso y pasarelas a 3,6 m y 6 m. Recorrido completo no caminado |
@@ -155,12 +155,12 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F8-06 | VFX de disparo, sangre y decals con tope | INTEGRATED | P3 | Proyectil/estela y pool de efectos; revisión visual y coste final pendientes |
 | F8-07 | Set de audio de combate | PARTIALLY_IMPLEMENTED | P3 | DeathSfx aportado, música PrincipalMenu y level1–level4 → afterFirstSong integrados (25 nov). Clips de combate existentes conservados. Ver PROGRESS para pruebas; diseño y mezcla final pendientes. |
 | F8-08 | Animación mínima de presentación | PARTIALLY_IMPLEMENTED | P3 | Armas/melee/cámara/targets/puertas procedurales; rigs de personajes pendientes |
-| F9-01 | Cerrar el modo versus de producto | BLOCKED | P2 | David / D-04 |
+| F9-01 | Cerrar el modo versus de producto | INTEGRATED | P2 | Campaign, Continuous y Private Match integrados; criterios de victoria en D-14. |
 | F9-02 | Reglas de equipo | NOT_STARTED | P2 | F3-05, F9-01 |
 | F9-03 | Puntuación | NOT_STARTED | P2 | F9-01, F3-10, F5-07 |
 | F9-04 | Intercambio de roles | NOT_STARTED | P2 | F9-01, F9-03, F5-07 |
 | F9-05 | Fin de partida y revancha | NOT_STARTED | P2 | F9-03, F3-02 |
-| F9-06 | Validación 4v4 | NOT_STARTED | P4 | F3-13, F4-08, F10-04, D-05 |
+| F9-06 | Validación 4v4 | PARTIALLY_IMPLEMENTED | P4 | Ocho procesos completaron Campaign M01–M04 con intercambio de roles. Pendientes equipos físicos separados, balance y perfiles de rendimiento. |
 | F10-01 | Matriz funcional | PARTIALLY_IMPLEMENTED | P2 | Matriz en la auditoría y pruebas locales. Versus, recogida simultánea y conexión de producto pendientes. |
 | F10-02 | Matriz de red | PARTIALLY_IMPLEMENTED | P2 | Prueba repetible de producto para dos procesos, Direct y relay con simulación. Evidencia y límites en NETWORK_VALIDATION.md. |
 | F10-03 | Balance | NOT_STARTED | P3 | F4-08, F5-08, F6-03 |

@@ -76,9 +76,9 @@ Las preguntas históricas de abajo permanecen como trazabilidad. No reabrir las 
 | D-09 | uGUI para HUD y menú propio inspirado en Quake 2. | Resolución de David, 22 de noviembre de 2026. |
 | D-10 | Resuelta arriba: Quad ×4 durante 30 s. | Resolución de David, 22 de noviembre de 2026. |
 | D-11 | Resuelta arriba: reinicio de duración, coexistencia y cifras provisionales. | Resolución de David, 22 de noviembre de 2026. |
-| D-12 | Estadísticas del demonio ligero y del demonio pesado. | El checklist pide dos modelos. La sección 7.2 solo describe un Demonio. |
-| D-13 | ¿Los monstruos recogen armas de fuego o solo potenciadores? | 6.2 dice que también pueden agarrar armas. La sección 25 solo afirma los potenciadores. |
-| D-14 | Victoria: progreso del recorrido, bajas, o una combinación. | 11.2 da puntos por bajas y por recorrido. La sección 25 dice «progreso recorrido». |
+| D-12 | Ligero móvil y de ataque rápido; pesado robusto y de ataque lento y amplio. | Estadísticas en los perfiles DemonLight/DemonHeavy. Cifras de balance PENDIENTES de playtest. |
+| D-13 | Ambos demonios pueden recoger salud, armadura y todos los potenciadores. | Armas de fuego, munición, botín de armas y llaves de recorrido reservados a humanos. |
+| D-14 | Campaign se decide por salidas completadas; Continuous y Private Match, por bajas rivales confirmadas. | Campaign compara M01–M04 tras intercambiar roles. Continuous suma las bajas de cuatro mapas; Private Match usa un mapa. Empate si hay igualdad. Suicidio y fuego amigo no puntúan. Un equipo vacío concede victoria por abandono. |
 | D-15 | Base mínima resuelta; objetivo y equipo principal siguen pendientes. | Resolución de David, 22 de noviembre de 2026. |
 | D-16 | Fecha de inicio de las 8 semanas. | El plan no tiene calendario. Hoy el código de juego no existe. |
 | D-17 | Resuelta arriba: Sprint y Crouch entran; dash no. | Resolución de David, 22 de noviembre de 2026. |

@@ -5,6 +5,12 @@ Alcance: juego completo (`GDD_SCOPE_ADDENDUM.md`). Estados: `MASTER_CHECKLIST.md
 
 ## Versus con Photon Fusion — 26 de noviembre
 
+Se integraron los demonios ligero y pesado. Sus cápsulas de combate, salud, movilidad y ataques se definen por perfil. Cada `MonsterDefinition` enlaza un prefab visual provisional reemplazable desde el Inspector. Las reglas de recursos y victoria figuran en D-13 y D-14.
+
+Para sustituir el arte, asignar el prefab final al campo **Visual Prefab** de `DemonLight.asset` o `DemonHeavy.asset` en `02_ScriptableObjects/Resources`. Preparar la raíz del modelo con el pivote a los pies, eje Y hacia arriba y frente +Z. Las hitboxes y los sockets de juego quedan en el cuerpo autoritativo; el modelo remoto solo aporta imagen.
+
+Las sondas de Private Match 2v2 y Campaign 4v4 pasaron en cuatro y ocho ejecutables Win64. Confirmaron equipos equilibrados, cambio de demonio al reaparecer y resultados por bajas o por salidas. Campaign recorrió M01–M04 en ambas mitades. Las pruebas se automatizaron en un solo equipo. El balance con personas y el rendimiento en equipos separados se mantienen pendientes.
+
 Se generó una nueva build Win64 con el App ID local. La prueba con dos procesos de Versus Continuous pasó por conexión directa y por relay simulado. Se corrigió la duplicación de identificadores de combate al clonar al jugador de plantilla. La validación en dos equipos distintos sigue pendiente. [Procedimiento y alcance](NETWORK_VALIDATION.md).
 
 La pantalla de creación y unión usa uGUI y reutiliza `GameUi` y el fondo del menú principal. El lobby y sus mensajes de carga, pausa y resultados comparten el mismo panel.

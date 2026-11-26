@@ -90,7 +90,7 @@ namespace Meatgrinder.Players
             ApplyPose();
         }
 
-        internal void SetTuning(MovementTuning value)
+        public void SetTuning(MovementTuning value)
         {
             tuning = value;
             ApplyPose();

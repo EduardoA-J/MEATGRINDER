@@ -26,4 +26,15 @@ Compilar con el App ID local y ejecutar desde la carpeta Unity del proyecto:
 
 Para probar desde equipos distintos, ejecutar `-Role Host` en uno y `-Role Client` en otro con el mismo valor de `-Room`. Usar un código nuevo por pasada. El script guarda los logs separados y falla si falta el marcador PASS de un proceso.
 
-La pasada actual usó un solo equipo físico. Quedan por comprobar LAN y redes de internet distintas con dos equipos, una recogida simultánea mediante colisiones reales, muertes simultáneas y el flujo completo de Campaign y Private Match.
+La pasada usó un solo equipo físico. Quedan por comprobar LAN y redes de internet distintas con dos equipos, una recogida simultánea mediante colisiones reales y muertes simultáneas.
+
+## Demonios en 2v2 y 4v4
+
+La sonda valida la preferencia de clase con Fusion, rechaza una opción inválida, comprueba perfiles de salud, hitbox y melee en el host, y confirma el cambio de clase al reaparecer. El caso privado decide por bajas rivales. Campaign comprueba los cuatro mapas en ambas mitades, los roles invertidos y el marcador por salidas. El host usa bajas y salidas controladas para reproducir los resultados. Todos los clientes confirman cada escena y el marcador antes de que la sonda pase al siguiente paso.
+
+```powershell
+./Tools/Test-VersusWindows.ps1 -Executable <ruta-al-exe> -Players 4
+./Tools/Test-VersusWindows.ps1 -Executable <ruta-al-exe> -Players 8 -Campaign
+```
+
+Todos los procesos deben usar la misma región de Photon. El script usa `cae` por defecto y admite `-Region`. Estas comprobaciones cubren la réplica y la lógica de las reglas; el playtest con personas, balance y rendimiento en equipos separados quedan pendientes.

@@ -38,7 +38,7 @@ namespace Meatgrinder.Pickups
         void OnTriggerEnter(Collider other)
         {
             var health = other.GetComponentInParent<HealthComponent>();
-            if (collected || health == null || !health.IsAlive) return;
+            if (collected || health == null || !health.IsAlive || !health.AllowWeapons) return;
             var weapons = health.GetComponent<WeaponController>();
             if (weapons == null || !weapons.ReceiveInventory(inventory)) return;
             collected = true;

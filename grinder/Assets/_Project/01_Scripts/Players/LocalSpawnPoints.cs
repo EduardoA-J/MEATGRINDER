@@ -23,18 +23,20 @@ namespace Meatgrinder.Players
                 if (distance < 1f || distance <= bestDistance) continue;
                 if (!Physics.Raycast(point.position + Vector3.up * 0.1f, Vector3.down, 0.6f,
                     Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
-                bool occupied = false;
-                foreach (var hit in Physics.OverlapCapsule(point.position + Vector3.up * radius,
-                    point.position + Vector3.up * (height - radius), radius * 0.9f,
-                    Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                {
-                    if (!hit.transform.IsChildOf(body)) { occupied = true; break; }
-                }
-                if (occupied) continue;
+                if (!IsClear(point.position, body, height, radius)) continue;
                 best = point;
                 bestDistance = distance;
             }
             return best;
+        }
+
+        public static bool IsClear(Vector3 position, Transform body, float height, float radius)
+        {
+            foreach (var hit in Physics.OverlapCapsule(position + Vector3.up * radius,
+                position + Vector3.up * (height - radius), radius * 0.95f,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                if (body == null || !hit.transform.IsChildOf(body)) return false;
+            return true;
         }
     }
 }

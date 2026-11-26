@@ -169,7 +169,7 @@ namespace Meatgrinder.Movement
             scriptedInput = input;
         }
 
-        internal void SetTuning(MovementTuning value)
+        public void SetTuning(MovementTuning value)
         {
             tuning = value;
             ApplyBody();

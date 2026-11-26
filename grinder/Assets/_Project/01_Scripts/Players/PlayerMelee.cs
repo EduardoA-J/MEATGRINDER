@@ -32,6 +32,12 @@ namespace Meatgrinder.Players
         public float DamageAmount => tuning != null ? tuning.Damage : damageAmount;
         public float CooldownRemaining => cooldownRemaining;
 
+        public void SetTuning(MeleeTuning value)
+        {
+            CancelSwing();
+            tuning = value;
+        }
+
         void Awake()
         {
             if (input == null)

@@ -25,6 +25,7 @@ namespace Meatgrinder.Players
         public float RespawnRemaining => Mathf.Max(0f, respawnRemaining);
         public string DeathCause { get; private set; }
         public event System.Action Respawned;
+        public event System.Action PreparingRespawn;
         public void SetSpawnContext(Transform initialSpawn, LocalSpawnPoints points)
         {
             spawnPoint = initialSpawn;
@@ -133,6 +134,7 @@ namespace Meatgrinder.Players
         }
         void CompleteRespawn()
         {
+            PreparingRespawn?.Invoke();
             Transform destination = spawnPoint;
             if (map != null)
             {
