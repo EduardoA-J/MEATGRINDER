@@ -18,7 +18,7 @@ using UnityEngine.SceneManagement;
 
 namespace Meatgrinder.Networking
 {
-    public sealed class VersusSession : MonoBehaviour, INetworkRunnerCallbacks
+    public sealed partial class VersusSession : MonoBehaviour, INetworkRunnerCallbacks
     {
         static readonly NetworkPrefabRef StatePrefab = NetworkPrefabRef.Parse("c137af85b708448ba1e36c1c617c10b2");
         readonly Dictionary<PlayerRef, int> seats = new();
@@ -40,6 +40,7 @@ namespace Meatgrinder.Networking
         VersusMode mode;
         string room = "", status = "";
         int firstMap, teamSize, roundScoreA, roundScoreB, roundsPlayed;
+        int nextCombatantId = 10000;
         bool busy, friendlyFire, paused, leaving;
         bool routeCompleted, killLimitReached;
         Canvas roomCanvas;
@@ -101,6 +102,9 @@ namespace Meatgrinder.Networking
                     SceneManager = sceneManager,
                     ObjectProvider = root.AddComponent<NetworkObjectProviderDefault>(),
                     PlayerCount = teamSize * 2,
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+                    DisableNATPunchthrough = probeRelay,
+#endif
                     IsVisible = mode != VersusMode.Private,
                     EnableClientSessionCreation = false,
                     IsOpen = true
@@ -208,6 +212,14 @@ namespace Meatgrinder.Networking
         public void OnInput(NetworkRunner current, NetworkInput input)
         {
             var command = new VersusInput { Aim = aim };
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            if (probeClient || probeHost)
+            {
+                command.Move = probeMove ? Vector2.up : Vector2.zero;
+                input.Set(command);
+                return;
+            }
+#endif
             if (!PanelVisible && viewedPlayer != null && viewedPlayer.Health > 0 && Keyboard.current is Keyboard keys)
             {
                 command.Move = new Vector2((keys.dKey.isPressed ? 1 : 0) - (keys.aKey.isPressed ? 1 : 0),
@@ -334,8 +346,11 @@ namespace Meatgrinder.Networking
             body.name = "VersusPlayer-" + player.PlayerId;
             body.GetComponent<PlayerInputReader>().ExternalInput = true;
             body.GetComponent<PlayerLook>().MenuControlsCursor = true;
-            body.GetComponent<HealthComponent>().SetTeam(team + 1);
-            body.GetComponent<HealthComponent>().AllowWeapons = role == 0;
+            var vitality = body.GetComponent<HealthComponent>();
+            // The scene template has already run Awake and can carry a generated serialized ID.
+            vitality.SetStableId(++nextCombatantId);
+            vitality.SetTeam(team + 1);
+            vitality.AllowWeapons = role == 0;
             var resolver = body.GetComponent<DamageResolverHost>().Resolver;
             resolver.FriendlyFire = friendlyFire;
             resolver.Killed += AwardKill;

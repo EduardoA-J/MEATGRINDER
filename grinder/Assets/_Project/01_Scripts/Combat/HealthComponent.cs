@@ -174,7 +174,7 @@ namespace Meatgrinder.Combat
             teamId = value;
         }
 
-        internal void SetStableId(int value)
+        public void SetStableId(int value)
         {
             stableId = value;
             idAssigned = true;

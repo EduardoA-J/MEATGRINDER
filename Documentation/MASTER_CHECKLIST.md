@@ -89,10 +89,10 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F2-13 | Melee humano (sistema real) | INTEGRATED | P0 | Preparación/impacto/recuperación, cobertura, un daño y vista procedural; tecla V o disparo sin arma |
 | F2-14 | Berserk integrado con melee | INTEGRATED | P0 | Multiplica junto con Quad; ×2 provisional |
 | F2-15 | Loot de muerte y caída al vacío | INTEGRATED | P0 | Prefab loot con cantidades exactas; vacío ≤5 s, cámara y oscuridad, respawn y pruebas de escena; red pendiente |
-| F3-01 | Bootstrap de Fusion en Boot | NOT_STARTED | P1 | Boot local ya existe; integración Fusion fuera del encargo actual |
+| F3-01 | Bootstrap de Fusion en Boot | INTEGRATED | P1 | Lobby de producto probado en la build Win64 mediante la sonda optativa; falta manejo completo de conexión en la UI. |
 | F3-02 | Crear, unir y salir de sesión (sonda) | VALIDATED | P1 | Sonda NetworkTest; Boot pendiente |
-| F3-03 | Spawn autorizado de jugador de juego | NOT_STARTED | P1 | F3-02, F5-04 |
-| F3-04 | Movimiento replicado con predicción | NOT_STARTED | P1 | F1-10, F3-03 |
+| F3-03 | Spawn autorizado de jugador de juego | INTEGRATED | P1 | Host y cliente comprobaron spawn en M01–M04; avatares con identificadores de combate únicos. |
+| F3-04 | Movimiento replicado con predicción | PARTIALLY_IMPLEMENTED | P1 | Intención remota y movimiento del host verificados en conexión directa y relay; predicción y reconciliación pendientes. |
 | F3-05 | Equipos | NOT_STARTED | P1 | F3-03 |
 | F3-06 | Sincronizar arma, salud y armadura | NOT_STARTED | P1 | F2-02, F2-06, F3-05 |
 | F3-07 | Daño autoritativo | NOT_STARTED | P1 | F2-01, F2-07, F3-06 |
@@ -100,12 +100,12 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F3-09 | Política de lag compensation | BLOCKED | P2 | D-03, F3-07 |
 | F3-10 | Muerte y respawn en red | NOT_STARTED | P1 | F2-04, F2-05, F3-07 |
 | F3-11 | Desconexión (partida continúa y se marca) | NOT_STARTED | P2 | F3-02 |
-| F3-12 | Dos clientes en la misma máquina (gameplay) | NOT_STARTED | P1 | F3-02, F3-04 |
-| F3-13 | LAN e internet | NOT_STARTED | P2 | F3-12, F3-07 |
-| F3-14 | Latencia y pérdida de paquetes | NOT_STARTED | P2 | F3-04, F3-07 |
-| F3-15 | Transición de mapa en red | NOT_STARTED | P2 | F5-07, F3-02 |
+| F3-12 | Dos clientes en la misma máquina (gameplay) | VALIDATED | P1 | Host y cliente Win64 obtuvieron PASS en una sesión Continuous real. |
+| F3-13 | LAN e internet | PARTIALLY_IMPLEMENTED | P2 | Transporte Direct y relay de Photon confirmados desde un equipo; falta repetir en dos equipos distintos. |
+| F3-14 | Latencia y pérdida de paquetes | PARTIALLY_IMPLEMENTED | P2 | El flujo Continuous pasó por relay con latencia y pérdida simuladas (120 ms, 4 %); queda ampliar la matriz de condiciones. |
+| F3-15 | Transición de mapa en red | INTEGRATED | P2 | Rotación M01–M04 y conservación de puntuación comprobadas en Continuous; quedan Campaign y casos de error. |
 | F3-16 | Muertes casi simultáneas | NOT_STARTED | P2 | F3-10 |
-| F3-17 | Recogida simultánea | NOT_STARTED | P2 | F6-05, F3-06 |
+| F3-17 | Recogida simultánea | PARTIALLY_IMPLEMENTED | P2 | Dos intentos en el mismo frame en el host, con ambos avatares conectados, conceden un solo pickup; queda probar la carrera por colisión. |
 | F4-01 | MonsterDefinition | NOT_STARTED | P2 | F0-07 |
 | F4-02 | Ficha del demonio ligero y del pesado | BLOCKED | P2 | David, F4-01, D-12 |
 | F4-03 | Selección validada por la autoridad | NOT_STARTED | P2 | F3-05, F4-02 |
@@ -162,7 +162,7 @@ El índice fija los estados vigentes. Las fichas inferiores conservan criterios 
 | F9-05 | Fin de partida y revancha | NOT_STARTED | P2 | F9-03, F3-02 |
 | F9-06 | Validación 4v4 | NOT_STARTED | P4 | F3-13, F4-08, F10-04, D-05 |
 | F10-01 | Matriz funcional | PARTIALLY_IMPLEMENTED | P2 | Matriz en la auditoría y pruebas locales. Versus, recogida simultánea y conexión de producto pendientes. |
-| F10-02 | Matriz de red | NOT_STARTED | P2 | F3-12…F3-17 |
+| F10-02 | Matriz de red | PARTIALLY_IMPLEMENTED | P2 | Prueba repetible de producto para dos procesos, Direct y relay con simulación. Evidencia y límites en NETWORK_VALIDATION.md. |
 | F10-03 | Balance | NOT_STARTED | P3 | F4-08, F5-08, F6-03 |
 | F10-04 | Rendimiento | NOT_STARTED | P4 | F0-10, F8-06, F3-13 |
 | F10-05 | Build de Windows | VALIDATED | P2 | Windows Standalone x64 Development generado con Unity 6000.5.6f1. 0 errores. Log de compilación en PROGRESS. |

@@ -71,7 +71,7 @@ namespace Meatgrinder.Pickups
                 return;
             }
 
-            Collect(health);
+            CollectAuthoritatively(health);
         }
 
         bool CanPickup(HealthComponent health)
@@ -103,9 +103,11 @@ namespace Meatgrinder.Pickups
             }
         }
 
-        internal bool Collect(HealthComponent health)
+        internal bool Collect(HealthComponent health) => CollectAuthoritatively(health);
+
+        public bool CollectAuthoritatively(HealthComponent health)
         {
-            if (available == false || definition == null || health == null || health.IsAlive == false)
+            if (Replica || available == false || definition == null || health == null || health.IsAlive == false)
             {
                 return false;
             }

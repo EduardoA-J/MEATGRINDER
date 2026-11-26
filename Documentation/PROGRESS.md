@@ -5,6 +5,8 @@ Alcance: juego completo (`GDD_SCOPE_ADDENDUM.md`). Estados: `MASTER_CHECKLIST.md
 
 ## Versus con Photon Fusion — 26 de noviembre
 
+Se generó una nueva build Win64 con el App ID local. La prueba con dos procesos de Versus Continuous pasó por conexión directa y por relay simulado. Se corrigió la duplicación de identificadores de combate al clonar al jugador de plantilla. La validación en dos equipos distintos sigue pendiente. [Procedimiento y alcance](NETWORK_VALIDATION.md).
+
 La pantalla de creación y unión usa uGUI y reutiliza `GameUi` y el fondo del menú principal. El lobby y sus mensajes de carga, pausa y resultados comparten el mismo panel.
 
 Boot incluye Multijugador con salas por código, lobby, Campaign con intercambio de roles tras recorrer M01–M04, Continuous con rotación automática y Private Match con mapa y fuego amigo configurables. El host confirma movimiento, combate, bajas, progresión de puertas, pickups y resultados. La práctica local conserva su flujo. Se compilaron los ensamblados afectados con las referencias de Unity 6000.5.6f1. Falta conectar dos procesos con un App ID local y validar la jugabilidad de red. Ranked requiere identidad y un backend de resultados confiable.
